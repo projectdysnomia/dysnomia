@@ -417,6 +417,7 @@ declare namespace Eris {
     decodeReasons?: boolean;
     disableLatencyCompensation?: boolean;
     domain?: string;
+    https?: boolean;
     latencyThreshold?: number;
     ratelimiterOffset?: number;
     requestTimeout?: number;
