@@ -5,6 +5,7 @@ export default function(token, options) {
 }
 
 export const {
+  ApplicationCommand,
   Attachment,
   AutocompleteInteraction,
   Base,
@@ -51,7 +52,6 @@ export const {
   ThreadChannel,
   ThreadMember,
   UnavailableGuild,
-  UnknownInteraction,
   User,
   VERSION,
   VoiceChannel,

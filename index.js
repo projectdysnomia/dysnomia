@@ -6,6 +6,7 @@ function Eris(token, options) {
     return new Client(token, options);
 }
 
+Eris.ApplicationCommand = require("./lib/structures/ApplicationCommand");
 Eris.Attachment = require("./lib/structures/Attachment");
 Eris.AutocompleteInteraction = require("./lib/structures/AutocompleteInteraction");
 Eris.Base = require("./lib/structures/Base");
@@ -52,7 +53,6 @@ Eris.TextVoiceChannel = require("./lib/structures/TextVoiceChannel");
 Eris.ThreadChannel = require("./lib/structures/ThreadChannel");
 Eris.ThreadMember = require("./lib/structures/ThreadMember");
 Eris.UnavailableGuild = require("./lib/structures/UnavailableGuild");
-Eris.UnknownInteraction = require("./lib/structures/UnknownInteraction");
 Eris.User = require("./lib/structures/User");
 Eris.VERSION = require("./package.json").version;
 Eris.VoiceChannel = require("./lib/structures/VoiceChannel");
