@@ -3349,6 +3349,7 @@ declare namespace Eris {
     ready: boolean;
     reconnectInterval: number;
     requestMembersPromise: { [s: string]: RequestMembersPromise };
+    resumeURL: string | null;
     seq: number;
     sessionID: string | null;
     status: "connecting" | "disconnected" | "handshaking" | "identifying" | "ready" | "resuming";
