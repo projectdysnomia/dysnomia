@@ -48,7 +48,6 @@ export const {
   SharedStream,
   StageChannel,
   StageInstance,
-  StoreChannel,
   TextChannel,
   TextVoiceChannel,
   ThreadChannel,
