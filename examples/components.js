@@ -1,9 +1,9 @@
-const Eris = require("eris");
+const Dysnomia = require("@projectdysnomia/dysnomia");
 
-const Constants = Eris.Constants;
+const Constants = Dysnomia.Constants;
 
 // Replace TOKEN with your bot account's token
-const bot = new Eris("BOT TOKEN", {
+const bot = new Dysnomia("BOT TOKEN", {
     intents: ["guildMessages"]
 });
 
@@ -71,7 +71,7 @@ bot.on("messageCreate", (msg) => { // When a message is created
 });
 
 bot.on("interactionCreate", (interaction) => {
-    if(interaction instanceof Eris.ComponentInteraction) {
+    if(interaction instanceof Dysnomia.ComponentInteraction) {
         return interaction.createMessage({
             content: "Interaction Recieved",
             flags: 64

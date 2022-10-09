@@ -1,7 +1,7 @@
-const Eris = require("eris");
+const Dysnomia = require("@projectdysnomai/dysnomia");
 
 // Replace TOKEN with your bot account's token
-const bot = new Eris("Bot TOKEN", {
+const bot = new Dysnomia("Bot TOKEN", {
     intents: [
         "guilds",
         "guildMessages"

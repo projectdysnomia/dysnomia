@@ -1,15 +1,20 @@
-Eris [![NPM version](https://img.shields.io/npm/v/eris.svg?style=flat-square&color=informational)](https://npmjs.com/package/eris)
+Project Dysnomia
 ====
 
-A Node.js wrapper for interfacing with Discord.
+A fork of [Eris](https://github.com/abalabahaha/eris), a Node.js wrapper for interfacing with Discord, focused on keeping up with the latest Discord API changes.
 
 Installing
 ----------
 
-You will need NodeJS 10.4+. If you need voice support you will also need Python 2.7 and a C++ compiler. Refer to [the Getting Started section of the docs](https://abal.moe/Eris/docs) for more details.
+You will need NodeJS 10.4+. Voice support requires [additional software](https://github.com/nodejs/node-gyp#installation).
 
 ```
-npm install --no-optional eris
+npm install --no-optional @projectdysnomia/dysnomia
+```
+
+If you'd like to install the development versions of the library, use the following command instead:
+```
+npm install --no-optional github:projectdysnomia/dysnomia#dev
 ```
 
 If you need voice support, remove the `--no-optional`.
@@ -18,10 +23,10 @@ Ping Pong Example
 -----------------
 
 ```js
-const Eris = require("eris");
+const Dysnomia = require("@projectdysnomia/dysnomia");
 
 // Replace TOKEN with your bot account's token
-const bot = new Eris("Bot TOKEN", {
+const bot = new Dysnomia("Bot TOKEN", {
     intents: [
         "guildMessages"
     ]
@@ -48,15 +53,14 @@ bot.on("messageCreate", (msg) => { // When a message is created
 bot.connect(); // Get the bot to connect to Discord
 ```
 
-More examples can be found in [the examples folder](https://github.com/abalabahaha/eris/tree/master/examples).
+More examples can be found in [the examples folder](https://github.com/projectdysnomia/dysnomia/tree/master/examples).
 
 Useful Links
 ------------
 
-- [The website](https://abal.moe/Eris/) has more details and documentation.
-- [The official Eris server](https://abal.moe/Eris/invite) is the best place to get support.
-- [The GitHub repo](https://github.com/abalabahaha/eris) is where development primarily happens.
-- [The NPM package webpage](https://npmjs.com/package/eris) is, well, the webpage for the NPM package.
+- [The official Project Dysnomia server](https://discord.gg/2uUvgJzgCE) is the best place to get support.
+- [The GitHub repo](https://github.com/projectdysnomia/dysnomia) is where development primarily happens.
+- [The NPM package webpage](https://npmjs.com/package/@projectdysnomia/dysnomia) is, well, the webpage for the NPM package.
 
 License
 -------

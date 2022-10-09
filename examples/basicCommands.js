@@ -1,8 +1,8 @@
-const Eris = require("eris");
+const Dysnomia = require("@projectdysnomia/dysnomia");
 
 // Replace TOKEN with your bot account's token
-const bot = new Eris.CommandClient("Bot TOKEN", {}, {
-    description: "A test bot made with Eris",
+const bot = new Dysnomia.CommandClient("Bot TOKEN", {}, {
+    description: "A test bot made with Dysnomia",
     owner: "somebody",
     prefix: "!"
 });
