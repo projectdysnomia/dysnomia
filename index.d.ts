@@ -3546,8 +3546,6 @@ declare namespace Dysnomia {
     connectTimeout: NodeJS.Timeout | null;
     discordServerTrace?: string[];
     getAllUsersCount: { [guildID: string]: boolean };
-    getAllUsersLength: number;
-    getAllUsersQueue: string;
     globalBucket: Bucket;
     guildCreateTimeout: NodeJS.Timeout | null;
     heartbeatInterval: NodeJS.Timeout | null;
