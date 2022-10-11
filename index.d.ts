@@ -3577,7 +3577,6 @@ declare namespace Dysnomia {
     emit(event: string, ...args: any[]): void;
     emit<K extends keyof ShardEvents>(event: K, ...args: ShardEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
-    getGuildMembers(guildID: string, timeout: number): void;
     hardReset(): void;
     heartbeat(normal?: boolean): void;
     identify(): void;
