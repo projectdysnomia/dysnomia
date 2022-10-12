@@ -456,7 +456,6 @@ declare namespace Dysnomia {
   interface RequestHandlerOptions {
     agent?: HTTPSAgent;
     baseURL?: string;
-    decodeReasons?: boolean;
     disableLatencyCompensation?: boolean;
     domain?: string;
     https?: boolean;
