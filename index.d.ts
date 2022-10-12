@@ -2577,8 +2577,6 @@ declare namespace Dysnomia {
     getGuildCommandPermissions(guildID: string): Promise<GuildApplicationCommandPermissions[]>;
     getGuildCommands<W extends boolean = false>(guildID: string, withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
     getGuildDiscovery(guildID: string): Promise<DiscoveryMetadata>;
-    /** @deprecated */
-    getGuildEmbed(guildID: string): Promise<Widget>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
     getGuildInvites(guildID: string): Promise<Invite[]>;
     getGuildPreview(guildID: string): Promise<GuildPreview>;
@@ -2925,8 +2923,6 @@ declare namespace Dysnomia {
     getCommandPermissions(): Promise<GuildApplicationCommandPermissions[]>;
     getCommands<W extends boolean = false>(): Promise<AnyApplicationCommand<W>[]>;
     getDiscovery(): Promise<DiscoveryMetadata>;
-    /** @deprecated */
-    getEmbed(): Promise<Widget>;
     getIntegrations(): Promise<GuildIntegration>;
     getInvites(): Promise<Invite[]>;
     getPruneCount(options?: GetPruneOptions): Promise<number>;
