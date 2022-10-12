@@ -409,16 +409,11 @@ declare namespace Dysnomia {
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    /** @deprecated */
-    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
-    /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     sendTyping(): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
   }
-  // @ts-ignore ts(2430) - ThreadTextable can't properly extend Textable because of getMessageReaction deprecated overload
   interface ThreadTextable extends Textable, Pinnable {
     lastPinTimestamp?: number;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
@@ -933,8 +928,6 @@ declare namespace Dysnomia {
 
   // Guild
   export interface BanMemberOptions {
-    /** @deprecated */
-    deleteMessageDays?: number;
     deleteMessageSeconds?: number;
     reason?: string;
   }
@@ -1344,8 +1337,6 @@ declare namespace Dysnomia {
     embeds?: EmbedOptions[];
     flags?: number;
     messageReference?: MessageReferenceReply;
-    /** @deprecated */
-    messageReferenceID?: string;
     stickerIDs?: string[];
     tts?: boolean;
   }
@@ -1401,8 +1392,6 @@ declare namespace Dysnomia {
   }
   interface GetMessageReactionOptions {
     after?: string;
-    /** @deprecated */
-    before?: string;
     limit?: number;
   }
 
@@ -1864,7 +1853,7 @@ declare namespace Dysnomia {
       AUTO_MODERATION_RULE_UPDATE:   141;
       AUTO_MODERATION_RULE_DELETE:   142;
       AUTO_MODERATION_BLOCK_MESSAGE: 143;
-      
+
       CREATOR_MONETIZATION_REQUEST_CREATED: 150;
       CREATOR_MONETIZATION_TERMS_ACCEPTED:  151;
 
@@ -2448,8 +2437,6 @@ declare namespace Dysnomia {
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, options?: BanMemberOptions): Promise<void>;
-    /** @deprecated */
-    banGuildMember(guildID: string, userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
     bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
     closeVoiceConnection(guildID: string): void;
@@ -2491,54 +2478,6 @@ declare namespace Dysnomia {
       name: string,
       type?: number,
       options?: CreateChannelOptions
-    ): Promise<unknown>;
-    /** @deprecated */
-    createChannel(
-      guildID: string,
-      name: string,
-      type: Constants["ChannelTypes"]["GUILD_TEXT"],
-      reason?: string,
-      options?: CreateChannelOptions | string
-    ): Promise<TextChannel>;
-    /** @deprecated */
-    createChannel(
-      guildID: string,
-      name: string,
-      type: Constants["ChannelTypes"]["GUILD_VOICE"],
-      reason?: string,
-      options?: CreateChannelOptions | string
-    ): Promise<TextVoiceChannel>;
-    /** @deprecated */
-    createChannel(
-      guildID: string,
-      name: string,
-      type: Constants["ChannelTypes"]["GUILD_CATEGORY"],
-      reason?: string,
-      options?: CreateChannelOptions | string
-    ): Promise<CategoryChannel>;
-    /** @deprecated */
-    createChannel(
-      guildID: string,
-      name: string,
-      type: Constants["ChannelTypes"]["GUILD_NEWS"],
-      reason?: string,
-      options?: CreateChannelOptions | string
-    ): Promise<NewsChannel>;
-    /** @deprecated */
-    createChannel(
-      guildID: string,
-      name: string,
-      type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"],
-      reason?: string,
-      options?: CreateChannelOptions | string
-    ): Promise<StageChannel>;
-    /** @deprecated */
-    createChannel(
-      guildID: string,
-      name: string,
-      type?: number,
-      reason?: string,
-      options?: CreateChannelOptions | string
     ): Promise<unknown>;
     createChannelInvite(
       channelID: string,
@@ -2668,8 +2607,6 @@ declare namespace Dysnomia {
     getEmojiGuild(emojiID: string): Promise<Guild>;
     getGateway(): Promise<{ url: string }>;
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
-    /** @deprecated */
-    getGuildAuditLogs(guildID: string, limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<GuildBan>;
     getGuildBans(guildID: string, options?: GetGuildBansOptions): Promise<GuildBan[]>;
     getGuildCommand<W extends boolean = false, T extends AnyApplicationCommand<W> = AnyApplicationCommand<W>>(guildID: string, commandID: string, withLocalizations?: W): Promise<T>;
@@ -2694,11 +2631,7 @@ declare namespace Dysnomia {
     getJoinedPrivateArchivedThreads(channelID: string, options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getMessage(channelID: string, messageID: string): Promise<Message>;
     getMessageReaction(channelID: string, messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    /** @deprecated */
-    getMessageReaction(channelID: string, messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
     getMessages(channelID: string, options?: GetMessagesOptions): Promise<Message[]>;
-    /** @deprecated */
-    getMessages(channelID: string, limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
@@ -2710,12 +2643,8 @@ declare namespace Dysnomia {
     getRESTGuildEmojis(guildID: string): Promise<Emoji[]>;
     getRESTGuildMember(guildID: string, memberID: string): Promise<Member>;
     getRESTGuildMembers(guildID: string, options?: GetRESTGuildMembersOptions): Promise<Member[]>;
-    /** @deprecated */
-    getRESTGuildMembers(guildID: string, limit?: number, after?: string): Promise<Member[]>;
     getRESTGuildRoles(guildID: string): Promise<Role[]>;
     getRESTGuilds(options?: GetRESTGuildsOptions): Promise<Guild[]>;
-    /** @deprecated */
-    getRESTGuilds(limit?: number, before?: string, after?: string): Promise<Guild[]>;
     getRESTGuildScheduledEvent(guildID: string, eventID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent>;
     getRESTGuildSticker(guildID: string, stickerID: string): Promise<Sticker>;
     getRESTGuildStickers(guildID: string): Promise<Sticker[]>;
@@ -2740,15 +2669,6 @@ declare namespace Dysnomia {
     pinMessage(channelID: string, messageID: string): Promise<void>;
     pruneMembers(guildID: string, options?: PruneMemberOptions): Promise<number>;
     purgeChannel(channelID: string, options: PurgeChannelOptions): Promise<number>;
-    /** @deprecated */
-    purgeChannel(
-      channelID: string,
-      limit?: number,
-      filter?: (m: Message<GuildTextableChannel>) => boolean,
-      before?: string,
-      after?: string,
-      reason?: string
-    ): Promise<number>;
     removeGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     removeMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactionEmoji(channelID: string, messageID: string, reaction: string): Promise<void>;
@@ -2980,8 +2900,6 @@ declare namespace Dysnomia {
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, options?: BanMemberOptions): Promise<void>;
-    /** @deprecated */
-    banMember(userID: string, deleteMessageDays?: number, reason?: string): Promise<void>;
     bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand[]>;
     createAutoModerationRule(rule: CreateAutoModerationRuleOptions): Promise<AutoModerationRule>;
     createChannel(name: string): Promise<TextChannel>;
@@ -2991,18 +2909,6 @@ declare namespace Dysnomia {
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_NEWS"], options?: CreateChannelOptions | string): Promise<NewsChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], options?: CreateChannelOptions | string): Promise<StageChannel>;
     createChannel(name: string, type?: number, options?: CreateChannelOptions): Promise<unknown>;
-    /** @deprecated */
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_TEXT"], reason?: string, options?: CreateChannelOptions | string): Promise<TextChannel>;
-    /** @deprecated */
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_VOICE"], reason?: string, options?: CreateChannelOptions | string): Promise<TextVoiceChannel>;
-    /** @deprecated */
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_CATEGORY"], reason?: string, options?: CreateChannelOptions | string): Promise<CategoryChannel>;
-    /** @deprecated */
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_NEWS"], reason?: string, options?: CreateChannelOptions | string): Promise<NewsChannel>;
-    /** @deprecated */
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], reason?: string, options?: CreateChannelOptions | string): Promise<StageChannel>;
-    /** @deprecated */
-    createChannel(name: string, type?: number, reason?: string, options?: CreateChannelOptions | string): Promise<unknown>;
     createCommand<T extends ApplicationCommandStructure>(command: T): Promise<ApplicationCommandStructureConversion<T, true>>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     createRole(options: RoleOptions, reason?: string): Promise<Role>;
@@ -3047,8 +2953,6 @@ declare namespace Dysnomia {
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
     getActiveThreads(): Promise<ListedGuildThreads>;
     getAuditLog(options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
-    /** @deprecated */
-    getAuditLogs(limit?: number, before?: string, actionType?: number, userID?: string): Promise<GuildAuditLog>;
     getAutoModerationRule(guildID: string, ruleID: string): Promise<AutoModerationRule>;
     getAutoModerationRules(guildID: string): Promise<AutoModerationRule[]>;
     getBan(userID: string): Promise<GuildBan>;
@@ -3067,8 +2971,6 @@ declare namespace Dysnomia {
     getRESTEmojis(): Promise<Emoji[]>;
     getRESTMember(memberID: string): Promise<Member>;
     getRESTMembers(options?: GetRESTGuildMembersOptions): Promise<Member[]>;
-    /** @deprecated */
-    getRESTMembers(limit?: number, after?: string): Promise<Member[]>;
     getRESTRoles(): Promise<Role[]>;
     getRESTScheduledEvent(eventID: string): Promise<GuildScheduledEvent>;
     getRESTSticker(stickerID: string): Promise<Sticker>;
@@ -3294,8 +3196,6 @@ declare namespace Dysnomia {
     mention: string;
     nick: string | null;
     pending?: boolean;
-    /** @deprecated */
-    permission: Permission;
     permissions: Permission;
     premiumSince?: number | null;
     roles: string[];
@@ -3307,10 +3207,8 @@ declare namespace Dysnomia {
     constructor(data: BaseData, guild?: Guild, client?: Client);
     addRole(roleID: string, reason?: string): Promise<void>;
     ban(options?: BanMemberOptions): Promise<void>;
-    /** @deprecated */
-    ban(deleteMessageDays?: number, reason?: string): Promise<void>;
-    edit(options: MemberOptions, reason?: string): Promise<void>;
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
+    edit(options: MemberOptions, reason?: string): Promise<void>;
     kick(reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
     unban(reason?: string): Promise<void>;
@@ -3362,8 +3260,6 @@ declare namespace Dysnomia {
     edit(content: MessageContent): Promise<Message<T>>;
     editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
     getReaction(reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    /** @deprecated */
-    getReaction(reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
     pin(): Promise<void>;
     removeReaction(reaction: string, userID?: string): Promise<void>;
     removeReactionEmoji(reaction: string): Promise<void>;
@@ -3404,8 +3300,6 @@ declare namespace Dysnomia {
     getInvites(): Promise<(Invite<"withMetadata", this>)[]>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
-    /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
     getPins(): Promise<Message<this>[]>;
   }
 
@@ -3426,7 +3320,7 @@ declare namespace Dysnomia {
     type: PermissionType;
     constructor(data: Overwrite);
   }
-  
+
   export class PingInteraction extends Interaction {
     type: Constants["InteractionTypes"]["PING"];
     acknowledge(): Promise<void>;
@@ -3462,17 +3356,11 @@ declare namespace Dysnomia {
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    /** @deprecated */
-    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
-    /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
     getPins(): Promise<Message<this>[]>;
     leave(): Promise<void>;
     pinMessage(messageID: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string): Promise<void>;
-    /** @deprecated */
-    removeMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     sendTyping(): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
     unsendMessage(messageID: string): Promise<void>;
@@ -3496,8 +3384,6 @@ declare namespace Dysnomia {
     readyQueue: (() => void)[];
     userAgent: string;
     constructor(client: Client, options?: RequestHandlerOptions);
-    /** @deprecated */
-    constructor(client: Client, forceQueueing?: boolean);
     globalUnblock(): void;
     request(method: RequestMethod, url: string, auth?: boolean, body?: { [s: string]: unknown }, file?: FileContent, _route?: string, short?: boolean): Promise<unknown>;
     routefy(url: string, method: RequestMethod): string;
@@ -3689,17 +3575,11 @@ declare namespace Dysnomia {
     getJoinedPrivateArchivedThreads(options: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    /** @deprecated */
-    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
-    /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
     getPins(): Promise<Message<this>[]>;
     getWebhooks(): Promise<Webhook[]>;
     pinMessage(messageID: string): Promise<void>;
     purge(options: PurgeChannelOptions): Promise<number>;
-    /** @deprecated */
-    purge(limit: number, filter?: (message: Message<this>) => boolean, before?: string, after?: string, reason?: string): Promise<number>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactionEmoji(messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(messageID: string): Promise<void>;
@@ -3713,8 +3593,6 @@ declare namespace Dysnomia {
     messages: Collection<Message<this>>;
     rateLimitPerUser: number;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    /** @deprecated */
-    addMessageReaction(messageID: string, reaction: string, userID: string): Promise<void>;
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
@@ -3722,11 +3600,7 @@ declare namespace Dysnomia {
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    /** @deprecated */
-    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
-    /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message[]>;
     getWebhooks(): Promise<Webhook[]>;
     purge(options: PurgeChannelOptions): Promise<number>;
     removeMessageReaction(messageID: string, reaction: string, userID?: string): Promise<void>;
@@ -3758,11 +3632,7 @@ declare namespace Dysnomia {
     getMembers(): Promise<ThreadMember[]>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
-    /** @deprecated */
-    getMessageReaction(messageID: string, reaction: string, limit?: number, before?: string, after?: string): Promise<User[]>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
-    /** @deprecated */
-    getMessages(limit?: number, before?: string, after?: string, around?: string): Promise<Message<this>[]>;
     getPins(): Promise<Message<this>[]>;
     join(userID?: string): Promise<void>;
     leave(userID?: string): Promise<void>;
