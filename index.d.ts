@@ -3205,8 +3205,6 @@ declare namespace Dysnomia {
     referencedMessage?: Message | null;
     roleMentions: string[];
     stickerItems?: StickerItem[];
-    /** @deprecated */
-    stickers?: Sticker[];
     timestamp: number;
     tts: boolean;
     type: number;
