@@ -4,7 +4,9 @@ const Constants = Dysnomia.Constants;
 
 // Replace TOKEN with your bot account's token
 const bot = new Dysnomia("BOT TOKEN", {
-    intents: ["guildMessages"]
+    gateway: {
+        intents: ["guildMessages"]
+    }
 });
 
 bot.on("ready", async () => { // When the bot is ready

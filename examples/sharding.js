@@ -2,11 +2,13 @@ const Dysnomia = require("@projectdysnomia/dysnomia");
 
 // Replace TOKEN with your bot account's token
 const bot = new Dysnomia("Bot TOKEN", {
-    firstShardID: 0,
-    lastShardID: 15,
-    maxShards: 16,
-    getAllUsers: false,
-    intents: ["guilds", "guildMembers", "guildPresences"]
+    gateway: {
+        firstShardID: 0,
+        lastShardID: 15,
+        maxShards: 16,
+        getAllUsers: false,
+        intents: ["guilds", "guildMembers", "guildPresences"]
+    }
 });
 
 bot.on("ready", () => { // When the bot is ready

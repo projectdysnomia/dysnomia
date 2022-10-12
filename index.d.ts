@@ -431,51 +431,15 @@ declare namespace Dysnomia {
 
   // Client
   interface ClientOptions {
-    /** @deprecated */
-    agent?: HTTPSAgent;
     allowedMentions?: AllowedMentions;
-    /** @deprecated */
-    autoreconnect?: boolean;
-    /** @deprecated */
-    compress?: boolean;
-    /** @deprecated */
-    connectionTimeout?: number;
     defaultImageFormat?: string;
     defaultImageSize?: number;
-    /** @deprecated */
-    disableEvents?: Record<string, boolean>;
-    /** @deprecated */
-    firstShardID?: number;
     gateway?: GatewayOptions;
-    /** @deprecated */
-    getAllUsers?: boolean;
-    /** @deprecated */
-    guildCreateTimeout?: number;
-    /** @deprecated */
-    intents?: number | (IntentStrings | number)[];
-    /** @deprecated */
-    largeThreshold?: number;
-    /** @deprecated */
-    lastShardID?: number;
-    /** @deprecated */
-    latencyThreshold?: number;
-    /** @deprecated */
-    maxReconnectAttempts?: number;
-    /** @deprecated */
-    maxResumeAttempts?: number;
-    /** @deprecated */
-    maxShards?: number | "auto";
     messageLimit?: number;
     opusOnly?: boolean;
-    /** @deprecated */
-    ratelimiterOffset?: number;
-    /** @deprecated */
-    reconnectDelay?: ReconnectDelayFunction;
     requestTimeout?: number;
     rest?: RequestHandlerOptions;
     restMode?: boolean;
-    /** @deprecated */
-    seedVoiceConnections?: boolean;
     ws?: unknown;
   }
   interface CommandClientOptions {
