@@ -2702,6 +2702,7 @@ declare namespace Dysnomia {
     toJSON(props?: string[]): JSONCache;
   }
 
+  /** @deprecated */
   export class CommandClient extends Client {
     activeMessages: { [s: string]: ActiveMessages };
     commandAliases: { [s: string]: string };
