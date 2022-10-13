@@ -626,8 +626,6 @@ declare namespace Dysnomia {
     maxVideoChannelUsers?: number;
     mfaLevel: MFALevel;
     name: string;
-    /** @deprecated */
-    nsfw: boolean;
     nsfwLevel: NSFWLevel;
     ownerID: string;
     preferredLocale?: string;
@@ -2824,8 +2822,6 @@ declare namespace Dysnomia {
     members: Collection<Member>;
     mfaLevel: MFALevel;
     name: string;
-    /** @deprecated */
-    nsfw: boolean;
     nsfwLevel: NSFWLevel;
     ownerID: string;
     preferredLocale: string;
