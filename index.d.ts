@@ -78,9 +78,9 @@ declare namespace Dysnomia {
   type ChannelTypes = GuildChannelTypes | PrivateChannelTypes;
   type GuildChannelTypes = Exclude<Constants["ChannelTypes"][keyof Constants["ChannelTypes"]], PrivateChannelTypes>;
   type TextChannelTypes = GuildTextChannelTypes | PrivateChannelTypes;
-  type GuildTextChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_TEXT" | "GUILD_NEWS">];
-  type GuildThreadChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_NEWS_THREAD" | "GUILD_PRIVATE_THREAD" | "GUILD_PUBLIC_THREAD">];
-  type GuildPublicThreadChannelTypes = Exclude<GuildThreadChannelTypes, Constants["ChannelTypes"]["GUILD_PRIVATE_THREAD"]>;
+  type GuildTextChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_TEXT" | "GUILD_ANNOUNCEMENT">];
+  type GuildThreadChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "ANNOUNCEMENT_THREAD" | "PRIVATE_THREAD" | "PUBLIC_THREAD">];
+  type GuildPublicThreadChannelTypes = Exclude<GuildThreadChannelTypes, Constants["ChannelTypes"]["PRIVATE_THREAD"]>;
   type GuildVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE_VOICE">];
   type PrivateChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "DM" | "GROUP_DM">];
   type TextVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE">];
@@ -1859,14 +1859,20 @@ declare namespace Dysnomia {
       GUILD_VOICE:          2;
       GROUP_DM:             3;
       GUILD_CATEGORY:       4;
+      GUILD_ANNOUNCEMENT:   5;
+      /** @deprecated */
       GUILD_NEWS:           5;
 
+      ANNOUNCEMENT_THREAD:  10;
+      /** @deprecated */
       GUILD_NEWS_THREAD:    10;
+      PUBLIC_THREAD:        11;
+      /** @deprecated */
       GUILD_PUBLIC_THREAD:  11;
+      PRIVATE_THREAD:       12;
+      /** @deprecated */
       GUILD_PRIVATE_THREAD: 12;
       GUILD_STAGE_VOICE:    13;
-      /** @deprecated */
-      GUILD_STAGE:          13;
     };
     ComponentTypes: {
       ACTION_ROW:  1;
@@ -1889,20 +1895,14 @@ declare namespace Dysnomia {
     };
     GatewayOPCodes: {
       DISPATCH:              0;
-      /** @deprecated */
-      EVENT:                 0;
       HEARTBEAT:             1;
       IDENTIFY:              2;
       PRESENCE_UPDATE:       3;
-      /** @deprecated */
-      STATUS_UPDATE:         3;
       VOICE_STATE_UPDATE:    4;
       VOICE_SERVER_PING:     5;
       RESUME:                6;
       RECONNECT:             7;
       REQUEST_GUILD_MEMBERS: 8;
-      /** @deprecated */
-      GET_GUILD_MEMBERS:     8;
       INVALID_SESSION:       9;
       HELLO:                 10;
       HEARTBEAT_ACK:         11;
@@ -1987,8 +1987,6 @@ declare namespace Dysnomia {
       guildMembers:                2;
       guildBans:                   4;
       guildEmojisAndStickers:      8;
-      /** @deprecated */
-      guildEmojis:                 8;
       guildIntegrations:           16;
       guildWebhooks:               32;
       guildInvites:                64;
@@ -2095,15 +2093,9 @@ declare namespace Dysnomia {
       manageGuild:             32n;
       addReactions:            64n;
       viewAuditLog:            128n;
-      /** @deprecated */
-      viewAuditLogs:           128n;
       voicePrioritySpeaker:    256n;
       voiceStream:             512n;
-      /** @deprecated */
-      stream:                  512n;
       viewChannel:             1024n;
-      /** @deprecated */
-      readMessages:            1024n;
       sendMessages:            2048n;
       sendTTSMessages:         4096n;
       manageMessages:          8192n;
@@ -2112,8 +2104,6 @@ declare namespace Dysnomia {
       readMessageHistory:      65536n;
       mentionEveryone:         131072n;
       useExternalEmojis:       262144n;
-      /** @deprecated */
-      externalEmojis:          262144n;
       viewGuildInsights:       524288n;
       voiceConnect:            1048576n;
       voiceSpeak:              2097152n;
@@ -2126,11 +2116,7 @@ declare namespace Dysnomia {
       manageRoles:             268435456n;
       manageWebhooks:          536870912n;
       manageEmojisAndStickers: 1073741824n;
-      /** @deprecated */
-      manageEmojis:            1073741824n;
       useApplicationCommands:  2147483648n;
-      /** @deprecated */
-      useSlashCommands:        2147483648n;
       voiceRequestToSpeak:     4294967296n;
       manageEvents:            8589934592n;
       manageThreads:           17179869184n;
@@ -2208,32 +2194,44 @@ declare namespace Dysnomia {
     };
     UserFlags: {
       NONE:                         0;
+      STAFF:                        1;
+      /** @deprecated */
       DISCORD_STAFF:                1;
+      /** @deprecated */
       DISCORD_EMPLOYEE:             1;
       PARTNER:                      2;
       PARTNERED_SERVER_OWNER:       2;
       /** @deprecated */
       DISCORD_PARTNER:              2;
       HYPESQUAD:                    4;
+      /** @deprecated */
       HYPESQUAD_EVENTS:             4;
       BUG_HUNTER_LEVEL_1:           8;
       HYPESQUAD_ONLINE_HOUSE_1:     64;
+      /** @deprecated */
       HOUSE_BRAVERY:                64;
       HYPESQUAD_ONLINE_HOUSE_2:     128;
+      /** @deprecated */
       HOUSE_BRILLIANCE:             128;
       HYPESQUAD_ONLINE_HOUSE_3:     256;
+      /** @deprecated */
       HOUSE_BALANCE:                256;
       PREMIUM_EARLY_SUPPORTER:      512;
+      /** @deprecated */
       EARLY_SUPPORTER:              512;
       TEAM_PSEUDO_USER:             1024;
+      /** @deprecated */
       TEAM_USER:                    1024;
       SYSTEM:                       4096;
       BUG_HUNTER_LEVEL_2:           16384;
       VERIFIED_BOT:                 65536;
       VERIFIED_DEVELOPER:           131072;
+      /** @deprecated */
       VERIFIED_BOT_DEVELOPER:       131072;
+      /** @deprecated */
       EARLY_VERIFIED_BOT_DEVELOPER: 131072;
       CERTIFIED_MODERATOR:          262144;
+      /** @deprecated */
       DISCORD_CERTIFIED_MODERATOR:  262144;
       BOT_HTTP_INTERACTIONS:        524288;
       SPAMMER:                      1048576;
@@ -2261,8 +2259,6 @@ declare namespace Dysnomia {
       HELLO:               8;
       RESUMED:             9;
       CLIENT_DISCONNECT:   13;
-      /** @deprecated */
-      DISCONNECT:          13;
     };
     GuildScheduledEventStatus: {
       SCHEDULED: 1;
@@ -2427,7 +2423,7 @@ declare namespace Dysnomia {
     createChannel(
       guildID: string,
       name: string,
-      type: Constants["ChannelTypes"]["GUILD_NEWS"],
+      type: Constants["ChannelTypes"]["GUILD_ANNOUNCEMENT"],
       options?: CreateChannelOptions
     ): Promise<NewsChannel>;
     createChannel(
@@ -2866,7 +2862,7 @@ declare namespace Dysnomia {
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_TEXT"], options?: CreateChannelOptions): Promise<TextChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_VOICE"], options?: CreateChannelOptions): Promise<TextVoiceChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_CATEGORY"], options?: CreateChannelOptions): Promise<CategoryChannel>;
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_NEWS"], options?: CreateChannelOptions | string): Promise<NewsChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_ANNOUNCEMENT"], options?: CreateChannelOptions | string): Promise<NewsChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], options?: CreateChannelOptions | string): Promise<StageChannel>;
     createChannel(name: string, type?: number, options?: CreateChannelOptions): Promise<unknown>;
     createCommand<T extends ApplicationCommandStructure>(command: T): Promise<ApplicationCommandStructureConversion<T, true>>;
@@ -3245,7 +3241,7 @@ declare namespace Dysnomia {
   // News channel rate limit is always 0
   export class NewsChannel extends TextChannel implements GuildPinnable {
     rateLimitPerUser: 0;
-    type: Constants["ChannelTypes"]["GUILD_NEWS"];
+    type: Constants["ChannelTypes"]["GUILD_ANNOUNCEMENT"];
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel>;
@@ -3259,7 +3255,7 @@ declare namespace Dysnomia {
   }
 
   export class NewsThreadChannel extends ThreadChannel {
-    type: Constants["ChannelTypes"]["GUILD_NEWS_THREAD"];
+    type: Constants["ChannelTypes"]["ANNOUNCEMENT_THREAD"];
   }
 
   export class Permission extends Base {
@@ -3323,7 +3319,7 @@ declare namespace Dysnomia {
 
   export class PrivateThreadChannel extends ThreadChannel {
     threadMetadata: PrivateThreadMetadata;
-    type: Constants["ChannelTypes"]["GUILD_PRIVATE_THREAD"];
+    type: Constants["ChannelTypes"]["PRIVATE_THREAD"];
   }
 
   export class PublicThreadChannel extends ThreadChannel {
