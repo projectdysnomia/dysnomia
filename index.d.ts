@@ -1133,8 +1133,8 @@ declare namespace Dysnomia {
     options?: InteractionDataOptions[];
   }
   interface CommandInteractionResolvedData extends InteractionResolvedData {
-    messages?: Collection<Message>;
     attachments?: Collection<Attachment>;
+    messages?: Collection<Message>;
   }
 
   interface ComponentInteractionButtonData {
@@ -1300,8 +1300,8 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["BUTTON"];
   }
   interface ChannelSelectMenu extends SelectMenuBase {
-    type: Constants["ComponentTypes"]["CHANNEL_SELECT"];
     channel_types?: GuildChannelTypes[];
+    type: Constants["ComponentTypes"]["CHANNEL_SELECT"];
   }
   interface CreateStickerOptions extends Required<Pick<EditStickerOptions, "name" | "tags" | "description">> {
     file: FileContent;
