@@ -1132,7 +1132,7 @@ declare namespace Dysnomia {
     resolved?: CommandInteractionResolvedData;
     options?: InteractionDataOptions[];
   }
-  interface CommandInteractionResolvedData extends CommandInteractionData {
+  interface CommandInteractionResolvedData extends InteractionResolvedData {
     messages?: Collection<Message>;
     attachments?: Collection<Attachment>;
   }
