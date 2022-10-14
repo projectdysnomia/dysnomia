@@ -146,7 +146,7 @@ declare namespace Dysnomia {
 
   // Message
   type ActionRowComponents = Button | SelectMenu;
-  type BaseSelectMenuWithEntityTypes = Exclude<SelectMenuWithEntityTypes, Constants["ComponentTypes"]["CHANNEL_SELECT"]>;
+  type BaseSelectMenuTypes = Exclude<SelectMenuTypes, SelectMenuExtendedTypes>;
   type Button = InteractionButton | URLButton;
   type ButtonStyles = Constants["ButtonStyles"][keyof Constants["ButtonStyles"]];
   type ButtonStyleNormal = Exclude<ButtonStyles, ButtonStyleLink>;
@@ -159,10 +159,9 @@ declare namespace Dysnomia {
   type MessageContentEdit = string | AdvancedMessageContentEdit;
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
-  type SelectMenu = ChannelSelectMenu | EntitySelectMenu | SelectMenuWithOptions;
-  type SelectMenuWithEntityTypes = Exclude<SelectMenuTypes, SelectMenuWithOptionsTypes>;
+  type SelectMenu = BaseSelectMenu | ChannelSelectMenu | StringSelectMenu;
   type SelectMenuTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "USER_SELECT" | "ROLE_SELECT" | "MENTIONABLE_SELECT" | "CHANNEL_SELECT">];
-  type SelectMenuWithOptionsTypes = Constants["ComponentTypes"]["STRING_SELECT"];
+  type SelectMenuExtendedTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "CHANNEL_SELECT">];
 
 
   // Permission
@@ -1311,8 +1310,8 @@ declare namespace Dysnomia {
     name?: string;
     tags?: string;
   }
-  interface EntitySelectMenu extends SelectMenuBase {
-    type: BaseSelectMenuWithEntityTypes;
+  interface BaseSelectMenu extends SelectMenuBase {
+    type: BaseSelectMenuTypes;
   }
   interface SelectMenuBase {
     custom_id: string;
@@ -1322,9 +1321,9 @@ declare namespace Dysnomia {
     placeholder?: string;
     type: SelectMenuTypes;
   }
-  interface SelectMenuWithOptions extends SelectMenuBase {
+  interface StringSelectMenu extends SelectMenuBase {
     options: SelectMenuOptions[];
-    type: SelectMenuWithOptionsTypes;
+    type: Constants["ComponentTypes"]["STRING_SELECT"];
   }
   interface SelectMenuOptions {
     default?: boolean;
