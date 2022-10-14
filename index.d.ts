@@ -146,6 +146,7 @@ declare namespace Dysnomia {
 
   // Message
   type ActionRowComponents = Button | SelectMenu;
+  type BaseSelectMenuWithEntityTypes = Exclude<SelectMenuWithEntityTypes, Constants["ComponentTypes"]["CHANNEL_SELECT"]>;
   type Button = InteractionButton | URLButton;
   type ButtonStyles = Constants["ButtonStyles"][keyof Constants["ButtonStyles"]];
   type ButtonStyleNormal = Exclude<ButtonStyles, ButtonStyleLink>;
@@ -158,6 +159,11 @@ declare namespace Dysnomia {
   type MessageContentEdit = string | AdvancedMessageContentEdit;
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
+  type SelectMenu = ChannelSelectMenu | EntitySelectMenu | SelectMenuWithOptions;
+  type SelectMenuWithEntityTypes = Exclude<SelectMenuTypes, SelectMenuWithOptionsTypes>;
+  type SelectMenuTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "USER_SELECT" | "ROLE_SELECT" | "MENTIONABLE_SELECT" | "CHANNEL_SELECT">];
+  type SelectMenuWithOptionsTypes = Constants["ComponentTypes"]["STRING_SELECT"];
+
 
   // Permission
   type PermissionType = Constants["PermissionOverwriteTypes"][keyof Constants["PermissionOverwriteTypes"]];
@@ -1126,12 +1132,9 @@ declare namespace Dysnomia {
     resolved?: CommandInteractionResolvedData;
     options?: InteractionDataOptions[];
   }
-  interface CommandInteractionResolvedData {
-    channels?: Collection<AnyChannel>;
-    members?: Collection<Member>;
+  interface CommandInteractionResolvedData extends CommandInteractionData {
     messages?: Collection<Message>;
-    roles?: Collection<Role>;
-    users?: Collection<User>;
+    attachments?: Collection<Attachment>;
   }
 
   interface ComponentInteractionButtonData {
@@ -1140,36 +1143,10 @@ declare namespace Dysnomia {
   }
 
   interface ComponentInteractionSelectMenuData {
-    component_type: Constants["ComponentTypes"]["SELECT_MENU"];
+    component_type: SelectMenuTypes;
     custom_id: string;
     values: string[];
-  }
-  interface InteractionAutocomplete {
-    choices: ApplicationCommandOptionsChoice[];
-  }
-  interface CommandInteractionData {
-    id: string;
-    name: string;
-    type: ApplicationCommandTypes;
-    target_id?: string;
-    resolved?: CommandInteractionResolvedData;
-    options?: InteractionDataOptions[];
-  }
-  interface CommandInteractionResolvedData {
-    channels?: Collection<AnyChannel>;
-    members?: Collection<Member>;
-    messages?: Collection<Message>;
-    roles?: Collection<Role>;
-    users?: Collection<User>;
-  }
-  interface InteractionComponentButtonData {
-    component_type: Constants["ComponentTypes"]["BUTTON"];
-    custom_id: string;
-  }
-  interface InteractionComponentSelectMenuData {
-    component_type: Constants["ComponentTypes"]["SELECT_MENU"];
-    custom_id: string;
-    values: string[];
+    resolved?: InteractionResolvedData;
   }
   interface InteractionDataOptionsBase<T extends ApplicationCommandOptionsTypes, V = unknown> {
     focused?: T extends ApplicationCommandOptionsTypesWithAutocomplete ? boolean : never;
@@ -1188,6 +1165,12 @@ declare namespace Dysnomia {
     title: string;
     custom_id: string;
     components: ModalContentActionRow[];
+  }
+  interface InteractionResolvedData {
+    channels?: Collection<AnyChannel>;
+    members?: Collection<Member>;
+    roles?: Collection<Role>;
+    users?: Collection<User>;
   }
   interface InteractionResponseAutocomplete {
     data: ApplicationCommandOptionsChoice[];
@@ -1316,6 +1299,10 @@ declare namespace Dysnomia {
     label?: string;
     type: Constants["ComponentTypes"]["BUTTON"];
   }
+  interface ChannelSelectMenu extends SelectMenuBase {
+    type: Constants["ComponentTypes"]["CHANNEL_SELECT"];
+    channel_types?: GuildChannelTypes[];
+  }
   interface CreateStickerOptions extends Required<Pick<EditStickerOptions, "name" | "tags" | "description">> {
     file: FileContent;
   }
@@ -1324,14 +1311,20 @@ declare namespace Dysnomia {
     name?: string;
     tags?: string;
   }
-  interface SelectMenu {
+  interface EntitySelectMenu extends SelectMenuBase {
+    type: BaseSelectMenuWithEntityTypes;
+  }
+  interface SelectMenuBase {
     custom_id: string;
     disabled?: boolean;
     max_values?: number;
     min_values?: number;
-    options: SelectMenuOptions[];
     placeholder?: string;
-    type: Constants["ComponentTypes"]["SELECT_MENU"];
+    type: SelectMenuTypes;
+  }
+  interface SelectMenuWithOptions extends SelectMenuBase {
+    options: SelectMenuOptions[];
+    type: SelectMenuWithOptionsTypes;
   }
   interface SelectMenuOptions {
     default?: boolean;
@@ -1873,10 +1866,16 @@ declare namespace Dysnomia {
       GUILD_STAGE_VOICE:    13;
     };
     ComponentTypes: {
-      ACTION_ROW:  1;
-      BUTTON:      2;
-      SELECT_MENU: 3;
-      TEXT_INPUT:  4;
+      ACTION_ROW:         1;
+      BUTTON:             2;
+      STRING_SELECT:      3;
+      /** @deprecated */
+      SELECT_MENU:        3;
+      TEXT_INPUT:         4;
+      USER_SELECT:        5;
+      ROLE_SELECT:        6;
+      MENTIONABLE_SELECT: 7;
+      CHANNEL_SELECT:     8;
     };
     ConnectionVisibilityTypes: {
       NONE:     0;
