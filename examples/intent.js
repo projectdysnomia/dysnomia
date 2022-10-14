@@ -2,10 +2,12 @@ const Dysnomia = require("@projectdysnomai/dysnomia");
 
 // Replace TOKEN with your bot account's token
 const bot = new Dysnomia("Bot TOKEN", {
-    intents: [
-        "guilds",
-        "guildMessages"
-    ]
+    gateway: {
+        intents: [
+            "guilds",
+            "guildMessages"
+        ]
+    }
 });
 
 bot.on("ready", () => { // When the bot is ready
