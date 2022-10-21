@@ -1,4 +1,4 @@
-const Dysnomia = require("@projectdysnomai/dysnomia");
+const Dysnomia = require("@projectdysnomia/dysnomia");
 
 // Replace TOKEN with your bot account's token
 const bot = new Dysnomia("Bot TOKEN", {
