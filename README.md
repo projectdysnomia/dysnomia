@@ -27,9 +27,11 @@ const Dysnomia = require("@projectdysnomia/dysnomia");
 
 // Replace TOKEN with your bot account's token
 const bot = new Dysnomia("Bot TOKEN", {
-    intents: [
-        "guildMessages"
-    ]
+    gateway: {
+        intents: [
+            "guildMessages"
+        ]
+    }
 });
 
 bot.on("ready", () => { // When the bot is ready
