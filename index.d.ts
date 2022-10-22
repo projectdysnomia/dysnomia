@@ -1184,7 +1184,7 @@ declare namespace Dysnomia {
     type: Constants["InteractionResponseTypes"]["DEFERRED_UPDATE_MESSAGE" | "DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE"];
   }
   interface InteractionResponseMessage {
-    data: InteractionContent;
+    data: RawInteractionContent;
     type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"];
   }
   interface InteractionResponseModal {
@@ -1196,6 +1196,19 @@ declare namespace Dysnomia {
     type: Constants["InteractionResponseTypes"]["PONG"];
   }
 
+  interface RawInteractionContent extends Pick<WebhookPayload, "content" | "embeds" | "tts" | "flags" | "components"> {
+    allowed_mentions?: {
+      parse?: ("roles" | "users" | "everyone")[];
+      roles?: string[];
+      users?: string[];
+      replied_user?: boolean;
+    };
+
+    attachments?: (AdvancedMessageContentAttachmentBase & {
+      id: string;
+      filename?: string;
+    })[];
+  }
   // Invite
   interface CreateChannelInviteOptions extends CreateInviteOptions {
     targetApplicationID?: string;
@@ -3265,7 +3278,7 @@ declare namespace Dysnomia {
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
     createMessage(content: string | InteractionContent): Promise<void>;
     /** @deprecated */
-    createMessage(content: string | InteractionContent , file?: FileContent | FileContent[]): Promise<void>;
+    createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
