@@ -124,7 +124,7 @@ declare namespace Dysnomia {
   // Interaction
   type AnyInteraction = AnyInteractionGateway | PingInteraction;
   type AnyInteractionGateway = AutocompleteInteraction | CommandInteraction | ComponentInteraction;
-  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components">;
+  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components" | "attachments">;
   type InteractionContentEdit = Omit<InteractionContent, "tts" | "flags">;
   type InteractionDataOption<T extends Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">, V = boolean | number | string> = InteractionDataOptionsBase<Constants["ApplicationCommandOptionTypes"][T], V>;
   type InteractionDataOptions = InteractionDataOptionsWithOptions | InteractionDataOptionsWithValue;
@@ -156,7 +156,7 @@ declare namespace Dysnomia {
   type ImageFormat = Constants["ImageFormats"][number];
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent = string | AdvancedMessageContent;
-  type MessageContentEdit = string | AdvancedMessageContentEdit;
+  type MessageContentEdit = string | AdvancedMessageContent<"isMessageEdit">;
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type PossiblyUncachedMessage = Message | { channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
   type SelectMenu = BaseSelectMenu | ChannelSelectMenu | StringSelectMenu;
@@ -194,7 +194,7 @@ declare namespace Dysnomia {
   type StageInstancePrivacyLevel = Constants["StageInstancePrivacyLevel"][keyof Constants["StageInstancePrivacyLevel"]];
 
   // Webhook
-  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "components">;
+  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "file" | "allowedMentions" | "components" | "attachments">;
   type WebhookTypes = Constants["WebhookTypes"][keyof Constants["WebhookTypes"]];
 
   // INTERFACES
@@ -409,6 +409,8 @@ declare namespace Dysnomia {
     lastMessageID: string;
     messages: Collection<Message<this>>;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
+    createMessage(content: MessageContent): Promise<Message<this>>;
+    /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
@@ -1182,7 +1184,7 @@ declare namespace Dysnomia {
     type: Constants["InteractionResponseTypes"]["DEFERRED_UPDATE_MESSAGE" | "DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE"];
   }
   interface InteractionResponseMessage {
-    data: InteractionContent;
+    data: RawInteractionContent;
     type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"];
   }
   interface InteractionResponseModal {
@@ -1194,6 +1196,19 @@ declare namespace Dysnomia {
     type: Constants["InteractionResponseTypes"]["PONG"];
   }
 
+  interface RawInteractionContent extends Pick<WebhookPayload, "content" | "embeds" | "tts" | "flags" | "components"> {
+    allowed_mentions?: {
+      parse?: ("roles" | "users" | "everyone")[];
+      roles?: string[];
+      users?: string[];
+      replied_user?: boolean;
+    };
+
+    attachments?: (AdvancedMessageContentAttachmentBase & {
+      id: string;
+      filename?: string;
+    })[];
+  }
   // Invite
   interface CreateChannelInviteOptions extends CreateInviteOptions {
     targetApplicationID?: string;
@@ -1272,19 +1287,34 @@ declare namespace Dysnomia {
     command: Command;
     timeout: NodeJS.Timer;
   }
-  interface AdvancedMessageContent {
+  interface AdvancedMessageContent<T extends "isMessageEdit" | "" = ""> {
     allowedMentions?: AllowedMentions;
+    attachments?: AdvancedMessageContentAttachment[];
     components?: ActionRow[];
     content?: string;
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
+    /** @deprecated */
+    files?: T extends "isMessageEdit" ? (FileContent | FileContent[]) : never;
     flags?: number;
     messageReference?: MessageReferenceReply;
     stickerIDs?: string[];
     tts?: boolean;
   }
-  interface AdvancedMessageContentEdit extends AdvancedMessageContent {
-    file?: FileContent | FileContent[];
+  type AdvancedMessageContentAttachment = AdvancedMessageContentAttachmentNew | AdvancedMessageContentAttachmentExisting;
+
+  interface AdvancedMessageContentAttachmentBase {
+    description?: string;
+  }
+  interface AdvancedMessageContentAttachmentExisting extends AdvancedMessageContentAttachmentBase {
+    id: string;
+    file?: never;
+    filename?: never;
+  }
+  interface AdvancedMessageContentAttachmentNew extends AdvancedMessageContentAttachmentBase {
+    filename: string;
+    file: Buffer | string;
+    id?: never;
   }
   interface AllowedMentions {
     everyone?: boolean;
@@ -1364,6 +1394,7 @@ declare namespace Dysnomia {
     name: string;
   }
   interface FileContent {
+    fieldName?: string;
     file: Buffer | string;
     name: string;
   }
@@ -1622,11 +1653,13 @@ declare namespace Dysnomia {
   interface WebhookPayload {
     allowedMentions?: AllowedMentions;
     auth?: boolean;
+    attachments?: AdvancedMessageContentAttachment[];
     avatarURL?: string;
     components?: ActionRow[];
     content?: string;
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
+    /** @deprecated */
     file?: FileContent | FileContent[];
     flags?: number;
     threadID?: string;
@@ -2453,6 +2486,8 @@ declare namespace Dysnomia {
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
     createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionResponse, file?: FileContent | FileContent[]): Promise<void>;
+    createMessage(channelID: string, content: MessageContent): Promise<Message>;
+    /** @deprecated */
     createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
     createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
@@ -2724,13 +2759,21 @@ declare namespace Dysnomia {
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
     user?: User;
     acknowledge(flags?: number): Promise<void>;
+    createFollowup(content: string | InteractionContent): Promise<Message>;
+    /** @deprecated */
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
-    createMessage(content: string | InteractionContent , file?: FileContent | FileContent[]): Promise<void>;
+    createMessage(content: string | InteractionContent): Promise<void>;
+    /** @deprecated */
+    createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     createModal(content: InteractionModalContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message>;
+    /** @deprecated */
     editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
+    /** @deprecated */
     editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
     getOriginalMessage(): Promise<Message>
   }
@@ -2745,15 +2788,25 @@ declare namespace Dysnomia {
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
     user?: User;
     acknowledge(): Promise<void>;
+    createFollowup(content: string | InteractionContent): Promise<Message>;
+    /** @deprecated */
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent): Promise<void>;
+    /** @deprecated */
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     createModal(content: InteractionModalContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message>;
+    /** @deprecated */
     editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
+    /** @deprecated */
     editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editParent(content: InteractionContentEdit): Promise<void>;
+    /** @deprecated */
     editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
     getOriginalMessage(): Promise<Message>
   }
@@ -3220,14 +3273,24 @@ declare namespace Dysnomia {
     type: Constants["InteractionTypes"]["MODAL_SUBMIT"];
     user?: User;
     acknowledge(): Promise<void>;
+    createFollowup(content: string | InteractionContent): Promise<Message>;
+    /** @deprecated */
     createFollowup(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<Message>;
+    createMessage(content: string | InteractionContent): Promise<void>;
+    /** @deprecated */
     createMessage(content: string | InteractionContent, file?: FileContent | FileContent[]): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
     deleteOriginalMessage(): Promise<void>;
+    editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message>;
+    /** @deprecated */
     editMessage(messageID: string, content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
+    /** @deprecated */
     editOriginalMessage(content: string | InteractionContentEdit, file?: FileContent | FileContent[]): Promise<Message>;
+    editParent(content: InteractionContentEdit): Promise<void>;
+    /** @deprecated */
     editParent(content: InteractionContentEdit, file?: FileContent | FileContent[]): Promise<void>;
     getOriginalMessage(): Promise<Message>
   }
@@ -3237,6 +3300,8 @@ declare namespace Dysnomia {
     rateLimitPerUser: 0;
     type: Constants["ChannelTypes"]["GUILD_ANNOUNCEMENT"];
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
+    createMessage(content: MessageContent): Promise<Message<this>>;
+    /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel>;
     crosspostMessage(messageID: string): Promise<Message<this>>;
@@ -3296,6 +3361,8 @@ declare namespace Dysnomia {
     recipient: User;
     type: PrivateChannelTypes;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
+    createMessage(content: MessageContent): Promise<Message<this>>;
+    /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
@@ -3506,6 +3573,8 @@ declare namespace Dysnomia {
     constructor(data: BaseData, client: Client, messageLimit: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
+    createMessage(content: MessageContent): Promise<Message<this>>;
+    /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
     createThreadWithoutMessage(options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
@@ -3538,6 +3607,8 @@ declare namespace Dysnomia {
     messages: Collection<Message<this>>;
     rateLimitPerUser: number;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
+    createMessage(content: MessageContent): Promise<Message<this>>;
+    /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
@@ -3569,6 +3640,8 @@ declare namespace Dysnomia {
     type: GuildThreadChannelTypes;
     constructor(data: BaseData, client: Client, messageLimit?: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
+    createMessage(content: MessageContent): Promise<Message<this>>;
+    /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
