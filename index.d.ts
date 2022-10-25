@@ -84,6 +84,7 @@ declare namespace Dysnomia {
   type GuildVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE_VOICE">];
   type PrivateChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "DM" | "GROUP_DM">];
   type TextVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE">];
+  type ThreadSortingOrders = Constants["ThreadSortingOrders"][keyof Constants["ThreadSortingOrders"]];
 
   // Client
   type MembershipStates = Constants["MembershipState"][keyof Constants["MembershipState"]];
@@ -353,7 +354,14 @@ declare namespace Dysnomia {
     parentID?: string;
   }
   interface CreateChannelOptions {
+    availableTags: Omit<ForumTag, "id"> & Required<Pick<ForumTag, "name">> & ForumTag;
     bitrate?: number;
+    defaultAutoArchiveDuration?: AutoArchiveDuration;
+    defaultReactionEmoji?: {
+      emoji_id?: string;
+      emoji_name?: string;
+    }
+    defaultSortOrder?: ThreadSortingOrders;
     nsfw?: boolean;
     parentID?: string;
     permissionOverwrites?: Overwrite[];
@@ -366,7 +374,7 @@ declare namespace Dysnomia {
   interface EditChannelOptions extends Omit<CreateChannelOptions, "reason"> {
     archived?: boolean;
     autoArchiveDuration?: AutoArchiveDuration;
-    defaultAutoArchiveDuration?: AutoArchiveDuration;
+    defaultThreadRateLimitPerUser?: number | null;
     invitable?: boolean;
     locked?: boolean;
     name?: string;
@@ -376,6 +384,13 @@ declare namespace Dysnomia {
   interface EditChannelPositionOptions {
     lockPermissions?: string;
     parentID?: string;
+  }
+  interface ForumTag {
+    id: string;
+    name: string;
+    moderated: boolean;
+    emoji_id?: string | null;
+    emoji_name?: string | null;
   }
   interface GetMessagesOptions {
     after?: string;
@@ -1307,6 +1322,7 @@ declare namespace Dysnomia {
     attachments?: AdvancedMessageContentAttachment[];
     components?: ActionRow[];
     content?: string;
+    /** @deprecated */
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
     /** @deprecated */
@@ -1546,11 +1562,14 @@ declare namespace Dysnomia {
 
   // Thread
   interface CreateThreadOptions {
-    autoArchiveDuration: AutoArchiveDuration;
+    autoArchiveDuration?: AutoArchiveDuration;
     name: string;
+    rateLimitPerUser?: number | null;
   }
   interface CreateThreadWithoutMessageOptions<T = AnyThreadChannel["type"]> extends CreateThreadOptions {
+    appliedTags: T extends PublicThreadChannel["type"] ? string[] : never;
     invitable: T extends PrivateThreadChannel["type"] ? boolean : never;
+    message: T extends PublicThreadChannel["type"] ? Omit<AdvancedMessageContent, "messageReference" | "tts"> : never
     type: T;
   }
   interface GetArchivedThreadsOptions {
@@ -1913,7 +1932,12 @@ declare namespace Dysnomia {
       /** @deprecated */
       GUILD_PRIVATE_THREAD: 12;
       GUILD_STAGE_VOICE:    13;
+      GUILD_FORUM:          15;
     };
+    ChannelFlags: {
+      PINNED:      1;
+      REQUIRE_TAG: 16;
+    }
     ComponentTypes: {
       ACTION_ROW:         1;
       BUTTON:             2;
@@ -2234,6 +2258,10 @@ declare namespace Dysnomia {
       ONLY_MENTIONS:  4;
       NO_MESSAGES:    8;
     };
+    ThreadSortingOrders: {
+      LATEST_ACTIVITY: 0;
+      CREATION_DATE:   1;
+    }
     TextInputStyles: {
       SHORT:     1;
       PARAGRAPH: 2;
@@ -2511,6 +2539,8 @@ declare namespace Dysnomia {
     createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
+    createThread(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
+    /** @deprecated */
     createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
     deleteAutoModerationRule(guildID: string, ruleID: string, reason?: string): Promise<void>;
@@ -2856,6 +2886,30 @@ declare namespace Dysnomia {
     mfaEnabled?: boolean;
     premiumType?: PremiumTypes;
     verified?: boolean;
+  }
+  export class ForumChannel extends GuildChannel {
+    availableTags: ForumTag[];
+    defaultAutoArchiveDuration: number;
+    defaultThreadRateLimitPerUser: number;
+    defaultReactionEmoji?: {
+      emoji_id: string | null;
+      emoji_name: string | null;
+    }
+
+    defaultSortOrder: ThreadSortingOrders | null;
+    lastThreadID?: string;
+    permissionOverwrites: Collection<PermissionOverwrite>;
+    rateLimitPerUser: number;
+    topic?: string | null;
+    type: Constants["ChannelTypes"]["GUILD_FORUM"];
+    createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
+    createThread(options: CreateThreadWithoutMessageOptions): Promise<PublicThreadChannel>;
+    createWebhook(options: Omit<WebhookOptions, "channelID">, reason?: string): Promise<Webhook>;
+    getArchivedThreads(type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
+    getArchivedThreads(type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
+    getInvites(): Promise<(Invite<"withMetadata", this>)[]>;
+    getJoinedPrivateArchivedThreads(options: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
+    getWebhooks(): Promise<Webhook[]>;
   }
 
   export class Guild extends Base {
@@ -3595,6 +3649,8 @@ declare namespace Dysnomia {
     /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
+    createThread(options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
+    /** @deprecated */
     createThreadWithoutMessage(options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
     createWebhook(options: Omit<WebhookOptions, "channelID">, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
