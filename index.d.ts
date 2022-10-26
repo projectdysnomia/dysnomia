@@ -360,7 +360,7 @@ declare namespace Dysnomia {
     defaultReactionEmoji?: {
       emoji_id?: string;
       emoji_name?: string;
-    }
+    };
     defaultSortOrder?: ThreadSortingOrders;
     nsfw?: boolean;
     parentID?: string;
@@ -1569,7 +1569,7 @@ declare namespace Dysnomia {
   interface CreateThreadWithoutMessageOptions<T = AnyThreadChannel["type"]> extends CreateThreadOptions {
     appliedTags: T extends PublicThreadChannel["type"] ? string[] : never;
     invitable: T extends PrivateThreadChannel["type"] ? boolean : never;
-    message: T extends PublicThreadChannel["type"] ? Omit<AdvancedMessageContent, "messageReference" | "tts"> : never
+    message: T extends PublicThreadChannel["type"] ? Omit<AdvancedMessageContent, "messageReference" | "tts"> : never;
     type: T;
   }
   interface GetArchivedThreadsOptions {
@@ -1937,7 +1937,7 @@ declare namespace Dysnomia {
     ChannelFlags: {
       PINNED:      1;
       REQUIRE_TAG: 16;
-    }
+    };
     ComponentTypes: {
       ACTION_ROW:         1;
       BUTTON:             2;
@@ -2261,7 +2261,7 @@ declare namespace Dysnomia {
     ThreadSortingOrders: {
       LATEST_ACTIVITY: 0;
       CREATION_DATE:   1;
-    }
+    };
     TextInputStyles: {
       SHORT:     1;
       PARAGRAPH: 2;
@@ -2538,8 +2538,8 @@ declare namespace Dysnomia {
     createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
     createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
-    createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     createThread(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
+    createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     /** @deprecated */
     createThreadWithoutMessage(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
@@ -2890,13 +2890,12 @@ declare namespace Dysnomia {
   export class ForumChannel extends GuildChannel {
     availableTags: ForumTag[];
     defaultAutoArchiveDuration: number;
-    defaultThreadRateLimitPerUser: number;
     defaultReactionEmoji?: {
       emoji_id: string | null;
       emoji_name: string | null;
-    }
-
+    };
     defaultSortOrder: ThreadSortingOrders | null;
+    defaultThreadRateLimitPerUser: number;
     lastThreadID?: string;
     permissionOverwrites: Collection<PermissionOverwrite>;
     rateLimitPerUser: number;
@@ -3648,8 +3647,8 @@ declare namespace Dysnomia {
     createMessage(content: MessageContent): Promise<Message<this>>;
     /** @deprecated */
     createMessage(content: MessageContent, file?: FileContent | FileContent[]): Promise<Message<this>>;
-    createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
     createThread(options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
+    createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
     /** @deprecated */
     createThreadWithoutMessage(options: CreateThreadWithoutMessageOptions): Promise<PrivateThreadChannel>;
     createWebhook(options: Omit<WebhookOptions, "channelID">, reason?: string): Promise<Webhook>;
