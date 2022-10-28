@@ -373,6 +373,7 @@ declare namespace Dysnomia {
   }
   interface EditChannelOptions extends Omit<CreateChannelOptions, "reason"> {
     archived?: boolean;
+    appliedTags?: string[];
     autoArchiveDuration?: AutoArchiveDuration;
     defaultThreadRateLimitPerUser?: number | null;
     invitable?: boolean;
