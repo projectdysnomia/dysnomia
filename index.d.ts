@@ -354,7 +354,7 @@ declare namespace Dysnomia {
     parentID?: string;
   }
   interface CreateChannelOptions {
-    availableTags: (Required<Pick<ForumTag, "name">> & Omit<ForumTag, "id">)[];
+    availableTags: (Required<Pick<ForumTag, "name">> & Partial<Omit<ForumTag, "id">>)[];
     bitrate?: number;
     defaultAutoArchiveDuration?: AutoArchiveDuration;
     defaultReactionEmoji?: {
