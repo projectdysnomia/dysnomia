@@ -358,8 +358,8 @@ declare namespace Dysnomia {
     bitrate?: number;
     defaultAutoArchiveDuration?: AutoArchiveDuration;
     defaultReactionEmoji?: {
-      emoji_id?: string;
-      emoji_name?: string;
+      emojiID?: string;
+      emojiName?: string;
     };
     defaultSortOrder?: ThreadSortingOrders;
     nsfw?: boolean;
@@ -390,8 +390,8 @@ declare namespace Dysnomia {
     id: string;
     name: string;
     moderated: boolean;
-    emoji_id?: string | null;
-    emoji_name?: string | null;
+    emojiID?: string | null;
+    emojiName?: string | null;
   }
   interface GetMessagesOptions {
     after?: string;
