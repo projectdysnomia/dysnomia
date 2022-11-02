@@ -1568,9 +1568,9 @@ declare namespace Dysnomia {
     rateLimitPerUser?: number | null;
   }
   interface CreateThreadWithoutMessageOptions<T = AnyThreadChannel["type"]> extends CreateThreadOptions {
-    appliedTags: T extends PublicThreadChannel["type"] ? string[] : never;
+    appliedTags?: T extends PublicThreadChannel["type"] ? string[] : never;
     invitable: T extends PrivateThreadChannel["type"] ? boolean : never;
-    message: T extends PublicThreadChannel["type"] ? Omit<AdvancedMessageContent, "messageReference" | "tts"> : never;
+    message?: T extends PublicThreadChannel["type"] ? Omit<AdvancedMessageContent, "messageReference" | "tts"> : never;
     type: T;
   }
   interface GetArchivedThreadsOptions {
