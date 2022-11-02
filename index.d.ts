@@ -1936,7 +1936,7 @@ declare namespace Dysnomia {
       GUILD_FORUM:          15;
     };
     ChannelFlags: {
-      PINNED:      1;
+      PINNED:      2;
       REQUIRE_TAG: 16;
     };
     ComponentTypes: {
