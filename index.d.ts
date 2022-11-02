@@ -2905,10 +2905,8 @@ declare namespace Dysnomia {
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
     createThread(options: CreateThreadWithoutMessageOptions): Promise<PublicThreadChannel>;
     createWebhook(options: Omit<WebhookOptions, "channelID">, reason?: string): Promise<Webhook>;
-    getArchivedThreads(type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getArchivedThreads(type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", this>)[]>;
-    getJoinedPrivateArchivedThreads(options: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getWebhooks(): Promise<Webhook[]>;
   }
 
