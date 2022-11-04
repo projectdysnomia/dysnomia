@@ -316,15 +316,21 @@ declare namespace Dysnomia {
     exemptRoles?: string[];
     name: string;
     reason?: string;
-    triggerMetadata?: AutoModerationTriggerMetadata;
+    triggerMetadata?: Partial<AutoModerationTriggerMetadata>;
     triggerType: AutoModerationTriggerType;
   }
 
   interface AutoModerationTriggerMetadata {
     /** valid for KEYWORD */
+    allowList: string[];
+    /** valid for KEYWORD */
     keywordFilter: string[];
+    /** valid for MENTION_SPAM */
+    mentionTotalLimit: number;
     /** valid for KEYWORD_PRESET */
     presets: AutoModerationKeywordPresetType[];
+    /** valid for KEYWORD */
+    regexPatterns: string[];
   }
   // Channel
   interface ChannelFollow {
