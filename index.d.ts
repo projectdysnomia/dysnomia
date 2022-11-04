@@ -1871,9 +1871,11 @@ declare namespace Dysnomia {
     };
     AutoModerationTriggerTypes: {
       KEYWORD:        1;
+      /** @deprecated */
       HARMFUL_LINK:   2;
       SPAM:           3;
       KEYWORD_PRESET: 4;
+      MENTION_SPAM:   5;
     };
     ButtonStyles: {
       PRIMARY:   1;
