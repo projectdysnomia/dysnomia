@@ -321,16 +321,25 @@ declare namespace Dysnomia {
   }
 
   interface AutoModerationTriggerMetadata {
-    /** valid for KEYWORD */
+    /** @deprecated */
     allowList: string[];
-    /** valid for KEYWORD */
+    /** @deprecated */
     keywordFilter: string[];
-    /** valid for MENTION_SPAM */
+    /** @deprecated */
     mentionTotalLimit: number;
+    /** @deprecated */
+    regexPatterns: string[];
+
+    /** valid for KEYWORD */
+    allow_list: string[];
+    /** valid for KEYWORD */
+    keyword_filter: string[];
+    /** valid for MENTION_SPAM */
+    mention_total_limit: number;
     /** valid for KEYWORD_PRESET */
     presets: AutoModerationKeywordPresetType[];
     /** valid for KEYWORD */
-    regexPatterns: string[];
+    regex_patterns: string[];
   }
   // Channel
   interface ChannelFollow {
