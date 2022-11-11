@@ -316,15 +316,30 @@ declare namespace Dysnomia {
     exemptRoles?: string[];
     name: string;
     reason?: string;
-    triggerMetadata?: AutoModerationTriggerMetadata;
+    triggerMetadata?: Partial<AutoModerationTriggerMetadata>;
     triggerType: AutoModerationTriggerType;
   }
 
   interface AutoModerationTriggerMetadata {
-    /** valid for KEYWORD */
+    /** @deprecated */
+    allowList: string[];
+    /** @deprecated */
     keywordFilter: string[];
+    /** @deprecated */
+    mentionTotalLimit: number;
+    /** @deprecated */
+    regexPatterns: string[];
+
+    /** valid for KEYWORD */
+    allow_list: string[];
+    /** valid for KEYWORD */
+    keyword_filter: string[];
+    /** valid for MENTION_SPAM */
+    mention_total_limit: number;
     /** valid for KEYWORD_PRESET */
     presets: AutoModerationKeywordPresetType[];
+    /** valid for KEYWORD */
+    regex_patterns: string[];
   }
   // Channel
   interface ChannelFollow {
@@ -1865,9 +1880,11 @@ declare namespace Dysnomia {
     };
     AutoModerationTriggerTypes: {
       KEYWORD:        1;
+      /** @deprecated */
       HARMFUL_LINK:   2;
       SPAM:           3;
       KEYWORD_PRESET: 4;
+      MENTION_SPAM:   5;
     };
     ButtonStyles: {
       PRIMARY:   1;
