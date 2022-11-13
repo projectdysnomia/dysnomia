@@ -681,6 +681,7 @@ declare namespace Dysnomia {
   }
   interface OldGuildChannel {
     bitrate?: number;
+    flags?: number;
     name: string;
     nsfw?: boolean;
     parentID: string | null;
@@ -3088,6 +3089,7 @@ declare namespace Dysnomia {
   }
 
   export class GuildChannel extends Channel {
+    flags?: number;
     guild: Guild;
     name: string;
     nsfw: boolean;
