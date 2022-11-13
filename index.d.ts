@@ -377,6 +377,7 @@ declare namespace Dysnomia {
     autoArchiveDuration?: AutoArchiveDuration;
     defaultThreadRateLimitPerUser?: number | null;
     invitable?: boolean;
+    flags?: number;
     locked?: boolean;
     name?: string;
     rtcRegion?: string | null;
