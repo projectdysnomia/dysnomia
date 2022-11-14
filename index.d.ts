@@ -764,6 +764,7 @@ declare namespace Dysnomia {
     videoQualityMode: VideoQualityMode;
   }
   interface OldThread {
+    appliedTags?: string[];
     flags?: number;
     name: string;
     rateLimitPerUser: number;
