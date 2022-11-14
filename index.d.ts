@@ -680,7 +680,15 @@ declare namespace Dysnomia {
     verificationLevel: VerificationLevel;
   }
   interface OldGuildChannel {
+    availableTags?: ForumTag[];
     bitrate?: number;
+    defaultAutoArchiveDuration?: AutoArchiveDuration;
+    defaultReactionEmoji?: {
+      emoji_id: string | null;
+      emoji_name: string | null;
+    };
+    defaultSortOrder?: ThreadSortingOrders;
+    defaultThreadRateLimitPerUser?: number;
     flags?: number;
     name: string;
     nsfw?: boolean;
@@ -756,6 +764,7 @@ declare namespace Dysnomia {
     videoQualityMode: VideoQualityMode;
   }
   interface OldThread {
+    flags?: number;
     name: string;
     rateLimitPerUser: number;
     threadMetadata: ThreadMetadata;
