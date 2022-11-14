@@ -357,10 +357,7 @@ declare namespace Dysnomia {
     availableTags?: (Required<Pick<ForumTag, "name">> & Partial<ForumTag>)[];
     bitrate?: number;
     defaultAutoArchiveDuration?: AutoArchiveDuration;
-    defaultReactionEmoji?: {
-      emojiID?: string;
-      emojiName?: string;
-    };
+    defaultReactionEmoji?: ForumDefaultReactionEmoji;
     defaultSortOrder?: ThreadSortingOrders;
     nsfw?: boolean;
     parentID?: string;
@@ -391,6 +388,11 @@ declare namespace Dysnomia {
     id: string;
     name: string;
     moderated: boolean;
+    emojiID?: string | null;
+    emojiName?: string | null;
+  }
+
+  interface ForumDefaultReactionEmoji {
     emojiID?: string | null;
     emojiName?: string | null;
   }
@@ -683,10 +685,7 @@ declare namespace Dysnomia {
     availableTags?: ForumTag[];
     bitrate?: number;
     defaultAutoArchiveDuration?: AutoArchiveDuration;
-    defaultReactionEmoji?: {
-      emoji_id: string | null;
-      emoji_name: string | null;
-    };
+    defaultReactionEmoji?: ForumDefaultReactionEmoji;
     defaultSortOrder?: ThreadSortingOrders;
     defaultThreadRateLimitPerUser?: number;
     flags?: number;
@@ -2903,10 +2902,7 @@ declare namespace Dysnomia {
   export class ForumChannel extends GuildChannel {
     availableTags: ForumTag[];
     defaultAutoArchiveDuration: number;
-    defaultReactionEmoji?: {
-      emoji_id: string | null;
-      emoji_name: string | null;
-    };
+    defaultReactionEmoji?: ForumDefaultReactionEmoji;
     defaultSortOrder: ThreadSortingOrders | null;
     defaultThreadRateLimitPerUser: number;
     lastThreadID?: string;
