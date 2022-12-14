@@ -85,6 +85,7 @@ declare namespace Dysnomia {
   type PrivateChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "DM" | "GROUP_DM">];
   type TextVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE">];
   type ThreadSortingOrders = Constants["ThreadSortingOrders"][keyof Constants["ThreadSortingOrders"]];
+  type ForumLayoutTypes = Constants["ForumLayoutTypes"][keyof Constants["ForumLayoutTypes"]];
 
   // Client
   type MembershipStates = Constants["MembershipState"][keyof Constants["MembershipState"]];
@@ -372,6 +373,7 @@ declare namespace Dysnomia {
     archived?: boolean;
     appliedTags?: string[];
     autoArchiveDuration?: AutoArchiveDuration;
+    defaultForumLayout?: ForumLayoutTypes;
     defaultThreadRateLimitPerUser?: number | null;
     flags?: number;
     invitable?: boolean;
@@ -1975,6 +1977,11 @@ declare namespace Dysnomia {
       MEMBERS_WITHOUT_ROLES: 1;
       ALL_MEMBERS:           2;
     };
+    ForumLayoutTypes: {
+      NOT_SET:      0;
+      LIST_VIEW:    1;
+      GALLERY_VIEW: 2;
+    };
     GatewayOPCodes: {
       DISPATCH:              0;
       HEARTBEAT:             1;
@@ -2902,6 +2909,7 @@ declare namespace Dysnomia {
   export class ForumChannel extends GuildChannel {
     availableTags: ForumTag[];
     defaultAutoArchiveDuration: number;
+    defaultForumLayout: ForumLayoutTypes;
     defaultReactionEmoji?: ForumDefaultReactionEmoji;
     defaultSortOrder: ThreadSortingOrders | null;
     defaultThreadRateLimitPerUser: number;
