@@ -2615,7 +2615,6 @@ declare namespace Dysnomia {
     editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editGuildSticker(guildID: string, stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
-    editGuildVanity(guildID: string, code: string | null): Promise<GuildVanity>;
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
@@ -3032,7 +3031,6 @@ declare namespace Dysnomia {
     editScheduledEvent<T extends GuildScheduledEventEntityTypes>(eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editSticker(stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
-    editVanity(code: string | null): Promise<GuildVanity>;
     editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
     editWelcomeScreen(options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editWidget(options: Widget): Promise<Widget>;
