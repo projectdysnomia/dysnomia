@@ -217,6 +217,7 @@ declare namespace Dysnomia {
     dmPermission?: boolean;
     name: string;
     nameLocalizations?: Record<string, string>;
+    nsfw?: boolean;
     type: Constants["ApplicationCommandTypes"][T];
   }
   interface ApplicationCommandOptionBase<T extends ApplicationCommandOptionsTypes> {
@@ -3218,6 +3219,7 @@ declare namespace Dysnomia {
     id: string;
     name: string;
     nameLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
+    nsfw?: boolean;
     options?: ApplicationCommandOptions[];
     type: Constants["ApplicationCommandTypes"][T];
     version: string;
