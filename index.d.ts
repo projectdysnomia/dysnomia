@@ -1738,6 +1738,7 @@ declare namespace Dysnomia {
     owner?: PartialUser;
     primary_sku_id?: string;
     privacy_policy_url?: string;
+    role_connections_verification_url?: string;
     rpc_origins?: string[];
     slug?: string;
     /** @deprecated */
