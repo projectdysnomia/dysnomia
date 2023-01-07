@@ -982,6 +982,7 @@ declare namespace Dysnomia {
   }
   interface GetGuildAuditLogOptions {
     actionType?: number;
+    after?: string;
     before?: string;
     limit?: number;
     userID?: string;
