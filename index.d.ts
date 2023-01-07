@@ -2330,7 +2330,7 @@ declare namespace Dysnomia {
       DISCORD_CERTIFIED_MODERATOR:  262144;
       BOT_HTTP_INTERACTIONS:        524288;
       SPAMMER:                      1048576;
-      ACTIVE_DEVELOPER:             2097152;
+      ACTIVE_DEVELOPER:             4194304;
     };
     VerificationLevels: {
       NONE:      0;
