@@ -1572,6 +1572,7 @@ declare namespace Dysnomia {
   }
   interface RoleTags {
     bot_id?: string;
+    guild_connections?: true;
     integration_id?: string;
     premium_subscriber?: true;
   }
