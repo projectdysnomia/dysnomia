@@ -2166,6 +2166,8 @@ declare namespace Dysnomia {
       CONTEXT_MENU_COMMAND:                         23;
       AUTO_MODERATION_ACTION:                       24;
       ROLE_SUBSCRIPTION_PURCHASE:                   25;
+      INTERACTION_PREMIUM_UPSELL:                   26;
+      GUILD_APPLICATION_PREMIUM_SUBSCRIPTION:       32;
     };
     MembershipState: {
       INVITED: 1;
