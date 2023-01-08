@@ -1482,6 +1482,12 @@ declare namespace Dysnomia {
     messageID: string;
     failIfNotExists?: boolean;
   }
+  interface RoleSubscriptionData {
+    isRenewal: boolean;
+    roleSubscriptionListingID: string;
+    tierName: string;
+    totalMonthsSubscribed: number;
+  }
   interface Sticker extends StickerItem {
     /** @deprecated */
     asset: "";
@@ -3357,6 +3363,7 @@ declare namespace Dysnomia {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
+    roleSubscriptionData?: RoleSubscriptionData;
     stickerItems?: StickerItem[];
     timestamp: number;
     tts: boolean;
