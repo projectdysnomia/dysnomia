@@ -2243,6 +2243,7 @@ declare namespace Dysnomia {
       PNG:    1;
       APNG:   2;
       LOTTIE: 3;
+      GIF:    4;
     };
     StickerTypes: {
       STANDARD: 1;
