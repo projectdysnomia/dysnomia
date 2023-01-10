@@ -45,6 +45,7 @@ declare namespace Dysnomia {
       MessageApplicationCommand<W> : T extends UserApplicationCommandStructure ?
         UserApplicationCommand<W> : never;
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
+  type ApplicationRoleConnectionMetadataTypes = Constants["RoleConnectionMetadataTypes"][keyof Constants["RoleConnectionMetadataTypes"]];
   type ChatInputApplicationCommand<W extends boolean = false> = ApplicationCommand<"CHAT_INPUT", W>;
   type MessageApplicationCommand<W extends boolean = false> = ApplicationCommand<"MESSAGE", W>;
   type MessageApplicationCommandStructure = ApplicationCommandStructureBase<"MESSAGE">;
@@ -261,6 +262,14 @@ declare namespace Dysnomia {
     id: string;
     permission: boolean;
     type: Constants["ApplicationCommandPermissionTypes"][keyof Constants["ApplicationCommandPermissionTypes"]];
+  }
+  interface ApplicationRoleConnectionMetadata {
+    description: string;
+    descriptionLocalizations?: Record<string, string>;
+    key: string;
+    name: string;
+    nameLocalizations?: Record<string, string>;
+    type: ApplicationRoleConnectionMetadataTypes;
   }
   interface ChatInputApplicationCommandStructure extends ApplicationCommandStructureBase<"CHAT_INPUT"> {
     description: string;
@@ -2637,6 +2646,7 @@ declare namespace Dysnomia {
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
     editMessage(channelID: string, messageID: string, content: MessageContentEdit): Promise<Message>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
+    editRoleConnectionMetadata(metadata: ApplicationRoleConnectionMetadata[]): Promise<ApplicationRoleConnectionMetadata[]>;
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
     editSelf(options: EditSelfOptions): Promise<ExtendedUser>;
     editStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
@@ -2719,6 +2729,7 @@ declare namespace Dysnomia {
     getRESTGuildStickers(guildID: string): Promise<Sticker[]>;
     getRESTSticker(stickerID: string): Promise<Sticker>;
     getRESTUser(userID: string): Promise<User>;
+    getRoleConnectionMetadata(): Promise<ApplicationRoleConnectionMetadata[]>;
     getSelf(): Promise<ExtendedUser>;
     getStageInstance(channelID: string): Promise<StageInstance>;
     getThreadMembers(channelID: string): Promise<ThreadMember[]>;
