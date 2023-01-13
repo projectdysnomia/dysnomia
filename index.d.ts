@@ -414,6 +414,14 @@ declare namespace Dysnomia {
     before?: string;
     limit?: number;
   }
+  interface GetThreadMemberOptions {
+    withMember?: boolean;
+  }
+  interface GetThreadMembersOptions {
+    after?: string;
+    limit?: number;
+    withMember?: boolean;
+  }
   interface GuildPinnable extends Pinnable {
     lastPinTimestamp: number | null;
     topic?: string | null;
@@ -470,7 +478,8 @@ declare namespace Dysnomia {
   interface ThreadTextable extends Textable, Pinnable {
     lastPinTimestamp?: number;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
-    getMembers(): Promise<ThreadMember[]>;
+    getMember(options: GetThreadMemberOptions): Promise<ThreadMember>;
+    getMembers(options: GetThreadMembersOptions): Promise<ThreadMember[]>;
     join(userID: string): Promise<void>;
     leave(userID: string): Promise<void>;
     purge(options: PurgeChannelOptions): Promise<number>;
@@ -2732,7 +2741,8 @@ declare namespace Dysnomia {
     getRoleConnectionMetadata(): Promise<ApplicationRoleConnectionMetadata[]>;
     getSelf(): Promise<ExtendedUser>;
     getStageInstance(channelID: string): Promise<StageInstance>;
-    getThreadMembers(channelID: string): Promise<ThreadMember[]>;
+    getThreadMember(channelID: string, memberID: string, options: GetThreadMemberOptions): Promise<ThreadMember>;
+    getThreadMembers(channelID: string, options: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
     getWebhookMessage(webhookID: string, token: string, messageID: string): Promise<Message<GuildTextableChannel>>;
@@ -3764,7 +3774,8 @@ declare namespace Dysnomia {
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "invitable" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
     editMessage(messageID: string, content: MessageContentEdit): Promise<Message<this>>;
-    getMembers(): Promise<ThreadMember[]>;
+    getMember(options: GetThreadMemberOptions): Promise<ThreadMember>;
+    getMembers(options: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
