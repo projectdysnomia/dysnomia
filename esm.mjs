@@ -1,6 +1,8 @@
+import emitDeprecation from "./lib/util/emitDeprecation.js";
 import Dysnomia from "./index.js";
 
 export default function(token, options) {
+  emitDeprecation("EXPORT_FUNCTION_CALL");
   return new Dysnomia.Client(token, options);
 }
 

@@ -1,8 +1,11 @@
 "use strict";
 
+const emitDeprecation = require("./lib/util/emitDeprecation");
 const Client = require("./lib/Client");
 
+// [DEPRECATED]
 function Dysnomia(token, options) {
+    emitDeprecation("EXPORT_FUNCTION_CALL");
     return new Client(token, options);
 }
 

@@ -7,6 +7,7 @@ import { URL } from "url";
 import { Socket as DgramSocket } from "dgram";
 import * as WebSocket from "ws";
 
+/** @deprecated */
 declare function Dysnomia(token: string, options?: Dysnomia.ClientOptions): Dysnomia.Client;
 
 declare namespace Dysnomia {
