@@ -1482,6 +1482,12 @@ declare namespace Dysnomia {
     messageID: string;
     failIfNotExists?: boolean;
   }
+  interface RoleSubscriptionData {
+    isRenewal: boolean;
+    roleSubscriptionListingID: string;
+    tierName: string;
+    totalMonthsSubscribed: number;
+  }
   interface Sticker extends StickerItem {
     /** @deprecated */
     asset: "";
@@ -1593,6 +1599,8 @@ declare namespace Dysnomia {
     guild_connections?: true;
     integration_id?: string;
     premium_subscriber?: true;
+    subscription_listing_id?: string;
+    available_for_purchase?: true;
   }
 
   // Thread
@@ -2023,39 +2031,25 @@ declare namespace Dysnomia {
     GuildFeatures: [
       "ANIMATED_BANNER",
       "ANIMATED_ICON",
+      "APPLICATION_COMMAND_PERMISSIONS_V2",
       "AUTO_MODERATION",
       "BANNER",
-      "COMMERCE",
       "COMMUNITY",
-      "CREATOR_MONETIZABLE",
-      "CREATOR_MONETIZABLE_DISABLED",
+      "CREATOR_MONETIZABLE_PROVISIONAL",
+      "CREATOR_STORE_PAGE",
+      "DEVELOPER_SUPPORT_SERVER",
       "DISCOVERABLE",
-      "DISCOVERABLE_DISABLED",
-      "ENABLED_DISCOVERABLE_BEFORE",
       "FEATURABLE",
-      "GUILD_HOME_TEST",
-      "HAS_DIRECTORY_ENTRY",
-      "HUB",
+      "INVITES_DISABLED",
       "INVITE_SPLASH",
-      "LINKED_TO_HUB",
       "MEMBER_VERIFICATION_GATE_ENABLED",
-      "MONETIZATION_ENABLED",
-      "MORE_EMOJI",
       "MORE_STICKERS",
       "NEWS",
-      "NEW_THREAD_PERMISSIONS",
       "PARTNERED",
       "PREVIEW_ENABLED",
-      "PREVIOUSLY_DISCOVERABLE",
-      "PRIVATE_THREADS",
       "ROLE_ICONS",
       "ROLE_SUBSCRIPTIONS_AVAILABLE_FOR_PURCHASE",
       "ROLE_SUBSCRIPTIONS_ENABLED",
-      "SEVEN_DAY_THREAD_ARCHIVE",
-      "TEXT_IN_VOICE_ENABLED",
-      "THREADS_ENABLED",
-      "THREADS_ENABLED_TESTING",
-      "THREE_DAY_THREAD_ARCHIVE",
       "TICKETED_EVENTS_ENABLED",
       "VANITY_URL",
       "VERIFIED",
@@ -2069,7 +2063,8 @@ declare namespace Dysnomia {
     GuildIntegrationTypes: [
       "twitch",
       "youtube",
-      "discord"
+      "discord",
+      "guild_subscription"
     ];
     GuildNSFWLevels: {
       DEFAULT:        0;
@@ -3368,6 +3363,7 @@ declare namespace Dysnomia {
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
+    roleSubscriptionData?: RoleSubscriptionData;
     stickerItems?: StickerItem[];
     timestamp: number;
     tts: boolean;
