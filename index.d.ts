@@ -1329,14 +1329,12 @@ declare namespace Dysnomia {
     roles: string[];
   }
   interface PartialUser {
-    accentColor?: number | null;
     avatar: string | null;
-    banner?: string | null;
+    avatar_decoration: string | null;
     discriminator: string;
     id: string;
     username: string;
     public_flags?: number;
-    flags?: number;
   }
 
   // Message
@@ -1840,8 +1838,11 @@ declare namespace Dysnomia {
       MESSAGE:    3;
     };
     ApplicationFlags: {
+      /** @deprecated */
       EMBEDDED_RELEASED:                2;
+      /** @deprecated */
       MANAGED_EMOJI:                    4;
+      /** @deprecated */
       GROUP_DM_CREATE:                  16;
       GATEWAY_PRESENCE:                 4096;
       GATEWAY_PRESENCE_LIMITED:         8192;
@@ -1851,7 +1852,9 @@ declare namespace Dysnomia {
       EMBEDDED:                         131072;
       GATEWAY_MESSAGE_CONTENT:          262144;
       GATEWAY_MESSAGE_CONTENT_LIMITED:  524288;
+      /** @deprecated */
       EMBEDDED_FIRST_PARTY:             1048576;
+      APPLICATION_COMMAND_BADGE:        8388608
     };
     AuditLogActions: {
       GUILD_UPDATE: 1;
