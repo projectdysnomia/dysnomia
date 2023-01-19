@@ -1,3 +1,5 @@
+// WARNING: CommandClient is a deprecated interface and will be removed in a future version.
+
 const Dysnomia = require("@projectdysnomia/dysnomia");
 
 // Replace TOKEN with your bot account's token
