@@ -1854,7 +1854,7 @@ declare namespace Dysnomia {
       GATEWAY_MESSAGE_CONTENT_LIMITED:  524288;
       /** @deprecated */
       EMBEDDED_FIRST_PARTY:             1048576;
-      APPLICATION_COMMAND_BADGE:        8388608
+      APPLICATION_COMMAND_BADGE:        8388608;
     };
     AuditLogActions: {
       GUILD_UPDATE: 1;
