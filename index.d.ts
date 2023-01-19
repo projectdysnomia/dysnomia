@@ -816,6 +816,7 @@ declare namespace Dysnomia {
     debug: [message: string, id?: number];
     disconnect: [];
     error: [err: Error, id?: number];
+    guildAuditLogEntryCreate: [entry: GuildAuditLogEntry];
     guildAvailable: [guild: Guild];
     guildBanAdd: [guild: Guild, user: User];
     guildBanRemove: [guild: Guild, user: User];
@@ -2092,6 +2093,8 @@ declare namespace Dysnomia {
     Intents: {
       guilds:                      1;
       guildMembers:                2;
+      guildModeration:             4;
+      /** @deprecated */
       guildBans:                   4;
       guildEmojisAndStickers:      8;
       guildIntegrations:           16;
