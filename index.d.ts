@@ -1035,7 +1035,10 @@ declare namespace Dysnomia {
     limit?: number;
   }
   interface GuildAuditLog {
+    autoModerationRules: AutoModerationRule[];
+    commands: ApplicationCommand[];
     entries: GuildAuditLogEntry[];
+    events: GuildScheduledEvent[];
     integrations: GuildIntegration[];
     threads: AnyThreadChannel[];
     users: User[];
@@ -1922,6 +1925,8 @@ declare namespace Dysnomia {
       AUTO_MODERATION_RULE_UPDATE:   141;
       AUTO_MODERATION_RULE_DELETE:   142;
       AUTO_MODERATION_BLOCK_MESSAGE: 143;
+      AUTO_MODERATION_FLAG_TO_CHANNEL: 144;
+      AUTO_MODERATION_USER_COMMUNICATION_DISABLED: 145;
 
       CREATOR_MONETIZATION_REQUEST_CREATED: 150;
       CREATOR_MONETIZATION_TERMS_ACCEPTED:  151;
@@ -3123,8 +3128,11 @@ declare namespace Dysnomia {
   export class GuildAuditLogEntry extends Base {
     actionType: number;
     after: { [key: string]: unknown } | null;
+    applicationID?: string;
+    autoModerationRuleName?: string;
+    autoModerationRuleTriggerType?: string;
     before: { [key: string]: unknown } | null;
-    channel?: AnyGuildChannel;
+    channel?: AnyGuildChannel | AnyThreadChannel;
     count?: number;
     deleteMemberDays?: number;
     guild: Guild;
@@ -3134,9 +3142,9 @@ declare namespace Dysnomia {
     message?: Message<GuildTextableChannel>;
     reason: string | null;
     role?: Role | { id: string; name: string };
-    target?: Guild | AnyGuildChannel | Member | Role | Invite | Emoji | Sticker | Message<GuildTextableChannel> | null;
+    target?: Guild | AnyGuildChannel | AnyThreadChannel | Member | Role | Invite | Emoji | Sticker | StageInstance | User | GuildScheduledEvent | null;
     targetID: string;
-    user: User;
+    user: User | Uncached;
     constructor(data: BaseData, guild: Guild);
   }
 
