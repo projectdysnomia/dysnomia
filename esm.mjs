@@ -11,6 +11,7 @@ export const {
   ApplicationCommand,
   Attachment,
   AutocompleteInteraction,
+  AutoModerationRule,
   Base,
   Bucket,
   CategoryChannel,

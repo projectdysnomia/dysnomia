@@ -12,6 +12,7 @@ function Dysnomia(token, options) {
 Dysnomia.ApplicationCommand = require("./lib/structures/ApplicationCommand");
 Dysnomia.Attachment = require("./lib/structures/Attachment");
 Dysnomia.AutocompleteInteraction = require("./lib/structures/AutocompleteInteraction");
+Dysnomia.AutoModerationRule = require("./lib/structures/AutoModerationRule");
 Dysnomia.Base = require("./lib/structures/Base");
 Dysnomia.Bucket = require("./lib/util/Bucket");
 Dysnomia.CategoryChannel = require("./lib/structures/CategoryChannel");

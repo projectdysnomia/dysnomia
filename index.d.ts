@@ -59,7 +59,7 @@ declare namespace Dysnomia {
   type AutoModerationEventType = Constants["AutoModerationEventTypes"][keyof Constants["AutoModerationEventTypes"]];
   type AutoModerationKeywordPresetType = Constants["AutoModerationKeywordPresetTypes"][keyof Constants["AutoModerationKeywordPresetTypes"]];
   type AutoModerationTriggerType = Constants["AutoModerationTriggerTypes"][keyof Constants["AutoModerationTriggerTypes"]];
-  type EditAutoModerationRuleOptions = Partial<CreateAutoModerationRuleOptions>;
+  type EditAutoModerationRuleOptions = Partial<Omit<CreateAutoModerationRuleOptions, "triggerType">>;
 
   // Cache
   interface Uncached { id: string }
@@ -303,28 +303,20 @@ declare namespace Dysnomia {
     userID: string;
   }
   interface AutoModerationActionMetadata {
-    /** valid for SEND_ALERT_MESSAGE */
+    /** @deprecated */
     channelID?: string;
+    /** @deprecated */
+    durationSeconds?: string;
+
+    /** valid for SEND_ALERT_MESSAGE */
+    channel_id?: string;
     /** valid for TIMEOUT */
-    durationSeconds?: number;
-  }
-  interface AutoModerationRule {
-    actions: AutoModerationAction[];
-    creatorID: string;
-    enabled: boolean;
-    eventType: AutoModerationEventType;
-    exemptRoles: string[];
-    exemptUsers: string[];
-    guildID: string;
-    id: string;
-    name: string;
-    triggerMetadata: AutoModerationTriggerMetadata;
-    triggerType: AutoModerationTriggerType;
+    duration_seconds?: number;
   }
   interface CreateAutoModerationRuleOptions {
     actions: AutoModerationAction[];
     enabled?: boolean;
-    eventType: AutoModerationActionType;
+    eventType: AutoModerationEventType;
     exemptChannels?: string[];
     exemptRoles?: string[];
     name: string;
@@ -2429,6 +2421,23 @@ declare namespace Dysnomia {
     user?: User;
     acknowledge(choices: ApplicationCommandOptionsChoice[]): Promise<void>;
     result(choices: ApplicationCommandOptionsChoice[]): Promise<void>;
+  }
+  export class AutoModerationRule extends Base {
+    actions: AutoModerationAction[];
+    creatorID: string;
+    enabled: boolean;
+    eventType: AutoModerationEventType;
+    exemptChannels: string[];
+    exemptRoles: string[];
+    guildID: string;
+    id: string;
+    name: string;
+    triggerMetadata: AutoModerationTriggerMetadata;
+    triggerType: AutoModerationTriggerType;
+
+    delete(): Promise<void>;
+    edit(options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
+
   }
   export class Attachment extends Base {
     contentType?: string;
