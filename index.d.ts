@@ -1312,6 +1312,7 @@ declare namespace Dysnomia {
     channelID?: string | null;
     communicationDisabledUntil?: Date | null;
     deaf?: boolean;
+    flags?: number;
     mute?: boolean;
     nick?: string | null;
     roles?: string[];
@@ -2139,6 +2140,12 @@ declare namespace Dysnomia {
     MFALevels: {
       NONE:     0;
       ELEVATED: 1;
+    };
+    MemberFlags: {
+      DID_REJOIN:             1;
+      COMPLETED_ONBOARDING:   2;
+      BYPASSES_VERIFICATION:  4;
+      STARTED_ONBOARDING:     8;
     };
     MessageActivityTypes: {
       JOIN:         1;
@@ -3332,6 +3339,7 @@ declare namespace Dysnomia {
     defaultAvatar: string;
     defaultAvatarURL: string;
     discriminator: string;
+    flags: number;
     game: Activity | null;
     guild: Guild;
     id: string;
