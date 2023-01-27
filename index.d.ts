@@ -3170,6 +3170,7 @@ declare namespace Dysnomia {
     name: string;
     nsfw: boolean;
     parentID: string | null;
+    permissions?: Permission;
     type: GuildChannelTypes;
     constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
