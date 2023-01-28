@@ -3421,8 +3421,8 @@ declare namespace Dysnomia {
     roleMentions: string[];
     roleSubscriptionData?: RoleSubscriptionData;
     stickerItems?: StickerItem[];
-    timestamp: number;
     thread?: AnyThreadChannel;
+    timestamp: number;
     tts: boolean;
     type: number;
     webhookID: T extends GuildTextableWithThreads ? string | undefined : undefined;
