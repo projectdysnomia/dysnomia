@@ -1979,6 +1979,7 @@ declare namespace Dysnomia {
       /** @deprecated */
       GUILD_PRIVATE_THREAD: 12;
       GUILD_STAGE_VOICE:    13;
+      GUILD_DIRECTORY:      14;
       GUILD_FORUM:          15;
     };
     ChannelFlags: {
