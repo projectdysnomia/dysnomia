@@ -1396,6 +1396,12 @@ declare namespace Dysnomia {
   interface CreateStickerOptions extends Required<Pick<EditStickerOptions, "name" | "tags" | "description">> {
     file: FileContent;
   }
+  interface CrosspostedChannelMention {
+    guildID: string;
+    id: string;
+    name: string;
+    type: number;
+  }
   interface EditStickerOptions {
     description?: string;
     name?: string;
@@ -2152,6 +2158,7 @@ declare namespace Dysnomia {
       JOIN:         1;
       SPECTATE:     2;
       LISTEN:       3;
+      /** @deprecated */
       WATCH:        4;
       JOIN_REQUEST: 5;
     };
@@ -2174,12 +2181,23 @@ declare namespace Dysnomia {
       CHANNEL_NAME_CHANGE:                          4;
       CHANNEL_ICON_CHANGE:                          5;
       CHANNEL_PINNED_MESSAGE:                       6;
+      USER_JOIN:                                    7;
+      /** @deprecated */
       GUILD_MEMBER_JOIN:                            7;
+      GUILD_BOOST:                                  8;
+      /** @deprecated */
       USER_PREMIUM_GUILD_SUBSCRIPTION:              8;
+      GUILD_BOOST_TIER_1:                           9;
+      /** @deprecated */
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1:       9;
+      GUILD_BOOST_TIER_2:                           10;
+      /** @deprecated */
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2:       10;
+      GUILD_BOOST_TIER_3:                           11;
+      /** @deprecated */
       USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3:       11;
       CHANNEL_FOLLOW_ADD:                           12;
+      /** @deprecated */
       GUILD_STREAM:                                 13;
       GUILD_DISCOVERY_DISQUALIFIED:                 14;
       GUILD_DISCOVERY_REQUALIFIED:                  15;
@@ -3377,10 +3395,12 @@ declare namespace Dysnomia {
     channelMentions: string[];
     /** @deprecated */
     cleanContent: string;
+    /** @deprecated */
     command?: Command;
     components?: ActionRow[];
     content: string;
     createdAt: number;
+    crosspostedChannelMentions?: CrosspostedChannelMention[];
     editedTimestamp?: number;
     embeds: Embed[];
     flags: number;
@@ -3393,6 +3413,8 @@ declare namespace Dysnomia {
     mentions: User[];
     messageReference: MessageReference | null;
     pinned: boolean;
+    position?: number;
+    /** @deprecated */
     prefix?: string;
     reactions: { [s: string]: { count: number; me: boolean } };
     referencedMessage?: Message | null;
@@ -3400,6 +3422,7 @@ declare namespace Dysnomia {
     roleSubscriptionData?: RoleSubscriptionData;
     stickerItems?: StickerItem[];
     timestamp: number;
+    thread?: AnyThreadChannel;
     tts: boolean;
     type: number;
     webhookID: T extends GuildTextableWithThreads ? string | undefined : undefined;
