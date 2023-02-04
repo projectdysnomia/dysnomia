@@ -3262,6 +3262,7 @@ declare namespace Dysnomia {
     name: string;
     splash: string | null;
     splashURL: string | null;
+    stickers: Sticker[];
     constructor(data: BaseData, client: Client);
     dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string | null;
     dynamicIconURL(format?: ImageFormat, size?: number): string | null;
