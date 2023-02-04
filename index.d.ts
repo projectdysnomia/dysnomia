@@ -115,7 +115,6 @@ declare namespace Dysnomia {
   type GuildScheduledEventEntityTypes = Constants["GuildScheduledEventEntityTypes"][keyof Constants["GuildScheduledEventEntityTypes"]];
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
-  type HubType = Constants["HubTypes"][keyof Constants["HubTypes"]];
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
   type PossiblyUncachedGuild = Guild | Uncached;
   type PossiblyUncachedGuildScheduledEvent = GuildScheduledEvent | Uncached;
@@ -2082,11 +2081,6 @@ declare namespace Dysnomia {
       SAFE:           2;
       AGE_RESTRICTED: 3;
     };
-    HubTypes: {
-      DEFAULT:     0;
-      HIGH_SCHOOL: 1;
-      COLLEGE:     2;
-    };
     ImageFormats: [
       "jpg",
       "jpeg",
@@ -2563,6 +2557,7 @@ declare namespace Dysnomia {
     users: Collection<User>;
     voiceConnections: VoiceConnectionManager;
     constructor(token: string, options?: ClientOptions);
+    /** @deprecated */
     addGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
@@ -2645,6 +2640,7 @@ declare namespace Dysnomia {
     deleteCommand(commandID: string): Promise<void>;
     deleteGuild(guildID: string): Promise<void>;
     deleteGuildCommand(guildID: string, commandID: string): Promise<void>;
+    /** @deprecated */
     deleteGuildDiscoverySubcategory(guildID: string, categoryID: string, reason?: string): Promise<void>;
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
@@ -2680,6 +2676,7 @@ declare namespace Dysnomia {
     editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
     editGuildCommand<T extends ApplicationCommandStructure>(guildID: string, commandID: string, command: Omit<T, "type">): Promise<ApplicationCommandStructureConversion<T, true>>;
+    /** @deprecated */
     editGuildDiscovery(guildID: string, options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editGuildEmoji(
       guildID: string,
@@ -2734,9 +2731,9 @@ declare namespace Dysnomia {
     getCommand<W extends boolean = false, T extends AnyApplicationCommand<W> = AnyApplicationCommand<W>>(commandID: string, withLocalizations?: W): Promise<T>;
     getCommandPermissions(guildID: string, commandID: string): Promise<GuildApplicationCommandPermissions>;
     getCommands<W extends boolean = false>(withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
+    /** @deprecated */
     getDiscoveryCategories(): Promise<DiscoveryCategory[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
-    getEmojiGuild(emojiID: string): Promise<Guild>;
     getGateway(): Promise<{ url: string }>;
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<GuildBan>;
@@ -2744,6 +2741,7 @@ declare namespace Dysnomia {
     getGuildCommand<W extends boolean = false, T extends AnyApplicationCommand<W> = AnyApplicationCommand<W>>(guildID: string, commandID: string, withLocalizations?: W): Promise<T>;
     getGuildCommandPermissions(guildID: string): Promise<GuildApplicationCommandPermissions[]>;
     getGuildCommands<W extends boolean = false>(guildID: string, withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
+    /** @deprecated */
     getGuildDiscovery(guildID: string): Promise<DiscoveryMetadata>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
     getGuildInvites(guildID: string): Promise<Invite[]>;
@@ -3011,7 +3009,6 @@ declare namespace Dysnomia {
     applicationID: string | null;
     approximateMemberCount?: number;
     approximatePresenceCount?: number;
-    autoRemoved?: boolean;
     banner: string | null;
     bannerURL: string | null;
     channels: Collection<AnyGuildChannel>;
@@ -3020,12 +3017,10 @@ declare namespace Dysnomia {
     description: string | null;
     discoverySplash: string | null;
     discoverySplashURL: string | null;
-    emojiCount?: number;
     emojis: Emoji[];
     events: Collection<GuildScheduledEvent>;
     explicitContentFilter: ExplicitContentFilter;
     features: GuildFeatures[];
-    hubType: HubType | null;
     icon: string | null;
     iconURL: string | null;
     id: string;
@@ -3044,8 +3039,6 @@ declare namespace Dysnomia {
     premiumProgressBarEnabled: boolean;
     premiumSubscriptionCount?: number;
     premiumTier: PremiumTier;
-    primaryCategory?: DiscoveryCategory;
-    primaryCategoryID?: number;
     publicUpdatesChannelID: string | null;
     roles: Collection<Role>;
     rulesChannelID: string | null;
@@ -3065,6 +3058,7 @@ declare namespace Dysnomia {
     widgetChannelID?: string | null;
     widgetEnabled?: boolean;
     constructor(data: BaseData, client: Client);
+    /** @deprecated */
     addDiscoverySubcategory(categoryID: string, reason?: string): Promise<DiscoverySubcategoryResponse>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, options?: BanMemberOptions): Promise<void>;
@@ -3087,6 +3081,7 @@ declare namespace Dysnomia {
     delete(): Promise<void>;
     deleteAutoModerationRule(ruleID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
+    /** @deprecated */
     deleteDiscoverySubcategory(categoryID: string, reason?: string): Promise<void>;
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;
     deleteIntegration(integrationID: string): Promise<void>;
@@ -3103,6 +3098,7 @@ declare namespace Dysnomia {
     editChannelPositions(channelPositions: ChannelPosition[]): Promise<void>;
     editCommand<T extends ApplicationCommandStructure>(commandID: string, command: Omit<T, "type">): Promise<ApplicationCommandStructureConversion<T, true>>;
     editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
+    /** @deprecated */
     editDiscovery(options?: DiscoveryOptions): Promise<DiscoveryMetadata>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
@@ -3126,6 +3122,7 @@ declare namespace Dysnomia {
     getCommand<W extends boolean = false, T extends AnyApplicationCommand<W> = AnyApplicationCommand<W>>(commandID: string, withLocalizations?: W): Promise<T>;
     getCommandPermissions(): Promise<GuildApplicationCommandPermissions[]>;
     getCommands<W extends boolean = false>(): Promise<AnyApplicationCommand<W>[]>;
+    /** @deprecated */
     getDiscovery(): Promise<DiscoveryMetadata>;
     getIntegrations(): Promise<GuildIntegration>;
     getInvites(): Promise<Invite[]>;
