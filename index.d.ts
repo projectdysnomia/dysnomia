@@ -992,6 +992,13 @@ declare namespace Dysnomia {
     category_id: number;
     guild_id: string;
   }
+  interface EditGuildMFALevelOptions {
+    level: MFALevel;
+    reason?: string;
+  }
+  interface EditGuildMFALevelResult {
+    level: MFALevel;
+  }
   interface GetGuildAuditLogOptions {
     actionType?: number;
     after?: string;
@@ -2688,6 +2695,7 @@ declare namespace Dysnomia {
     ): Promise<Emoji>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
+    editGuildMFALevel(guildID: string, options: EditGuildMFALevelOptions): Promise<EditGuildMFALevelResult>;
     editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editGuildSticker(guildID: string, stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
@@ -3105,6 +3113,7 @@ declare namespace Dysnomia {
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
+    editMFALevel(options: EditGuildMFALevelOptions): Promise<EditGuildMFALevelResult>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editScheduledEvent<T extends GuildScheduledEventEntityTypes>(eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editSticker(stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
