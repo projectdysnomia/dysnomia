@@ -1053,6 +1053,7 @@ declare namespace Dysnomia {
     name?: string;
     ownerID?: string;
     preferredLocale?: string;
+    premiumProgressBarEnabled?: boolean;
     publicUpdatesChannelID?: string;
     rulesChannelID?: string;
     splash?: string;
