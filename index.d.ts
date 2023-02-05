@@ -3237,6 +3237,7 @@ declare namespace Dysnomia {
     name: string;
     revoked?: boolean;
     roleID?: string;
+    scopes?: string[];
     subscriberCount?: number;
     syncedAt?: number;
     syncing?: boolean;
