@@ -963,7 +963,8 @@ declare namespace Dysnomia {
     explicitContentFilter?: ExplicitContentFilter;
     icon?: string;
     roles?: PartialRole[];
-    systemChannelID: string;
+    systemChannelFlags?: number;
+    systemChannelID?: string;
     verificationLevel?: VerificationLevel;
   }
   interface DiscoveryCategory {
