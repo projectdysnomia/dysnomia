@@ -368,8 +368,10 @@ declare namespace Dysnomia {
     position?: number;
     rateLimitPerUser?: number;
     reason?: string;
+    rtcRegion?: string | null;
     topic?: string;
     userLimit?: number;
+    videoQualityMode?: VideoQualityMode;
   }
   interface EditChannelOptions extends Omit<CreateChannelOptions, "reason"> {
     archived?: boolean;
@@ -381,8 +383,6 @@ declare namespace Dysnomia {
     invitable?: boolean;
     locked?: boolean;
     name?: string;
-    rtcRegion?: string | null;
-    videoQualityMode?: VideoQualityMode;
   }
   interface EditChannelPositionOptions {
     lockPermissions?: string;
