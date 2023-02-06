@@ -1287,6 +1287,11 @@ declare namespace Dysnomia {
     temporary?: boolean;
     unique?: boolean;
   }
+  interface GetInviteOptions<C extends boolean, E extends boolean, GSE extends string | undefined> {
+    withCounts?: C;
+    withExpiration?: E;
+    guildScheduledEventID?: GSE;
+  }
   interface Invitable {
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite>;
     getInvites(): Promise<Invite[]>;
@@ -2762,6 +2767,8 @@ declare namespace Dysnomia {
     getGuildWelcomeScreen(guildID: string): Promise<WelcomeScreen>;
     getGuildWidget(guildID: string): Promise<WidgetData>;
     getGuildWidgetSettings(guildID: string): Promise<Widget>;
+    getInvite<C extends boolean = false, E extends boolean = false, GSE extends string | undefined = undefined>(inviteID: string, options?: GetInviteOptions<C, E, GSE>): Promise<Invite<(C extends true ? "withCount" : "withoutCount") | (E extends true ? "withExpiration" : "withoutExpiration") | (GSE extends string ? "withGuildScheduledEvent" : never)>>;
+    /** @deprecated */
     getInvite<C extends boolean = false, E extends boolean = false>(inviteID: string, withCounts?: C, withExpiration?: E): Promise<Invite<(C extends true ? "withCount" : "withoutCount") | (E extends true ? "withExpiration" : "withoutExpiration")>>;
     getJoinedPrivateArchivedThreads(channelID: string, options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getMessage(channelID: string, messageID: string): Promise<Message>;
@@ -3325,7 +3332,7 @@ declare namespace Dysnomia {
   }
 
   // If CT (count) is "withMetadata", it will not have count properties
-  export class Invite<CT extends "withMetadata" | "withCount" | "withoutCount" | "withExpiration" | "withoutExpiration" = "withMetadata", CH extends InviteChannel = InviteChannel> extends Base {
+  export class Invite<CT extends "withMetadata" | "withCount" | "withoutCount" | "withExpiration" | "withoutExpiration" | "withGuildScheduledEvent" = "withMetadata", CH extends InviteChannel = InviteChannel> extends Base {
     channel: CH | null;
     code: string;
     // @ts-ignore: Property is only not null when invite metadata is supplied
@@ -3336,6 +3343,8 @@ declare namespace Dysnomia {
       : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata
         ? Guild // If the invite channel is not partial
         : Guild | undefined; // If the invite channel is partial
+    // The event might not get included if not valid
+    guildScheduledEvent: CT extends "withGuildScheduledEvent" ? GuildScheduledEvent | undefined : never;
     inviter?: User;
     maxAge: CT extends "withMetadata" ? number : null;
     maxUses: CT extends "withMetadata" ? number : null;
