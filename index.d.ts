@@ -1667,6 +1667,9 @@ declare namespace Dysnomia {
   }
 
   // Voice
+  interface CreateStageInstanceOptions extends StageInstanceOptions {
+    sendStartNotification?: boolean;
+  }
   interface JoinVoiceChannelOptions {
     opusOnly?: boolean;
     selfDeaf?: boolean;
@@ -2641,7 +2644,7 @@ declare namespace Dysnomia {
     createMessage(channelID: string, content: MessageContent, file?: FileContent | FileContent[]): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
     createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
-    createStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
+    createStageInstance(channelID: string, options: CreateStageInstanceOptions): Promise<StageInstance>;
     createThread(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     /** @deprecated */
@@ -3736,7 +3739,7 @@ declare namespace Dysnomia {
   export class StageChannel extends VoiceChannel {
     topic?: string;
     type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"];
-    createInstance(options: StageInstanceOptions): Promise<StageInstance>;
+    createInstance(options: CreateStageInstanceOptions): Promise<StageInstance>;
     deleteInstance(): Promise<void>;
     editInstance(options: StageInstanceOptions): Promise<StageInstance>;
     getInstance(): Promise<StageInstance>;
@@ -3745,8 +3748,10 @@ declare namespace Dysnomia {
   export class StageInstance extends Base {
     channel: StageChannel | Uncached;
     client: Client;
+    /** @deprecated */
     discoverableDisabled: boolean;
     guild: Guild | Uncached;
+    guildScheduledEvent: GuildScheduledEvent | Uncached;
     privacyLevel: StageInstancePrivacyLevel;
     topic: string;
     constructor(data: BaseData, client: Client);
