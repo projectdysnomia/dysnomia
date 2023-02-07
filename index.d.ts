@@ -1518,7 +1518,7 @@ declare namespace Dysnomia {
     name: string;
   }
   interface StickerPack {
-    banner_asset_id: string;
+    banner_asset_id?: string;
     cover_sticker_id?: string;
     description: string;
     id: string;
