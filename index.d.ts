@@ -2296,6 +2296,7 @@ declare namespace Dysnomia {
       BOOLEAN_NOT_EQUAL:              8;
     };
     StageInstancePrivacyLevel: {
+      /** @deprecated */
       PUBLIC: 1;
       GUILD_ONLY: 2;
     };
@@ -2431,6 +2432,7 @@ declare namespace Dysnomia {
       EXTERNAL: 3;
     };
     GuildScheduledEventPrivacyLevel: {
+      /** @deprecated */
       PUBLIC: 1;
       GUILD_ONLY: 2;
     };
