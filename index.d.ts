@@ -2180,6 +2180,7 @@ declare namespace Dysnomia {
       EPHEMERAL:                              64;
       LOADING:                                128;
       FAILED_TO_MENTION_SOME_ROLES_IN_THREAD: 256;
+      SUPPRESS_NOTIFICATIONS:                 4096;
     };
     MessageTypes: {
       DEFAULT:                                      0;
