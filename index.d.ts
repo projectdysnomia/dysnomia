@@ -698,6 +698,7 @@ declare namespace Dysnomia {
     availableTags?: ForumTag[];
     bitrate?: number;
     defaultAutoArchiveDuration?: AutoArchiveDuration;
+    defaultForumLayout?: ForumLayoutTypes;
     defaultReactionEmoji?: ForumDefaultReactionEmoji;
     defaultSortOrder?: ThreadSortingOrders;
     defaultThreadRateLimitPerUser?: number;
