@@ -1755,6 +1755,7 @@ declare namespace Dysnomia {
     file?: FileContent | FileContent[];
     flags?: number;
     threadID?: string;
+    threadName?: string;
     tts?: boolean;
     username?: string;
     wait?: boolean;
