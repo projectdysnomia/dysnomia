@@ -810,8 +810,8 @@ declare namespace Dysnomia {
     error: [err: Error, id?: number];
     guildAuditLogEntryCreate: [entry: GuildAuditLogEntry];
     guildAvailable: [guild: Guild];
-    guildBanAdd: [guild: Guild, user: User];
-    guildBanRemove: [guild: Guild, user: User];
+    guildBanAdd: [guild: PossiblyUncachedGuild, user: User];
+    guildBanRemove: [guild: PossiblyUncachedGuild, user: User];
     guildCreate: [guild: Guild];
     guildDelete: [guild: PossiblyUncachedGuild];
     guildEmojisUpdate: [guild: PossiblyUncachedGuild, emojis: Emoji[], oldEmojis: Emoji[] | null];
