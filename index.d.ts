@@ -743,11 +743,11 @@ declare namespace Dysnomia {
   interface OldMessage {
     attachments: Attachment[];
     channelMentions: string[];
+    components?: ActionRow[];
     content: string;
     editedTimestamp?: number;
     embeds: Embed[];
     flags: number;
-    mentionedBy?: unknown;
     mentions: User[];
     pinned: boolean;
     roleMentions: string[];
