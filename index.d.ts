@@ -3301,7 +3301,7 @@ declare namespace Dysnomia {
     isDirty: string | null;
     name: string;
     serializedSourceGuild: Guild;
-    sourceGuild: Guild | Uncached;
+    sourceGuild: PossiblyUncachedGuild;
     updatedAt: number;
     usageCount: number;
     constructor(data: BaseData, client: Client);
@@ -3753,8 +3753,8 @@ declare namespace Dysnomia {
     client: Client;
     /** @deprecated */
     discoverableDisabled: boolean;
-    guild: Guild | Uncached;
-    guildScheduledEvent: GuildScheduledEvent | Uncached;
+    guild: PossiblyUncachedGuild;
+    guildScheduledEvent: PossiblyUncachedGuildScheduledEvent;
     privacyLevel: StageInstancePrivacyLevel;
     topic: string;
     constructor(data: BaseData, client: Client);
