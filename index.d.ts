@@ -835,6 +835,9 @@ declare namespace Dysnomia {
     interactionCreate: [interaction: AnyInteractionGateway];
     inviteCreate: [guild: Guild, invite: Invite];
     inviteDelete: [guild: Guild, invite: Invite];
+    integrationCreate: [guild: Guild, integration: GuildIntegration];
+    integrationUpdate: [guild: Guild, integration: GuildIntegration];
+    integrationDelete: [guild: PossiblyUncachedGuild, integration: DeletedGuildIntegration];
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
     messageDelete: [message: PossiblyUncachedMessage];
     messageDeleteBulk: [messages: PossiblyUncachedMessage[]];
@@ -967,6 +970,10 @@ declare namespace Dysnomia {
     systemChannelFlags?: number;
     systemChannelID?: string;
     verificationLevel?: VerificationLevel;
+  }
+  interface DeletedGuildIntegration {
+    applicationID?: string;
+    id: string;
   }
   interface DiscoveryCategory {
     id: number;
