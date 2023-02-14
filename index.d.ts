@@ -3256,6 +3256,7 @@ declare namespace Dysnomia {
     enableEmoticons?: boolean;
     expireBehavior?: GuildIntegrationExpireBehavior;
     expireGracePeriod?: number;
+    guild: Guild;
     id: string;
     name: string;
     revoked?: boolean;
