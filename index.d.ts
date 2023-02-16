@@ -69,7 +69,7 @@ declare namespace Dysnomia {
   type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = TextVoiceChannel | StageChannel;
-  type GuildTextableChannel = TextChannel | TextVoiceChannel | NewsChannel;
+  type GuildTextableChannel = TextChannel | TextVoiceChannel | NewsChannel | StageChannel;
   type GuildTextableWithThreads = GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
   type PossiblyUncachedSpeakableChannel = VoiceChannel | StageChannel | Uncached;
@@ -2230,6 +2230,10 @@ declare namespace Dysnomia {
       AUTO_MODERATION_ACTION:                       24;
       ROLE_SUBSCRIPTION_PURCHASE:                   25;
       INTERACTION_PREMIUM_UPSELL:                   26;
+      STAGE_START:                                  27;
+      STAGE_END:                                    28;
+      STAGE_SPEAKER:                                29;
+      STAGE_TOPIC:                                  31;
       GUILD_APPLICATION_PREMIUM_SUBSCRIPTION:       32;
     };
     MembershipState: {
@@ -3747,7 +3751,7 @@ declare namespace Dysnomia {
     on(event: string, listener: (...args: any[]) => void): this;
   }
 
-  export class StageChannel extends VoiceChannel {
+  export class StageChannel extends TextVoiceChannel {
     topic?: string;
     type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"];
     createInstance(options: CreateStageInstanceOptions): Promise<StageInstance>;
