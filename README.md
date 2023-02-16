@@ -14,7 +14,7 @@ npm install --no-optional @projectdysnomia/dysnomia
 
 If you'd like to install the development versions of the library, use the following command instead:
 ```
-npm install --no-optional github:projectdysnomia/dysnomia#dev
+npm install --no-optional "github:projectdysnomia/dysnomia#dev"
 ```
 
 If you need voice support, remove the `--no-optional`.
