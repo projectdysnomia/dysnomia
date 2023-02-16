@@ -1,14 +1,18 @@
 "use strict";
 
+const emitDeprecation = require("./lib/util/emitDeprecation");
 const Client = require("./lib/Client");
 
+// [DEPRECATED]
 function Dysnomia(token, options) {
+    emitDeprecation("EXPORT_FUNCTION_CALL");
     return new Client(token, options);
 }
 
 Dysnomia.ApplicationCommand = require("./lib/structures/ApplicationCommand");
 Dysnomia.Attachment = require("./lib/structures/Attachment");
 Dysnomia.AutocompleteInteraction = require("./lib/structures/AutocompleteInteraction");
+Dysnomia.AutoModerationRule = require("./lib/structures/AutoModerationRule");
 Dysnomia.Base = require("./lib/structures/Base");
 Dysnomia.Bucket = require("./lib/util/Bucket");
 Dysnomia.CategoryChannel = require("./lib/structures/CategoryChannel");
@@ -23,6 +27,7 @@ Dysnomia.Constants = require("./lib/Constants");
 Dysnomia.DiscordHTTPError = require("./lib/errors/DiscordHTTPError");
 Dysnomia.DiscordRESTError = require("./lib/errors/DiscordRESTError");
 Dysnomia.ExtendedUser = require("./lib/structures/ExtendedUser");
+Dysnomia.ForumChannel = require("./lib/structures/ForumChannel");
 Dysnomia.Guild = require("./lib/structures/Guild");
 Dysnomia.GuildChannel = require("./lib/structures/GuildChannel");
 Dysnomia.GuildIntegration = require("./lib/structures/GuildIntegration");

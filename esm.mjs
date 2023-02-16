@@ -1,6 +1,9 @@
+import emitDeprecation from "./lib/util/emitDeprecation.js";
 import Dysnomia from "./index.js";
 
+// [DEPRECATED]
 export default function(token, options) {
+  emitDeprecation("EXPORT_FUNCTION_CALL");
   return new Dysnomia.Client(token, options);
 }
 
@@ -8,6 +11,7 @@ export const {
   ApplicationCommand,
   Attachment,
   AutocompleteInteraction,
+  AutoModerationRule,
   Base,
   Bucket,
   CategoryChannel,
@@ -22,6 +26,7 @@ export const {
   DiscordHTTPError,
   DiscordRESTError,
   ExtendedUser,
+  ForumChannel,
   Guild,
   GuildChannel,
   GuildIntegration,

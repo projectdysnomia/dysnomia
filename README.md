@@ -14,7 +14,7 @@ npm install --no-optional @projectdysnomia/dysnomia
 
 If you'd like to install the development versions of the library, use the following command instead:
 ```
-npm install --no-optional github:projectdysnomia/dysnomia#dev
+npm install --no-optional "github:projectdysnomia/dysnomia#dev"
 ```
 
 If you need voice support, remove the `--no-optional`.
@@ -26,7 +26,7 @@ Ping Pong Example
 const Dysnomia = require("@projectdysnomia/dysnomia");
 
 // Replace TOKEN with your bot account's token
-const bot = new Dysnomia("Bot TOKEN", {
+const bot = new Dysnomia.Client("Bot TOKEN", {
     gateway: {
         intents: [
             "guildMessages"

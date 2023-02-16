@@ -3,7 +3,7 @@ const Dysnomia = require("@projectdysnomia/dysnomia");
 const Constants = Dysnomia.Constants;
 
 // Replace TOKEN with your bot account's token
-const bot = new Dysnomia("BOT TOKEN", {
+const bot = new Dysnomia.Client("BOT TOKEN", {
     gateway: {
         intents: ["guildMessages"]
     }

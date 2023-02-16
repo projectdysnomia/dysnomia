@@ -1,0 +1,29 @@
+name: JavaScript/TypeScript linting
+on: [ pull_request ]
+
+jobs:
+  lint:
+    name: Lint ${{ matrix.lang.name }} files
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        lang: 
+          - lang: js
+            name: JavaScript
+          - lang: ts
+            name: TypeScript
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with: 
+          node-version: lts/*
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm i --omit=optional
+      - name: Lint ${{ matrix.lang.name }} files
+        run: "npm run lint:${{ matrix.lang.lang }}"
+        
