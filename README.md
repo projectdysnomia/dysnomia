@@ -9,15 +9,15 @@ Installing
 You will need NodeJS 10.4+. Voice support requires [additional software](https://github.com/nodejs/node-gyp#installation).
 
 ```
-npm install --no-optional @projectdysnomia/dysnomia
+npm install --omit=optional @projectdysnomia/dysnomia
 ```
 
 If you'd like to install the development versions of the library, use the following command instead:
 ```
-npm install --no-optional "github:projectdysnomia/dysnomia#dev"
+npm install --omit=optional "github:projectdysnomia/dysnomia#dev"
 ```
 
-If you need voice support, remove the `--no-optional`.
+If you need voice support, remove the `--omit=optional`.
 
 Ping Pong Example
 -----------------
