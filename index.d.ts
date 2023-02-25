@@ -309,6 +309,8 @@ declare namespace Dysnomia {
 
     /** valid for SEND_ALERT_MESSAGE */
     channel_id?: string;
+    /** valid for BLOCK_MESSAGE */
+    custom_message?: string;
     /** valid for TIMEOUT */
     duration_seconds?: number;
   }
