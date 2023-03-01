@@ -1372,8 +1372,6 @@ declare namespace Dysnomia {
     attachments?: AdvancedMessageContentAttachment[];
     components?: ActionRow[];
     content?: string;
-    /** @deprecated */
-    embed?: EmbedOptions;
     embeds?: EmbedOptions[];
     /** @deprecated */
     files?: T extends "isMessageEdit" ? (FileContent | FileContent[]) : never;
