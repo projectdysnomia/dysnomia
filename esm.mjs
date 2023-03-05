@@ -1,11 +1,5 @@
-import emitDeprecation from "./lib/util/emitDeprecation.js";
 import Dysnomia from "./index.js";
 
-// [DEPRECATED]
-export default function(token, options) {
-  emitDeprecation("EXPORT_FUNCTION_CALL");
-  return new Dysnomia.Client(token, options);
-}
 
 export const {
   ApplicationCommand,
@@ -18,8 +12,6 @@ export const {
   Channel,
   Client,
   Collection,
-  Command,
-  CommandClient,
   CommandInteraction,
   ComponentInteraction,
   Constants,

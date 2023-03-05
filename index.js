@@ -1,13 +1,6 @@
 "use strict";
 
-const emitDeprecation = require("./lib/util/emitDeprecation");
-const Client = require("./lib/Client");
-
-// [DEPRECATED]
-function Dysnomia(token, options) {
-    emitDeprecation("EXPORT_FUNCTION_CALL");
-    return new Client(token, options);
-}
+const Dysnomia = {};
 
 Dysnomia.ApplicationCommand = require("./lib/structures/ApplicationCommand");
 Dysnomia.Attachment = require("./lib/structures/Attachment");
@@ -19,10 +12,8 @@ Dysnomia.CategoryChannel = require("./lib/structures/CategoryChannel");
 Dysnomia.Channel = require("./lib/structures/Channel");
 Dysnomia.CommandInteraction = require("./lib/structures/CommandInteraction");
 Dysnomia.ComponentInteraction = require("./lib/structures/ComponentInteraction");
-Dysnomia.Client = Client;
+Dysnomia.Client = require("./lib/Client");
 Dysnomia.Collection = require("./lib/util/Collection");
-Dysnomia.Command = require("./lib/command/Command");
-Dysnomia.CommandClient = require("./lib/command/CommandClient");
 Dysnomia.Constants = require("./lib/Constants");
 Dysnomia.DiscordHTTPError = require("./lib/errors/DiscordHTTPError");
 Dysnomia.DiscordRESTError = require("./lib/errors/DiscordRESTError");
