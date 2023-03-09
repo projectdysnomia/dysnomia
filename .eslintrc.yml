@@ -1,15 +1,12 @@
 ---
 env:
-  es6: true
+  es2022: true
   node: true
 plugins:
   - "sort-class-members"
 extends: "eslint:recommended"
 globals:
-  BigInt: true
   window: true
-parserOptions:
-  ecmaVersion: 2020
 rules:
   array-bracket-spacing:
     - 2
