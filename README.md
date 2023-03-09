@@ -6,7 +6,7 @@ A fork of [Eris](https://github.com/abalabahaha/eris), a Node.js wrapper for int
 Installing
 ----------
 
-You will need NodeJS 10.4+. Voice support requires [additional software](https://github.com/nodejs/node-gyp#installation).
+You will need NodeJS 18+. Voice support requires [additional software](https://github.com/nodejs/node-gyp#installation).
 
 ```
 npm install --omit=optional @projectdysnomia/dysnomia
