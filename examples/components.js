@@ -45,7 +45,7 @@ bot.on("messageCreate", (msg) => { // When a message is created
                     type: Constants.ComponentTypes.ACTION_ROW, // You can have up to 5 action rows, and 5 buttons per action row
                     components: [
                         {
-                            type: Constants.ComponentTypes.SELECT_MENU, // https://discord.com/developers/docs/interactions/message-components#select-menus
+                            type: Constants.ComponentTypes.STRING_SELECT, // https://discord.com/developers/docs/interactions/message-components#select-menus
                             custom_id: "select_one",
                             placeholder: "Select an option",
                             options: [ // The options to select from https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure
@@ -75,7 +75,7 @@ bot.on("messageCreate", (msg) => { // When a message is created
 bot.on("interactionCreate", (interaction) => {
     if(interaction instanceof Dysnomia.ComponentInteraction) {
         return interaction.createMessage({
-            content: "Interaction Recieved",
+            content: "Interaction Received",
             flags: 64
         });
     }
