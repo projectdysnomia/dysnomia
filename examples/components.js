@@ -75,7 +75,7 @@ bot.on("messageCreate", (msg) => { // When a message is created
 bot.on("interactionCreate", (interaction) => {
     if(interaction instanceof Dysnomia.ComponentInteraction) {
         return interaction.createMessage({
-            content: "Interaction Recieved",
+            content: "Interaction Received",
             flags: 64
         });
     }
