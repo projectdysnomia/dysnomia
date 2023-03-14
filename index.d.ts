@@ -863,6 +863,12 @@ declare namespace Dysnomia {
   }
 
   // Guild
+  interface AddGuildMemberOptions {
+    nick?: string;
+    roles?: string[];
+    deaf?: boolean;
+    mute?: boolean;
+  }
   export interface BanMemberOptions {
     deleteMessageSeconds?: number;
     reason?: string;
@@ -2422,6 +2428,7 @@ declare namespace Dysnomia {
     users: Collection<User>;
     voiceConnections: VoiceConnectionManager;
     constructor(token: string, options?: ClientOptions);
+    addGuildMember(guildID: string, userID: string, accessToken: string, options?: AddGuildMemberOptions): Promise<void>;
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, options?: BanMemberOptions): Promise<void>;
@@ -2829,6 +2836,7 @@ declare namespace Dysnomia {
     widgetChannelID?: string | null;
     widgetEnabled?: boolean;
     constructor(data: BaseData, client: Client);
+    addMember(userID: string, accessToken: string, options?: AddGuildMemberOptions): Promise<void>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, options?: BanMemberOptions): Promise<void>;
     bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand[]>;
