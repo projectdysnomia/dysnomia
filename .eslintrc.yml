@@ -62,6 +62,7 @@ rules:
   sort-class-members/sort-class-members:
     - 2
     - order:
+      - "[alphabetical-properties]"
       - constructor
       - update
       - "[alphabetical-getters]"
@@ -77,6 +78,9 @@ rules:
           sort: alphabetical
         alphabetical-methods:
         - type: method
+          sort: alphabetical
+        alphabetical-properties:
+        - type: property
           sort: alphabetical
         alphabetical-conventional-private-methods:
         - name: "/_.+/"
