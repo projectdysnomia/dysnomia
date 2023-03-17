@@ -63,13 +63,14 @@ rules:
     - 2
     - order:
       - "[alphabetical-properties]"
+      - "[alphabetical-private-properties]"
       - constructor
       - update
       - "[alphabetical-getters]"
       - "[alphabetical-methods]"
       - "[alphabetical-conventional-private-methods]"
-      - "[everything-else]"
       - "[alphabetical-private-methods]"
+      - "[everything-else]"
       - "[custom-inspect-method]"
       - toString
       - toJSON
@@ -89,6 +90,11 @@ rules:
           sort: alphabetical
         alphabetical-private-methods:
         - type: method
+          private: true
+          sort: alphabetical
+        alphabetical-private-properties:
+        - type: property
+          private: true
           sort: alphabetical
         custom-inspect-method:
         - name: "[util.inspect.custom]"

@@ -1,7 +1,6 @@
 import { EventEmitter } from "events";
+import { Dispatcher, FormData, Headers, Response } from "undici";
 import { Duplex, Readable as ReadableStream, Stream } from "stream";
-import { Agent as HTTPSAgent } from "https";
-import { IncomingMessage, ClientRequest, IncomingHttpHeaders } from "http";
 import OpusScript = require("opusscript"); // Thanks TypeScript
 import { URL } from "url";
 import { Socket as DgramSocket } from "dgram";
@@ -464,22 +463,28 @@ declare namespace Dysnomia {
     gateway?: GatewayOptions;
     messageLimit?: number;
     opusOnly?: boolean;
-    requestTimeout?: number;
-    rest?: RequestHandlerOptions;
-    restMode?: boolean;
+    rest?: ClientRESTOptions;
     ws?: unknown;
   }
-  interface RequestHandlerOptions {
-    agent?: HTTPSAgent;
+  interface ClientRESTOptions {
+    agent?: Dispatcher;
     baseURL?: string;
+    /** @deprecated */
     disableLatencyCompensation?: boolean;
+    /** @deprecated */
     domain?: string;
+    /** @deprecated */
     https?: boolean;
+    /** @deprecated */
     latencyThreshold?: number;
     ratelimiterOffset?: number;
     requestTimeout?: number;
+    retryLimit?: number;
   }
-
+  interface RESTOptions extends ClientRESTOptions {
+    client?: Client;
+    token?: string;
+  }
   interface EditSelfOptions {
     avatar?: string | null;
     username?: string;
@@ -757,6 +762,7 @@ declare namespace Dysnomia {
     messageReactionRemoveEmoji: [message: PossiblyUncachedMessage, emoji: PartialEmoji];
     messageUpdate: [message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null];
     presenceUpdate: [other: Member, oldPresence: Presence | null];
+    /** @deprecated */
     rawREST: [request: RawRESTRequest];
     rawWS: [packet: RawPacket, id: number];
     ready: [];
@@ -786,6 +792,10 @@ declare namespace Dysnomia {
     shardDisconnect: [err: Error | undefined, id: number];
     shardReady: [id: number];
     shardResume: [id: number];
+  }
+  interface RESTEvents {
+    debug: [message: string];
+    response: [request: RawRESTRequest];
   }
   interface ShardEvents extends EventListeners {
     resume: [];
@@ -830,16 +840,13 @@ declare namespace Dysnomia {
     reconnectDelay?: ReconnectDelayFunction;
     seedVoiceConnections?: boolean;
   }
+  interface HashData {
+    value: string;
+    lastAccess: number;
+  }
   interface HTTPResponse {
     code: number;
     message: string;
-  }
-  interface LatencyRef {
-    lastTimeOffsetCheck: number;
-    latency: number;
-    raw: number[];
-    timeOffset: number;
-    timeOffsets: number[];
   }
   interface RawPacket {
     d?: unknown;
@@ -850,11 +857,10 @@ declare namespace Dysnomia {
   interface RawRESTRequest {
     auth: boolean;
     body?: unknown;
-    file?: FileContent;
+    files?: FileContent[];
+    latency: number;
     method: string;
-    resp: IncomingMessage;
-    route: string;
-    short: boolean;
+    response: Response;
     url: string;
   }
   interface RequestMembersPromise {
@@ -862,6 +868,15 @@ declare namespace Dysnomia {
     received: number;
     res: (value: Member[]) => void;
     timeout: NodeJS.Timeout;
+  }
+  interface RequestOptions {
+    auth?: boolean;
+    body?: Record<string, any>;
+    headers?: Record<string, string>;
+    files?: FileContent[];
+    formdata?: boolean;
+    query?: Record<string, any>;
+    reason?: string;
   }
 
   // Guild
@@ -2420,7 +2435,7 @@ declare namespace Dysnomia {
     privateChannels: Collection<PrivateChannel>;
     ready: boolean;
     reconnectAttempts: number;
-    requestHandler: RequestHandler;
+    rest: RESTClient;
     shards: ShardManager;
     startTime: number;
     threadGuildMap: { [s: string]: string };
@@ -2430,104 +2445,157 @@ declare namespace Dysnomia {
     users: Collection<User>;
     voiceConnections: VoiceConnectionManager;
     constructor(token: string, options?: ClientOptions);
+    /** @deprecated */
     addGuildMember(guildID: string, userID: string, accessToken: string, options?: AddGuildMemberOptions): Promise<void>;
+    /** @deprecated */
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
+    /** @deprecated */
     addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
+    /** @deprecated */
     banGuildMember(guildID: string, userID: string, options?: BanMemberOptions): Promise<void>;
+    /** @deprecated */
     bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
+    /** @deprecated */
     bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
     closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
+    /** @deprecated */
     createAutoModerationRule(guildID: string, rule: CreateAutoModerationRuleOptions): Promise<AutoModerationRule>;
+    /** @deprecated */
     createChannel(guildID: string, name: string): Promise<TextChannel>;
+    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: Constants["ChannelTypes"]["GUILD_TEXT"],
       options?: CreateChannelOptions
     ): Promise<TextChannel>;
+    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: Constants["ChannelTypes"]["GUILD_VOICE"],
       options?: CreateChannelOptions
     ): Promise<TextVoiceChannel>;
+    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: Constants["ChannelTypes"]["GUILD_CATEGORY"],
       options?: CreateChannelOptions
     ): Promise<CategoryChannel>;
+    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: Constants["ChannelTypes"]["GUILD_ANNOUNCEMENT"],
       options?: CreateChannelOptions
     ): Promise<NewsChannel>;
+    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"],
       options?: CreateChannelOptions
     ): Promise<StageChannel>;
+    /** @deprecated */
     createChannel(
       guildID: string,
       name: string,
       type?: number,
       options?: CreateChannelOptions
     ): Promise<unknown>;
+    /** @deprecated */
     createChannelInvite(
       channelID: string,
       options?: CreateChannelInviteOptions,
       reason?: string
     ): Promise<Invite<"withoutCount">>;
+    /** @deprecated */
     createChannelWebhook(
       channelID: string,
       options: { name: string; avatar?: string | null },
       reason?: string
     ): Promise<Webhook>;
+    /** @deprecated */
     createCommand<T extends ApplicationCommandStructure>(command: T): Promise<ApplicationCommandStructureConversion<T, true>>;
+    /** @deprecated */
     createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
+    /** @deprecated */
     createGuildCommand<T extends ApplicationCommandStructure>(guildID: string, command: T): Promise<ApplicationCommandStructureConversion<T, true>>;
+    /** @deprecated */
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
+    /** @deprecated */
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
+    /** @deprecated */
     createGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, event: GuildScheduledEventOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
+    /** @deprecated */
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
+    /** @deprecated */
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
+    /** @deprecated */
     createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionResponse, file?: FileContent | FileContent[]): Promise<void>;
+    /** @deprecated */
     createMessage(channelID: string, content: MessageContent): Promise<Message>;
+    /** @deprecated */
     createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
+    /** @deprecated */
     createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
+    /** @deprecated */
     createStageInstance(channelID: string, options: CreateStageInstanceOptions): Promise<StageInstance>;
+    /** @deprecated */
     createThread(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
+    /** @deprecated */
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
+    /** @deprecated */
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
+    /** @deprecated */
     deleteAutoModerationRule(guildID: string, ruleID: string, reason?: string): Promise<void>;
+    /** @deprecated */
     deleteChannel(channelID: string, reason?: string): Promise<void>;
+    /** @deprecated */
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
+    /** @deprecated */
     deleteCommand(commandID: string): Promise<void>;
+    /** @deprecated */
     deleteGuild(guildID: string): Promise<void>;
+    /** @deprecated */
     deleteGuildCommand(guildID: string, commandID: string): Promise<void>;
+    /** @deprecated */
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
+    /** @deprecated */
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
+    /** @deprecated */
     deleteGuildScheduledEvent(guildID: string, eventID: string): Promise<void>;
+    /** @deprecated */
     deleteGuildSticker(guildID: string, stickerID: string, reason?: string): Promise<void>;
+    /** @deprecated */
     deleteGuildTemplate(guildID: string, code: string): Promise<GuildTemplate>;
+    /** @deprecated */
     deleteInvite(inviteID: string, reason?: string): Promise<void>;
+    /** @deprecated */
     deleteMessage(channelID: string, messageID: string, reason?: string): Promise<void>;
+    /** @deprecated */
     deleteMessages(channelID: string, messageIDs: string[], reason?: string): Promise<void>;
+    /** @deprecated */
     deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
+    /** @deprecated */
     deleteStageInstance(channelID: string): Promise<void>;
+    /** @deprecated */
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
+    /** @deprecated */
     deleteWebhookMessage(webhookID: string, token: string, messageID: string): Promise<void>;
     disconnect(options: { reconnect?: boolean | "auto" }): void;
     editAFK(afk: boolean): void;
+    /** @deprecated */
     editAutoModerationRule(guildID: string, ruleID: string, options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
+    /** @deprecated */
     editChannel(
       channelID: string,
       options: EditChannelOptions,
       reason?: string
     ): Promise<AnyGuildChannel>;
+    /** @deprecated */
     editChannelPermission(
       channelID: string,
       overwriteID: string,
@@ -2536,41 +2604,65 @@ declare namespace Dysnomia {
       type: PermissionType,
       reason?: string
     ): Promise<void>;
+    /** @deprecated */
     editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
+    /** @deprecated */
     editChannelPositions(guildID: string, channelPositions: ChannelPosition[]): Promise<void>;
+    /** @deprecated */
     editCommand<T extends ApplicationCommandStructure>(commandID: string, command: Omit<ApplicationCommandStructure, "type">): Promise<ApplicationCommandStructureConversion<T, true>>;
+    /** @deprecated */
     editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions>;
+    /** @deprecated */
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
+    /** @deprecated */
     editGuildCommand<T extends ApplicationCommandStructure>(guildID: string, commandID: string, command: Omit<T, "type">): Promise<ApplicationCommandStructureConversion<T, true>>;
+    /** @deprecated */
     editGuildEmoji(
       guildID: string,
       emojiID: string,
       options: { name?: string; roles?: string[] },
       reason?: string
     ): Promise<Emoji>;
+    /** @deprecated */
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
+    /** @deprecated */
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
+    /** @deprecated */
     editGuildMFALevel(guildID: string, options: EditGuildMFALevelOptions): Promise<MFALevel>;
+    /** @deprecated */
     editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
+    /** @deprecated */
     editGuildSticker(guildID: string, stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
+    /** @deprecated */
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
+    /** @deprecated */
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
+    /** @deprecated */
     editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
+    /** @deprecated */
     editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
+    /** @deprecated */
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
+    /** @deprecated */
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
+    /** @deprecated */
     editRoleConnectionMetadata(metadata: ApplicationRoleConnectionMetadata[]): Promise<ApplicationRoleConnectionMetadata[]>;
+    /** @deprecated */
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
+    /** @deprecated */
     editSelf(options: EditSelfOptions): Promise<ExtendedUser>;
+    /** @deprecated */
     editStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
     editStatus(status: SelfStatus, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
     editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    /** @deprecated */
     editWebhook(
       webhookID: string,
       options: WebhookOptions,
       token?: string,
       reason?: string
     ): Promise<Webhook>;
+    /** @deprecated */
     editWebhookMessage(
       webhookID: string,
       token: string,
@@ -2579,97 +2671,183 @@ declare namespace Dysnomia {
     ): Promise<Message<GuildTextableChannel>>;
     emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
+    /** @deprecated */
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string }): Promise<void>;
+    /** @deprecated */
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string; wait: true }): Promise<Message<GuildTextableChannel>>;
+    /** @deprecated */
     executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<GuildTextableChannel>>;
+    /** @deprecated */
     executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
+    /** @deprecated */
     followChannel(channelID: string, webhookChannelID: string): Promise<ChannelFollow>;
+    /** @deprecated */
     getActiveGuildThreads(guildID: string): Promise<ListedGuildThreads>;
+    /** @deprecated */
     getArchivedThreads(channelID: string, type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
+    /** @deprecated */
     getArchivedThreads(channelID: string, type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
+    /** @deprecated */
     getAutoModerationRule(guildID: string, ruleID: string): Promise<AutoModerationRule>;
+    /** @deprecated */
     getAutoModerationRules(guildID: string): Promise<AutoModerationRule[]>;
+    /** @deprecated */
     getBotGateway(): Promise<{ session_start_limit: { max_concurrency: number; remaining: number; reset_after: number; total: number }; shards: number; url: string }>;
     getChannel(channelID: string): AnyChannel;
+    /** @deprecated */
     getChannelInvites(channelID: string): Promise<Invite[]>;
+    /** @deprecated */
     getChannelWebhooks(channelID: string): Promise<Webhook[]>;
+    /** @deprecated */
     getCommand<W extends boolean = false, T extends AnyApplicationCommand<W> = AnyApplicationCommand<W>>(commandID: string, withLocalizations?: W): Promise<T>;
+    /** @deprecated */
     getCommandPermissions(guildID: string, commandID: string): Promise<GuildApplicationCommandPermissions>;
+    /** @deprecated */
     getCommands<W extends boolean = false>(withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
+    /** @deprecated */
     getDMChannel(userID: string): Promise<PrivateChannel>;
+    /** @deprecated */
     getGateway(): Promise<{ url: string }>;
+    /** @deprecated */
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
+    /** @deprecated */
     getGuildBan(guildID: string, userID: string): Promise<GuildBan>;
+    /** @deprecated */
     getGuildBans(guildID: string, options?: GetGuildBansOptions): Promise<GuildBan[]>;
+    /** @deprecated */
     getGuildCommand<W extends boolean = false, T extends AnyApplicationCommand<W> = AnyApplicationCommand<W>>(guildID: string, commandID: string, withLocalizations?: W): Promise<T>;
+    /** @deprecated */
     getGuildCommandPermissions(guildID: string): Promise<GuildApplicationCommandPermissions[]>;
+    /** @deprecated */
     getGuildCommands<W extends boolean = false>(guildID: string, withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
+    /** @deprecated */
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
+    /** @deprecated */
     getGuildInvites(guildID: string): Promise<Invite[]>;
+    /** @deprecated */
     getGuildPreview(guildID: string): Promise<GuildPreview>;
+    /** @deprecated */
     getGuildScheduledEvents(guildID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent[]>;
+    /** @deprecated */
     getGuildScheduledEventUsers(guildID: string, eventID: string, options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
+    /** @deprecated */
     getGuildTemplate(code: string): Promise<GuildTemplate>;
+    /** @deprecated */
     getGuildTemplates(guildID: string): Promise<GuildTemplate[]>;
+    /** @deprecated */
     getGuildVanity(guildID: string): Promise<GuildVanity>;
+    /** @deprecated */
     getGuildWebhooks(guildID: string): Promise<Webhook[]>;
+    /** @deprecated */
     getGuildWelcomeScreen(guildID: string): Promise<WelcomeScreen>;
+    /** @deprecated */
     getGuildWidget(guildID: string): Promise<WidgetData>;
+    /** @deprecated */
     getGuildWidgetSettings(guildID: string): Promise<Widget>;
+    /** @deprecated */
     getInvite<C extends boolean = false, E extends boolean = false, GSE extends string | undefined = undefined>(inviteID: string, options?: GetInviteOptions<C, E, GSE>): Promise<Invite<(C extends true ? "withCount" : "withoutCount") | (E extends true ? "withExpiration" : "withoutExpiration") | (GSE extends string ? "withGuildScheduledEvent" : never)>>;
+    /** @deprecated */
     getJoinedPrivateArchivedThreads(channelID: string, options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
+    /** @deprecated */
     getMessage(channelID: string, messageID: string): Promise<Message>;
+    /** @deprecated */
     getMessageReaction(channelID: string, messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
+    /** @deprecated */
     getMessages(channelID: string, options?: GetMessagesOptions): Promise<Message[]>;
+    /** @deprecated */
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
+    /** @deprecated */
     getOAuthApplication(): Promise<OAuthApplicationInfo>;
+    /** @deprecated */
     getPins(channelID: string): Promise<Message[]>;
+    /** @deprecated */
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
+    /** @deprecated */
     getRESTChannel(channelID: string): Promise<AnyChannel>;
+    /** @deprecated */
     getRESTGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
+    /** @deprecated */
     getRESTGuildChannels(guildID: string): Promise<AnyGuildChannel[]>;
+    /** @deprecated */
     getRESTGuildEmoji(guildID: string, emojiID: string): Promise<Emoji>;
+    /** @deprecated */
     getRESTGuildEmojis(guildID: string): Promise<Emoji[]>;
+    /** @deprecated */
     getRESTGuildMember(guildID: string, memberID: string): Promise<Member>;
+    /** @deprecated */
     getRESTGuildMembers(guildID: string, options?: GetRESTGuildMembersOptions): Promise<Member[]>;
+    /** @deprecated */
     getRESTGuildRoles(guildID: string): Promise<Role[]>;
+    /** @deprecated */
     getRESTGuilds(options?: GetRESTGuildsOptions): Promise<Guild[]>;
+    /** @deprecated */
     getRESTGuildScheduledEvent(guildID: string, eventID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent>;
+    /** @deprecated */
     getRESTGuildSticker(guildID: string, stickerID: string): Promise<Sticker>;
+    /** @deprecated */
     getRESTGuildStickers(guildID: string): Promise<Sticker[]>;
+    /** @deprecated */
     getRESTSticker(stickerID: string): Promise<Sticker>;
+    /** @deprecated */
     getRESTUser(userID: string): Promise<User>;
+    /** @deprecated */
     getRoleConnectionMetadata(): Promise<ApplicationRoleConnectionMetadata[]>;
+    /** @deprecated */
     getSelf(): Promise<ExtendedUser>;
+    /** @deprecated */
     getStageInstance(channelID: string): Promise<StageInstance>;
+    /** @deprecated */
     getThreadMember(channelID: string, memberID: string, options: GetThreadMemberOptions): Promise<ThreadMember>;
+    /** @deprecated */
     getThreadMembers(channelID: string, options: GetThreadMembersOptions): Promise<ThreadMember[]>;
+    /** @deprecated */
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
+    /** @deprecated */
     getWebhook(webhookID: string, token?: string): Promise<Webhook>;
+    /** @deprecated */
     getWebhookMessage(webhookID: string, token: string, messageID: string): Promise<Message<GuildTextableChannel>>;
+    /** @deprecated */
     joinThread(channelID: string, userID?: string): Promise<void>;
     joinVoiceChannel(channelID: string, options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
+    /** @deprecated */
     kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
+    /** @deprecated */
     leaveGuild(guildID: string): Promise<void>;
+    /** @deprecated */
     leaveThread(channelID: string, userID?: string): Promise<void>;
     leaveVoiceChannel(channelID: string): void;
     off<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
     off(event: string, listener: (...args: any[]) => void): this;
     once<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
     once(event: string, listener: (...args: any[]) => void): this;
+    /** @deprecated */
     pinMessage(channelID: string, messageID: string): Promise<void>;
+    /** @deprecated */
     pruneMembers(guildID: string, options?: PruneMemberOptions): Promise<number>;
+    /** @deprecated */
     purgeChannel(channelID: string, options: PurgeChannelOptions): Promise<number>;
+    /** @deprecated */
     removeGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
+    /** @deprecated */
     removeMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
+    /** @deprecated */
     removeMessageReactionEmoji(channelID: string, messageID: string, reaction: string): Promise<void>;
+    /** @deprecated */
     removeMessageReactions(channelID: string, messageID: string): Promise<void>;
+    /** @deprecated */
     searchGuildMembers(guildID: string, query: string, limit?: number): Promise<Member[]>;
+    /** @deprecated */
     sendChannelTyping(channelID: string): Promise<void>;
+    /** @deprecated */
     syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
+    /** @deprecated */
     syncGuildTemplate(guildID: string, code: string): Promise<GuildTemplate>;
+    /** @deprecated */
+    /** @deprecated */
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
+    /** @deprecated */
     unpinMessage(channelID: string, messageID: string): Promise<void>;
+    /** @deprecated */
     validateDiscoverySearchTerm(term: string): Promise<{ valid: boolean }>;
     on<K extends keyof ClientEvents>(event: K, listener: (...args: ClientEvents[K]) => void): this;
     on(event: string, listener: (...args: any[]) => void): this;
@@ -2737,23 +2915,21 @@ declare namespace Dysnomia {
 
   export class DiscordHTTPError extends Error {
     code: number;
-    headers: IncomingHttpHeaders;
+    headers: Headers;
     name: "DiscordHTTPError";
-    req: ClientRequest;
-    res: IncomingMessage;
-    response: HTTPResponse;
-    constructor(req: ClientRequest, res: IncomingMessage, response: HTTPResponse, stack: string);
-    flattenErrors(errors: HTTPResponse, keyPrefix?: string): string[];
+    req: Request;
+    res: Response;
+    constructor(req: Request, res: Response, stack: string);
   }
 
   export class DiscordRESTError extends Error {
     code: number;
-    headers: IncomingHttpHeaders;
+    headers: Headers;
     name: string;
-    req: ClientRequest;
-    res: IncomingMessage;
+    req: Request;
+    res: Response;
     response: HTTPResponse;
-    constructor(req: ClientRequest, res: IncomingMessage, response: HTTPResponse, stack: string);
+    constructor(req: Request, res: Response, response: HTTPResponse, stack: string);
     flattenErrors(errors: HTTPResponse, keyPrefix?: string): string[];
   }
 
@@ -3321,19 +3497,279 @@ declare namespace Dysnomia {
     edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
   }
 
-  export class RequestHandler implements SimpleJSON {
+  export class Request {
+    data?: FormData | string;
+    handler: RequestHandler;
+    headers: Record<string, string>;
+    id: string;
+    majorParameter: string;
+    method: RequestMethod;
+    options: RequestOptions;
+    path: string;
+    route: string;
+    url: URL;
+    constructor(handler: RequestHandler, method: RequestMethod, path: string, options: RequestOptions);
+    send(): Promise<Response>;
+    setBody(body?: Record<string, any>, files?: FileContent[]): this;
+  }
+
+  export class RequestHandler {
+    buckets: Map<string, SequentialBucket>;
     globalBlock: boolean;
-    latencyRef: LatencyRef;
-    options: RequestHandlerOptions;
-    ratelimits: { [route: string]: SequentialBucket };
-    readyQueue: (() => void)[];
-    userAgent: string;
-    constructor(client: Client, options?: RequestHandlerOptions);
-    globalUnblock(): void;
-    request(method: RequestMethod, url: string, auth?: boolean, body?: { [s: string]: unknown }, file?: FileContent, _route?: string, short?: boolean): Promise<unknown>;
-    routefy(url: string, method: RequestMethod): string;
-    toString(): string;
-    toJSON(props?: string[]): JSONCache;
+    globalReset: number;
+    globalTimeout?: Promise<void>;
+    hashes: Map<string, HashData>;
+    limited: boolean;
+    options: RESTOptions;
+    rest: RESTClient;
+    constructor(rest: RESTClient, options?: RESTOptions);
+    request<T = unknown>(method: RequestMethod, path: string, options?: RequestOptions): Promise<T>;
+  }
+
+  export class RESTClient extends EventEmitter {
+    constructor(options?: RESTOptions);
+    addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
+    addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
+    banGuildMember(guildID: string, userID: string, options?: BanMemberOptions): Promise<void>;
+    bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
+    bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
+    createAutoModerationRule(guildID: string, rule: CreateAutoModerationRuleOptions): Promise<AutoModerationRule>;
+    createChannel(guildID: string, name: string): Promise<TextChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
+      type: Constants["ChannelTypes"]["GUILD_TEXT"],
+      options?: CreateChannelOptions
+    ): Promise<TextChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
+      type: Constants["ChannelTypes"]["GUILD_VOICE"],
+      options?: CreateChannelOptions
+    ): Promise<TextVoiceChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
+      type: Constants["ChannelTypes"]["GUILD_CATEGORY"],
+      options?: CreateChannelOptions
+    ): Promise<CategoryChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
+      type: Constants["ChannelTypes"]["GUILD_ANNOUNCEMENT"],
+      options?: CreateChannelOptions
+    ): Promise<NewsChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
+      type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"],
+      options?: CreateChannelOptions
+    ): Promise<StageChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
+      type?: number,
+      options?: CreateChannelOptions
+    ): Promise<unknown>;
+    createChannelInvite(
+      channelID: string,
+      options?: CreateChannelInviteOptions,
+      reason?: string
+    ): Promise<Invite<"withoutCount">>;
+    createChannelWebhook(
+      channelID: string,
+      options: { name: string; avatar?: string | null },
+      reason?: string
+    ): Promise<Webhook>;
+    createCommand<T extends ApplicationCommandStructure>(command: T): Promise<ApplicationCommandStructureConversion<T, true>>;
+    createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
+    createGuildCommand<T extends ApplicationCommandStructure>(guildID: string, command: T): Promise<ApplicationCommandStructureConversion<T, true>>;
+    createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
+    createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
+    createGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, event: GuildScheduledEventOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
+    createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
+    createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
+    createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionResponse, file?: FileContent | FileContent[]): Promise<void>;
+    createMessage(channelID: string, content: MessageContent): Promise<Message>;
+    createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
+    createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
+    createStageInstance(channelID: string, options: CreateStageInstanceOptions): Promise<StageInstance>;
+    createThread(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
+    createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
+    crosspostMessage(channelID: string, messageID: string): Promise<Message>;
+    delete<T = unknown>(path: string, options: RequestOptions): Promise<T>;
+    deleteAutoModerationRule(guildID: string, ruleID: string, reason?: string): Promise<void>;
+    deleteChannel(channelID: string, reason?: string): Promise<void>;
+    deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
+    deleteCommand(commandID: string): Promise<void>;
+    deleteGuild(guildID: string): Promise<void>;
+    deleteGuildCommand(guildID: string, commandID: string): Promise<void>;
+    deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
+    deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
+    deleteGuildScheduledEvent(guildID: string, eventID: string): Promise<void>;
+    deleteGuildSticker(guildID: string, stickerID: string, reason?: string): Promise<void>;
+    deleteGuildTemplate(guildID: string, code: string): Promise<GuildTemplate>;
+    deleteInvite(inviteID: string, reason?: string): Promise<void>;
+    deleteMessage(channelID: string, messageID: string, reason?: string): Promise<void>;
+    deleteMessages(channelID: string, messageIDs: string[], reason?: string): Promise<void>;
+    deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
+    deleteStageInstance(channelID: string): Promise<void>;
+    deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
+    deleteWebhookMessage(webhookID: string, token: string, messageID: string): Promise<void>;
+    disconnect(options: { reconnect?: boolean | "auto" }): void;
+    editAFK(afk: boolean): void;
+    editAutoModerationRule(guildID: string, ruleID: string, options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
+    editChannel(
+      channelID: string,
+      options: EditChannelOptions,
+      reason?: string
+    ): Promise<AnyGuildChannel>;
+    editChannelPermission(
+      channelID: string,
+      overwriteID: string,
+      allow: bigint | number,
+      deny: bigint | number,
+      type: PermissionType,
+      reason?: string
+    ): Promise<void>;
+    editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
+    editChannelPositions(guildID: string, channelPositions: ChannelPosition[]): Promise<void>;
+    editCommand<T extends ApplicationCommandStructure>(commandID: string, command: Omit<ApplicationCommandStructure, "type">): Promise<ApplicationCommandStructureConversion<T, true>>;
+    editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions>;
+    editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
+    editGuildCommand<T extends ApplicationCommandStructure>(guildID: string, commandID: string, command: Omit<T, "type">): Promise<ApplicationCommandStructureConversion<T, true>>;
+    editGuildEmoji(
+      guildID: string,
+      emojiID: string,
+      options: { name?: string; roles?: string[] },
+      reason?: string
+    ): Promise<Emoji>;
+    editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
+    editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
+    editGuildMFALevel(guildID: string, options: EditGuildMFALevelOptions): Promise<MFALevel>;
+    editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
+    editGuildSticker(guildID: string, stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
+    editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
+    editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
+    editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
+    editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
+    editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
+    editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
+    editRoleConnectionMetadata(metadata: ApplicationRoleConnectionMetadata[]): Promise<ApplicationRoleConnectionMetadata[]>;
+    editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
+    editSelf(options: EditSelfOptions): Promise<ExtendedUser>;
+    editStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
+    editStatus(status: SelfStatus, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    editWebhook(
+      webhookID: string,
+      options: WebhookOptions,
+      token?: string,
+      reason?: string
+    ): Promise<Webhook>;
+    editWebhookMessage(
+      webhookID: string,
+      token: string,
+      messageID: string,
+      options: MessageWebhookContent
+    ): Promise<Message<GuildTextableChannel>>;
+    emit<K extends keyof RESTEvents>(event: K, ...args: RESTEvents[K]): boolean;
+    emit(event: string, ...args: any[]): boolean;
+    executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string }): Promise<void>;
+    executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string; wait: true }): Promise<Message<GuildTextableChannel>>;
+    executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<GuildTextableChannel>>;
+    executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
+    followChannel(channelID: string, webhookChannelID: string): Promise<ChannelFollow>;
+    get<T = unknown>(path: string, options: RequestOptions): Promise<T>;
+    getActiveGuildThreads(guildID: string): Promise<ListedGuildThreads>;
+    getArchivedThreads(channelID: string, type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
+    getArchivedThreads(channelID: string, type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
+    getAutoModerationRule(guildID: string, ruleID: string): Promise<AutoModerationRule>;
+    getAutoModerationRules(guildID: string): Promise<AutoModerationRule[]>;
+    getBotGateway(): Promise<{ session_start_limit: { max_concurrency: number; remaining: number; reset_after: number; total: number }; shards: number; url: string }>;
+    getChannel(channelID: string): Promise<AnyChannel>;
+    getChannelInvites(channelID: string): Promise<Invite[]>;
+    getChannelWebhooks(channelID: string): Promise<Webhook[]>;
+    getCommand<W extends boolean = false, T extends AnyApplicationCommand<W> = AnyApplicationCommand<W>>(commandID: string, withLocalizations?: W): Promise<T>;
+    getCommandPermissions(guildID: string, commandID: string): Promise<GuildApplicationCommandPermissions>;
+    getCommands<W extends boolean = false>(withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
+    getDMChannel(userID: string): Promise<PrivateChannel>;
+    getGateway(): Promise<{ url: string }>;
+    getGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
+    getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
+    getGuildBan(guildID: string, userID: string): Promise<GuildBan>;
+    getGuildBans(guildID: string, options?: GetGuildBansOptions): Promise<GuildBan[]>;
+    getGuildChannels(guildID: string): Promise<AnyGuildChannel[]>;
+    getGuildCommand<W extends boolean = false, T extends AnyApplicationCommand<W> = AnyApplicationCommand<W>>(guildID: string, commandID: string, withLocalizations?: W): Promise<T>;
+    getGuildCommandPermissions(guildID: string): Promise<GuildApplicationCommandPermissions[]>;
+    getGuildCommands<W extends boolean = false>(guildID: string, withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
+    getGuildEmoji(guildID: string, emojiID: string): Promise<Emoji>;
+    getGuildEmojis(guildID: string): Promise<Emoji[]>;
+    getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
+    getGuildInvites(guildID: string): Promise<Invite[]>;
+    getGuildMember(guildID: string, memberID: string): Promise<Member>;
+    getGuildMembers(guildID: string, options?: GetRESTGuildMembersOptions): Promise<Member[]>;
+    getGuildPreview(guildID: string): Promise<GuildPreview>;
+    getGuildRoles(guildID: string): Promise<Role[]>;
+    getGuilds(options?: GetRESTGuildsOptions): Promise<Guild[]>;
+    getGuildScheduledEvent(guildID: string, eventID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent>;
+    getGuildScheduledEvents(guildID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent[]>;
+    getGuildScheduledEventUsers(guildID: string, eventID: string, options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
+    getGuildSticker(guildID: string, stickerID: string): Promise<Sticker>;
+    getGuildStickers(guildID: string): Promise<Sticker[]>;
+    getGuildTemplate(code: string): Promise<GuildTemplate>;
+    getGuildTemplates(guildID: string): Promise<GuildTemplate[]>;
+    getGuildVanity(guildID: string): Promise<GuildVanity>;
+    getGuildWebhooks(guildID: string): Promise<Webhook[]>;
+    getGuildWelcomeScreen(guildID: string): Promise<WelcomeScreen>;
+    getGuildWidget(guildID: string): Promise<WidgetData>;
+    getGuildWidgetSettings(guildID: string): Promise<Widget>;
+    getInvite<C extends boolean = false, E extends boolean = false, GSE extends string | undefined = undefined>(inviteID: string, options?: GetInviteOptions<C, E, GSE>): Promise<Invite<(C extends true ? "withCount" : "withoutCount") | (E extends true ? "withExpiration" : "withoutExpiration") | (GSE extends string ? "withGuildScheduledEvent" : never)>>;
+    getJoinedPrivateArchivedThreads(channelID: string, options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
+    getMessage(channelID: string, messageID: string): Promise<Message>;
+    getMessageReaction(channelID: string, messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
+    getMessages(channelID: string, options?: GetMessagesOptions): Promise<Message[]>;
+    getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
+    getOAuthApplication(): Promise<OAuthApplicationInfo>;
+    getPins(channelID: string): Promise<Message[]>;
+    getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
+    getRoleConnectionMetadata(): Promise<ApplicationRoleConnectionMetadata[]>;
+    getSelf(): Promise<ExtendedUser>;
+    getStageInstance(channelID: string): Promise<StageInstance>;
+    getSticker(stickerID: string): Promise<Sticker>;
+    getThreadMember(channelID: string, memberID: string, options: GetThreadMemberOptions): Promise<ThreadMember>;
+    getThreadMembers(channelID: string, options: GetThreadMembersOptions): Promise<ThreadMember[]>;
+    getUser(userID: string): Promise<User>;
+    getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
+    getWebhook(webhookID: string, token?: string): Promise<Webhook>;
+    getWebhookMessage(webhookID: string, token: string, messageID: string): Promise<Message<GuildTextableChannel>>;
+    joinThread(channelID: string, userID?: string): Promise<void>;
+    kickGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
+    leaveGuild(guildID: string): Promise<void>;
+    leaveThread(channelID: string, userID?: string): Promise<void>;
+    off<K extends keyof RESTEvents>(event: K, listener: (...args: RESTEvents[K]) => void): this;
+    off(event: string, listener: (...args: any[]) => void): this;
+    on<K extends keyof RESTEvents>(event: K, listener: (...args: RESTEvents[K]) => void): this;
+    on(event: string, listener: (...args: any[]) => void): this;
+    once<K extends keyof RESTEvents>(event: K, listener: (...args: RESTEvents[K]) => void): this;
+    once(event: string, listener: (...args: any[]) => void): this;
+    patch<T = unknown>(path: string, options: RequestOptions): Promise<T>;
+    pinMessage(channelID: string, messageID: string): Promise<void>;
+    post<T = unknown>(path: string, options: RequestOptions): Promise<T>;
+    pruneMembers(guildID: string, options?: PruneMemberOptions): Promise<number>;
+    purgeChannel(channelID: string, options: PurgeChannelOptions): Promise<number>;
+    put<T = unknown>(path: string, options: RequestOptions): Promise<T>;
+    removeGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
+    removeMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
+    removeMessageReactionEmoji(channelID: string, messageID: string, reaction: string): Promise<void>;
+    removeMessageReactions(channelID: string, messageID: string): Promise<void>;
+    searchGuildMembers(guildID: string, query: string, limit?: number): Promise<Member[]>;
+    sendChannelTyping(channelID: string): Promise<void>;
+    syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
+    syncGuildTemplate(guildID: string, code: string): Promise<GuildTemplate>;
+    unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
+    unpinMessage(channelID: string, messageID: string): Promise<void>;
+    validateDiscoverySearchTerm(term: string): Promise<{ valid: boolean }>;
   }
 
   export class Role extends Base {
@@ -3360,14 +3796,14 @@ declare namespace Dysnomia {
   }
 
   export class SequentialBucket {
-    latencyRef: LatencyRef;
+    id: string;
+    inactive: boolean;
     limit: number;
-    processing: boolean;
+    limited: boolean;
     remaining: number;
     reset: number;
-    constructor(limit: number, latencyRef?: LatencyRef);
-    check(override?: boolean): void;
-    queue(func: (cb: () => void) => void, short?: boolean): void;
+    constructor(rest: RequestHandler, hash: string, majorParameter: string);
+    add<T = unknown>(request: Request, next?: boolean): Promise<T>;
   }
 
   export class Shard extends EventEmitter implements SimpleJSON {

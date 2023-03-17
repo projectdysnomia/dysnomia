@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "ES2022",
     "module": "commonjs",
     "strict": true,
     "noImplicitAny": true,
@@ -12,7 +12,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "lib": ["es6"]
+    "lib": ["ES2022"]
   },
   "files": ["index.d.ts"]
 }
