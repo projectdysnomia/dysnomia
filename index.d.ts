@@ -463,7 +463,11 @@ declare namespace Dysnomia {
     gateway?: GatewayOptions;
     messageLimit?: number;
     opusOnly?: boolean;
+    /** @deprecated */
+    requestTimeout?: number;
     rest?: ClientRESTOptions;
+    /** @deprecated */
+    restMode?: boolean;
     ws?: unknown;
   }
   interface ClientRESTOptions {
