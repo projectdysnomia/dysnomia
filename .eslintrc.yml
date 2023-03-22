@@ -69,6 +69,7 @@ rules:
       - "[alphabetical-methods]"
       - "[alphabetical-conventional-private-methods]"
       - "[everything-else]"
+      - "[alphabetical-private-methods]"
       - "[custom-inspect-method]"
       - toString
       - toJSON
@@ -85,6 +86,9 @@ rules:
         alphabetical-conventional-private-methods:
         - name: "/_.+/"
           type: method
+          sort: alphabetical
+        alphabetical-private-methods:
+        - type: method
           sort: alphabetical
         custom-inspect-method:
         - name: "[util.inspect.custom]"
