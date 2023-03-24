@@ -591,6 +591,7 @@ declare namespace Dysnomia {
     nsfwLevel: NSFWLevel;
     ownerID: string;
     preferredLocale?: string;
+    premiumProgressBarEnabled: boolean;
     premiumSubscriptionCount?: number;
     premiumTier: PremiumTier;
     publicUpdatesChannelID: string | null;
@@ -601,6 +602,7 @@ declare namespace Dysnomia {
     systemChannelID: string | null;
     vanityURL: string | null;
     verificationLevel: VerificationLevel;
+    welcomeScreen?: WelcomeScreen;
   }
   interface OldGuildChannel {
     availableTags?: ForumTag[];
