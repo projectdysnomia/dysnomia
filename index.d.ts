@@ -2158,8 +2158,8 @@ declare namespace Dysnomia {
       sendMessagesInThreads:            274877906944n;
       startEmbeddedActivities:          549755813888n;
       moderateMembers:                  1099511627776n;
-      viewCreatorMonetizationAnalytics: 2199023255552n,
-      useSoundboard:                    4398046511104n,
+      viewCreatorMonetizationAnalytics: 2199023255552n;
+      useSoundboard:                    4398046511104n;
       allGuild:                         3309205717182n;
       allText:                          535529258065n;
       allVoice:                         4952431789841n;
