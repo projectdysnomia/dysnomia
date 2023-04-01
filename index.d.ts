@@ -878,7 +878,7 @@ declare namespace Dysnomia {
     body?: Record<string, any>;
     headers?: Record<string, string>;
     files?: FileContent[];
-    formdata?: boolean;
+    formData?: boolean;
     query?: Record<string, any>;
     reason?: string;
   }
