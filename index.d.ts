@@ -2809,6 +2809,7 @@ declare namespace Dysnomia {
     large: boolean;
     maxMembers: number;
     maxPresences?: number | null;
+    maxStageVideoChannelUsers?: number;
     maxVideoChannelUsers?: number;
     memberCount: number;
     members: Collection<Member>;
