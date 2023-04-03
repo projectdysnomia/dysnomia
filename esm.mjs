@@ -39,6 +39,7 @@ export const {
   PrivateThreadChannel,
   PublicThreadChannel,
   RequestHandler,
+  RESTClient,
   Role,
   SequentialBucket,
   Shard,

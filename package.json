@@ -42,6 +42,7 @@
     "url": "https://github.com/projectdysnomia/dysnomia/issues"
   },
   "dependencies": {
+    "undici": "^5.21.0",
     "ws": "^8.2.3"
   },
   "devDependencies": {
@@ -69,8 +70,8 @@
   },
   "peerDependencies": {
     "@discordjs/opus": "^0.9.0",
-    "eventemitter3": "^5.0.0",
     "erlpack": "github:discord/erlpack || github:abalabahaha/erlpack",
+    "eventemitter3": "^5.0.0",
     "pako": "^2.1.0",
     "sodium-native": "^4.0.1",
     "zlib-sync": "^0.1.8"
