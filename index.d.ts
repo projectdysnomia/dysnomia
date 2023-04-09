@@ -585,6 +585,7 @@ declare namespace Dysnomia {
     icon: string | null;
     large: boolean;
     maxMembers?: number;
+    maxStageVideoChannelUsers?: number;
     maxVideoChannelUsers?: number;
     mfaLevel: MFALevel;
     name: string;
