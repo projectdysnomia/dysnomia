@@ -69,7 +69,7 @@ declare namespace Dysnomia {
   type GuildTextableChannel = TextChannel | TextVoiceChannel | NewsChannel | StageChannel;
   type GuildTextableWithThreads = GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
-  type PossiblyUncachedInteractionChannel = Textable | { id: string; type: ChannelTypes };
+  type PossiblyUncachedInteractionChannel = TextableChannel | PartialChannel;
   type PossiblyUncachedSpeakableChannel = VoiceChannel | StageChannel | Uncached;
   type PossiblyUncachedTextable = Textable | Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
