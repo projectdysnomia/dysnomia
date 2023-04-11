@@ -69,6 +69,7 @@ declare namespace Dysnomia {
   type GuildTextableChannel = TextChannel | TextVoiceChannel | NewsChannel | StageChannel;
   type GuildTextableWithThreads = GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
+  type PossiblyUncachedInteractionChannel = TextableChannel | PartialChannel;
   type PossiblyUncachedSpeakableChannel = VoiceChannel | StageChannel | Uncached;
   type PossiblyUncachedTextable = Textable | Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
@@ -2310,7 +2311,7 @@ declare namespace Dysnomia {
   }
 
   // Classes
-  export class AutocompleteInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class AutocompleteInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
     data: AutocompleteInteractionData;
@@ -2698,7 +2699,7 @@ declare namespace Dysnomia {
     update(obj: T, extra?: unknown, replace?: boolean): T;
   }
 
-  export class CommandInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class CommandInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
     data: CommandInteractionData;
@@ -2718,7 +2719,7 @@ declare namespace Dysnomia {
     getOriginalMessage(): Promise<Message>;
   }
 
-  export class ComponentInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class ComponentInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
     appPermissions?: Permission;
     channel: T;
     data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
@@ -3219,7 +3220,7 @@ declare namespace Dysnomia {
     unpin(): Promise<void>;
   }
 
-  export class ModalSubmitInteraction<T extends PossiblyUncachedTextable = TextableChannel> extends Interaction {
+  export class ModalSubmitInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
     channel: T;
     data: ModalSubmitInteractionData;
     guildID?: string;
