@@ -105,6 +105,7 @@ declare namespace Dysnomia {
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
+  type OnboardingPromptTypes = Constants["OnboardingPromptTypes"][keyof Constants["OnboardingPromptTypes"]];
   type PossiblyUncachedGuild = Guild | Uncached;
   type PossiblyUncachedGuildScheduledEvent = GuildScheduledEvent | Uncached;
   type PremiumTier = Constants["PremiumTiers"][keyof Constants["PremiumTiers"]];
@@ -969,6 +970,29 @@ declare namespace Dysnomia {
   interface GuildBan {
     reason?: string;
     user: User;
+  }
+  interface GuildOnboarding {
+    enabled: boolean;
+    default_channel_ids: string[];
+    guild_id: string;
+    prompts: GuildOnboardingPrompt[];
+  }
+  interface GuildOnboardingPrompt {
+    id: string;
+    in_onboarding: boolean;
+    options: GuildOnboardingPromptOption[];
+    required: boolean;
+    single_select: boolean;
+    type: OnboardingPromptTypes;
+    title: string;
+  }
+  interface GuildOnboardingPromptOption {
+    channel_ids: string[];
+    description: string | null;
+    emoji: PartialEmoji;
+    id: string;
+    role_ids: string[];
+    title: string;
   }
   interface GuildOptions {
     afkChannelID?: string;
@@ -2112,6 +2136,10 @@ declare namespace Dysnomia {
       INVITED: 1;
       ACCEPTED: 2;
     };
+    OnboardingPromptTypes: {
+      MULTIPLE_CHOICE: 0;
+      DROPDOWN:        1;
+    };
     PermissionOverwriteTypes: {
       ROLE: 0;
       USER: 1;
@@ -2613,6 +2641,7 @@ declare namespace Dysnomia {
     getGuildCommands<W extends boolean = false>(guildID: string, withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
     getGuildIntegrations(guildID: string): Promise<GuildIntegration[]>;
     getGuildInvites(guildID: string): Promise<Invite[]>;
+    getGuildOnboarding(guildID: string): Promise<GuildOnboarding>;
     getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildScheduledEvents(guildID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent[]>;
     getGuildScheduledEventUsers(guildID: string, eventID: string, options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
@@ -2906,6 +2935,7 @@ declare namespace Dysnomia {
     getCommands<W extends boolean = false>(): Promise<AnyApplicationCommand<W>[]>;
     getIntegrations(): Promise<GuildIntegration>;
     getInvites(): Promise<Invite[]>;
+    getOnboarding(): Promise<GuildOnboarding>;
     getPruneCount(options?: GetPruneOptions): Promise<number>;
     getRESTChannels(): Promise<AnyGuildChannel[]>;
     getRESTEmoji(emojiID: string): Promise<Emoji>;
