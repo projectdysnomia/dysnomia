@@ -2380,7 +2380,7 @@ declare namespace Dysnomia {
     proxyURL: string;
     size: number;
     url: string;
-    waveform?: Buffer;
+    waveform?: string;
     width?: number;
     constructor(data: BaseData);
   }
