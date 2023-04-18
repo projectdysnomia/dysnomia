@@ -3876,6 +3876,8 @@ declare namespace Dysnomia {
     accentColor?: number | null;
     avatar: string | null;
     avatarURL: string;
+    avatarDecoration?: string | null;
+    avatarDecorationURL: string | null;
     banner?: string | null;
     bannerURL: string | null;
     bot: boolean;
@@ -3892,6 +3894,7 @@ declare namespace Dysnomia {
     username: string;
     constructor(data: BaseData, client: Client);
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
+    dynamicAvatarDecorationURL(format?: ImageFormat, size?: number): string | null;
     dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
     getDMChannel(): Promise<PrivateChannel>;
   }
