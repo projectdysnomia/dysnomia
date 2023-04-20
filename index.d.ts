@@ -2098,6 +2098,7 @@ declare namespace Dysnomia {
       LOADING:                                128;
       FAILED_TO_MENTION_SOME_ROLES_IN_THREAD: 256;
       SUPPRESS_NOTIFICATIONS:                 4096;
+      IS_VOICE_MESSAGE:                       8192;
     };
     MessageTypes: {
       DEFAULT:                                      0;
@@ -2190,10 +2191,11 @@ declare namespace Dysnomia {
       moderateMembers:                  1099511627776n;
       viewCreatorMonetizationAnalytics: 2199023255552n;
       useSoundboard:                    4398046511104n;
+      sendVoiceMessages:                70368744177664n;
       allGuild:                         3309205717182n;
-      allText:                          535529258065n;
+      allText:                          70904273435729n;
       allVoice:                         4952431789841n;
-      all:                              8796093022207n;
+      all:                              79164837199871n;
     };
     PremiumTiers: {
       NONE:   0;
@@ -2370,6 +2372,7 @@ declare namespace Dysnomia {
   export class Attachment extends Base {
     contentType?: string;
     description?: string;
+    durationSecs?: number;
     ephemeral?: boolean;
     filename: string;
     height?: number;
@@ -2377,6 +2380,7 @@ declare namespace Dysnomia {
     proxyURL: string;
     size: number;
     url: string;
+    waveform?: string;
     width?: number;
     constructor(data: BaseData);
   }
