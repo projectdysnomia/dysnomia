@@ -2160,7 +2160,7 @@ declare namespace Dysnomia {
     OnboardingModes: {
       ONBOARDING_DEFAULT:  0;
       ONBOARDING_ADVANCED: 1;
-    }
+    };
     OnboardingPromptTypes: {
       MULTIPLE_CHOICE: 0;
       DROPDOWN:        1;
