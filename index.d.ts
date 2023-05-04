@@ -3673,8 +3673,8 @@ declare namespace Dysnomia {
     defaultAvatar: string;
     defaultAvatarURL: string;
     discriminator: string;
-    id: string;
     globalName: string | null;
+    id: string;
     mention: string;
     publicFlags?: number;
     staticAvatarURL: string;
