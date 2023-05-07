@@ -317,6 +317,8 @@ declare namespace Dysnomia {
     keyword_filter: string[];
     /** valid for MENTION_SPAM */
     mention_total_limit: number;
+    /** valid for MENTION_SPAM */
+    mention_raid_protection_enabled: boolean;
     /** valid for KEYWORD_PRESET */
     presets: AutoModerationKeywordPresetType[];
     /** valid for KEYWORD */
@@ -599,6 +601,7 @@ declare namespace Dysnomia {
     premiumTier: PremiumTier;
     publicUpdatesChannelID: string | null;
     rulesChannelID: string | null;
+    safetyAlertsChannelID: string | null;
     splash: string | null;
     stickers?: Sticker[];
     systemChannelFlags: SystemChannelFlags;
@@ -1010,6 +1013,7 @@ declare namespace Dysnomia {
     premiumProgressBarEnabled?: boolean;
     publicUpdatesChannelID?: string;
     rulesChannelID?: string;
+    safetyAlertsChannelID?: string;
     splash?: string;
     systemChannelFlags?: number;
     systemChannelID?: string;
@@ -1991,6 +1995,7 @@ declare namespace Dysnomia {
       "NEWS",
       "PARTNERED",
       "PREVIEW_ENABLED",
+      "RAID_ALERTS_DISABLED",
       "ROLE_ICONS",
       "ROLE_SUBSCRIPTIONS_AVAILABLE_FOR_PURCHASE",
       "ROLE_SUBSCRIPTIONS_ENABLED",
@@ -2863,6 +2868,7 @@ declare namespace Dysnomia {
     publicUpdatesChannelID: string | null;
     roles: Collection<Role>;
     rulesChannelID: string | null;
+    safetyAlertsChannelID: string | null;
     shard: Shard;
     splash: string | null;
     splashURL: string | null;
