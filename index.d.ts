@@ -1013,6 +1013,7 @@ declare namespace Dysnomia {
     premiumProgressBarEnabled?: boolean;
     publicUpdatesChannelID?: string;
     rulesChannelID?: string;
+    safetyAlertsChannelID?: string;
     splash?: string;
     systemChannelFlags?: number;
     systemChannelID?: string;
