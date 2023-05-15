@@ -19,6 +19,9 @@ rules:
   comma-dangle:
     - 2
     - never
+  comma-style:
+    - 2
+    - last
   curly: 2
   eol-last:
     - 2
