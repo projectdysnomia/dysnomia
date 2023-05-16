@@ -96,3 +96,9 @@ rules:
           type: method
   strict:
     - 2
+overrides:
+  - files: [ ./lib/Constants.js ]
+    rules:
+      key-spacing:
+        - 2
+        - align: value
