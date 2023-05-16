@@ -1,3 +1,5 @@
+"use strict";
+
 const Dysnomia = require("@projectdysnomia/dysnomia");
 
 const Constants = Dysnomia.Constants;
@@ -5,8 +7,8 @@ const Constants = Dysnomia.Constants;
 // Replace TOKEN with your bot account's token
 const bot = new Dysnomia.Client("BOT TOKEN", {
     gateway: {
-        intents: [] //No intents are needed for interactions, but you still need to specify either an empty array or 0
-    }
+        intents: [], //No intents are needed for interactions, but you still need to specify either an empty array or 0
+    },
 });
 
 bot.on("ready", async () => { // When the bot is ready
@@ -14,7 +16,7 @@ bot.on("ready", async () => { // When the bot is ready
 
     const commands = await bot.getCommands();
 
-    if(!commands.length) {
+    if (!commands.length) {
         bot.createCommand({
             name: "test_chat_input",
             description: "Test command to show how to make commands",
@@ -27,48 +29,48 @@ bot.on("ready", async () => { // When the bot is ready
                     "choices": [ //The possible choices for the options
                         {
                             "name": "Dog",
-                            "value": "animal_dog"
+                            "value": "animal_dog",
                         },
                         {
                             "name": "Cat",
-                            "value": "animal_cat"
+                            "value": "animal_cat",
                         },
                         {
                             "name": "Penguin",
-                            "value": "animal_penguin"
-                        }
-                    ]
+                            "value": "animal_penguin",
+                        },
+                    ],
                 },
                 {
                     "name": "only_smol",
                     "description": "Whether to show only baby animals",
                     "type": Constants.ApplicationCommandOptionTypes.BOOLEAN,
-                    "required": false
-                }
+                    "required": false,
+                },
             ],
-            type: Constants.ApplicationCommandTypes.CHAT_INPUT //Not required for Chat input type, but recommended
+            type: Constants.ApplicationCommandTypes.CHAT_INPUT, //Not required for Chat input type, but recommended
         }); //Create a chat input command
 
         bot.createCommand({
             name: "Test User Menu",
-            type: Constants.ApplicationCommandTypes.USER
+            type: Constants.ApplicationCommandTypes.USER,
         }); //Create a user context menu
 
         bot.createCommand({
             name: "Test Message Menu",
-            type: Constants.ApplicationCommandTypes.MESSAGE
+            type: Constants.ApplicationCommandTypes.MESSAGE,
         }); //Create a message context menu
 
         bot.createCommand({
             name: "test_edit_command",
             description: "Test command to show off how to edit commands",
-            type: Constants.ApplicationCommandTypes.CHAT_INPUT //Not required for Chat input type, but recommended
+            type: Constants.ApplicationCommandTypes.CHAT_INPUT, //Not required for Chat input type, but recommended
         }); //Create a chat input command
 
         bot.createCommand({
             name: "test_delete_command",
             description: "Test command to show off how to delete commands",
-            type: Constants.ApplicationCommandTypes.CHAT_INPUT //Not required for Chat input type, but recommended
+            type: Constants.ApplicationCommandTypes.CHAT_INPUT, //Not required for Chat input type, but recommended
         }); //Create a chat input command
 
         //In practice, you should use bulkEditCommands if you need to create multiple commands
@@ -80,13 +82,13 @@ bot.on("error", (err) => {
 });
 
 bot.on("interactionCreate", (interaction) => {
-    if(interaction instanceof Dysnomia.CommandInteraction) {
-        switch(interaction.data.name) {
+    if (interaction instanceof Dysnomia.CommandInteraction) {
+        switch (interaction.data.name) {
             case "test_edit_command":
                 interaction.createMessage("interaction recieved");
                 return bot.editCommand(interaction.data.id, {
                     name: "edited_test_command",
-                    description: "Test command that was edited by running test_edit_command"
+                    description: "Test command that was edited by running test_edit_command",
                 });
             case "test_delete_command":
                 interaction.createMessage("interaction received");
