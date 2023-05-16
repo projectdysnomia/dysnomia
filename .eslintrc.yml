@@ -39,7 +39,6 @@ rules:
     - 2
   keyword-spacing:
     - 2
-  no-prototype-builtins: 0
   no-trailing-spaces: 2
   no-var: 2
   object-curly-spacing:
