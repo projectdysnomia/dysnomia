@@ -23,31 +23,25 @@ rules:
   eol-last:
     - 2
     - always
+  eqeqeq:
+    - 2
+    - always
+    - "null": ignore
   indent:
     - 2
     - 4
     - SwitchCase: 1
       ignoreComments: false
+  key-spacing:
+    - 2
   keyword-spacing:
     - 2
-    - after: true
-      overrides:
-        catch:
-          after: false
-        for:
-          after: false
-        if:
-          after: false
-        switch:
-          after: false
-        while:
-          after: false
   no-prototype-builtins: 0
   no-trailing-spaces: 2
   no-var: 2
   object-curly-spacing:
     - 2
-    - never
+    - always
   object-shorthand:
     - 2
     - consistent-as-needed
@@ -93,3 +87,5 @@ rules:
         custom-inspect-method:
         - name: "[util.inspect.custom]"
           type: method
+  strict:
+    - 2
