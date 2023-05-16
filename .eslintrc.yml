@@ -18,7 +18,7 @@ rules:
     - allowSingleLine: false
   comma-dangle:
     - 2
-    - never
+    - always-multiline
   comma-style:
     - 2
     - last
