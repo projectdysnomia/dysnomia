@@ -18,36 +18,32 @@ rules:
     - allowSingleLine: false
   comma-dangle:
     - 2
-    - never
+    - always-multiline
+  comma-style:
+    - 2
+    - last
   curly: 2
   eol-last:
     - 2
     - always
+  eqeqeq:
+    - 2
+    - always
+    - "null": ignore
   indent:
     - 2
     - 4
     - SwitchCase: 1
       ignoreComments: false
+  key-spacing:
+    - 2
   keyword-spacing:
     - 2
-    - after: true
-      overrides:
-        catch:
-          after: false
-        for:
-          after: false
-        if:
-          after: false
-        switch:
-          after: false
-        while:
-          after: false
-  no-prototype-builtins: 0
   no-trailing-spaces: 2
   no-var: 2
   object-curly-spacing:
     - 2
-    - never
+    - always
   object-shorthand:
     - 2
     - consistent-as-needed
@@ -63,6 +59,7 @@ rules:
     - 2
     - order:
       - "[alphabetical-properties]"
+      - "[alphabetical-private-properties]"
       - constructor
       - update
       - "[alphabetical-getters]"
@@ -90,6 +87,18 @@ rules:
         alphabetical-private-methods:
         - type: method
           sort: alphabetical
+          private: true
+        alphabetical-private-properties:
+        - type: property
+          private: true
         custom-inspect-method:
         - name: "[util.inspect.custom]"
           type: method
+  strict:
+    - 2
+overrides:
+  - files: [ ./lib/Constants.js ]
+    rules:
+      key-spacing:
+        - 2
+        - align: value

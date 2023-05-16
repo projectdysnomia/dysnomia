@@ -1,3 +1,5 @@
+"use strict";
+
 const Dysnomia = require("@projectdysnomia/dysnomia");
 
 const Constants = Dysnomia.Constants;
@@ -5,8 +7,8 @@ const Constants = Dysnomia.Constants;
 // Replace TOKEN with your bot account's token
 const bot = new Dysnomia.Client("BOT TOKEN", {
     gateway: {
-        intents: ["guildMessages"]
-    }
+        intents: ["guildMessages"],
+    },
 });
 
 bot.on("ready", async () => { // When the bot is ready
@@ -18,7 +20,7 @@ bot.on("error", (err) => {
 });
 
 bot.on("messageCreate", (msg) => { // When a message is created
-    if(msg.content === "!button") { // If the message content is "!button"
+    if (msg.content === "!button") { // If the message content is "!button"
         bot.createMessage(msg.channel.id, {
             content: "Button Example",
             components: [
@@ -30,14 +32,14 @@ bot.on("messageCreate", (msg) => { // When a message is created
                             style: Constants.ButtonStyles.PRIMARY, // This is the style of the button https://discord.com/developers/docs/interactions/message-components#button-object-button-styles
                             custom_id: "click_one",
                             label: "Click me!",
-                            disabled: false // Whether or not the button is disabled, is false by default
-                        }
-                    ]
-                }
-            ]
+                            disabled: false, // Whether or not the button is disabled, is false by default
+                        },
+                    ],
+                },
+            ],
         });
         // Send a message in the same channel with a Button
-    } else if(msg.content === "!select") { // Otherwise, if the message is "!select"
+    } else if (msg.content === "!select") { // Otherwise, if the message is "!select"
         bot.createMessage(msg.channel.id, {
             content: "Select Menu Example",
             components: [
@@ -52,31 +54,31 @@ bot.on("messageCreate", (msg) => { // When a message is created
                                 {
                                     label: "Option 1",
                                     value: "option_1",
-                                    description: "[Insert description here]"
+                                    description: "[Insert description here]",
                                 },
                                 {
                                     label: "Option 2",
                                     value: "option_2",
-                                    description: "This is only here to show off picking one"
-                                }
+                                    description: "This is only here to show off picking one",
+                                },
                             ],
                             min_values: 1,
                             max_values: 1,
-                            disabled: false // Whether or not the select menu is disabled, is false by default
-                        }
-                    ]
-                }
-            ]
+                            disabled: false, // Whether or not the select menu is disabled, is false by default
+                        },
+                    ],
+                },
+            ],
         });
         // Send a message in the same channel with a Select Menu
     }
 });
 
 bot.on("interactionCreate", (interaction) => {
-    if(interaction instanceof Dysnomia.ComponentInteraction) {
+    if (interaction instanceof Dysnomia.ComponentInteraction) {
         return interaction.createMessage({
             content: "Interaction Received",
-            flags: 64
+            flags: 64,
         });
     }
 });
