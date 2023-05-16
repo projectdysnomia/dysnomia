@@ -57,6 +57,7 @@ rules:
     - 2
     - order:
       - "[alphabetical-properties]"
+      - "[alphabetical-private-properties]"
       - constructor
       - update
       - "[alphabetical-getters]"
@@ -84,6 +85,9 @@ rules:
         alphabetical-private-methods:
         - type: method
           sort: alphabetical
+          private: true
+        alphabetical-private-properties:
+        - type: property
           private: true
         custom-inspect-method:
         - name: "[util.inspect.custom]"
