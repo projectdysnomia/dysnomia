@@ -2333,12 +2333,13 @@ declare namespace Dysnomia {
       startEmbeddedActivities:          549755813888n;
       moderateMembers:                  1099511627776n;
       viewCreatorMonetizationAnalytics: 2199023255552n;
+      useExternalSounds:                35184372088832n;
       useSoundboard:                    4398046511104n;
       sendVoiceMessages:                70368744177664n;
       allGuild:                         3309205717182n;
       allText:                          70904273435729n;
-      allVoice:                         4952431789841n;
-      all:                              79164837199871n;
+      allVoice:                         40136803878673n;
+      all:                              114349209288703n;
     };
     PremiumTiers: {
       NONE:   0;
