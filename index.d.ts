@@ -780,7 +780,7 @@ declare namespace Dysnomia {
     | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
     unavailableGuildCreate: [guild: UnavailableGuild];
     unknown: [packet: RawPacket, id?: number];
-    userUpdate: [user: User, oldUser: PartialUser | null];
+    userUpdate: [user: User, oldUser: OldUser | null];
     voiceChannelJoin: [member: Member, channel: AnyVoiceChannel];
     voiceChannelLeave: [member: Member, channel: AnyVoiceChannel];
     voiceChannelSwitch: [member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel];
@@ -1287,6 +1287,12 @@ declare namespace Dysnomia {
   }
   interface MemberRoles extends BaseData {
     roles: string[];
+  }
+  interface OldUser {
+    avatar: string | null;
+    discriminator: string;
+    globalName: string | null;
+    username: string;
   }
   interface PartialUser {
     avatar: string | null;
@@ -3673,6 +3679,7 @@ declare namespace Dysnomia {
     defaultAvatar: string;
     defaultAvatarURL: string;
     discriminator: string;
+    globalName: string | null;
     id: string;
     mention: string;
     publicFlags?: number;
