@@ -835,7 +835,7 @@ declare namespace Dysnomia {
     maxShards?: number | "auto";
     reconnectDelay?: ReconnectDelayFunction;
     seedVoiceConnections?: boolean;
-    gateway_url?: string;
+    gatewayURL?: string;
   }
   interface HTTPResponse {
     code: number;
