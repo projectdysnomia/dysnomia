@@ -518,6 +518,7 @@ declare namespace Dysnomia {
     baseURL?: string;
     disableLatencyCompensation?: boolean;
     domain?: string;
+    port?: string;
     https?: boolean;
     latencyThreshold?: number;
     ratelimiterOffset?: number;
