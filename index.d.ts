@@ -481,9 +481,9 @@ declare namespace Dysnomia {
     headers?: Record<string, number | string | string[]>;
     https?: boolean;
     latencyThreshold?: number;
+    port?: number;
     ratelimiterOffset?: number;
     requestTimeout?: number;
-    port?: number;
   }
 
   interface EditSelfOptions {
