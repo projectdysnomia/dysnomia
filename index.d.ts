@@ -666,7 +666,7 @@ declare namespace Dysnomia {
     roles?: string[];
   }
   interface PartialEmoji {
-    id: string | null;
+    id?: string;
     name: string;
     animated?: boolean;
   }
