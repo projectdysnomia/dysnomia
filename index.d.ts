@@ -2232,6 +2232,9 @@ declare namespace Dysnomia {
       BOOLEAN_EQUAL:                  7;
       BOOLEAN_NOT_EQUAL:              8;
     };
+    RoleFlags: {
+      IN_PROMPT: 1
+    };
     StageInstancePrivacyLevel: {
       /** @deprecated */
       PUBLIC: 1;
@@ -3401,6 +3404,7 @@ declare namespace Dysnomia {
     icon: string | null;
     iconURL: string | null;
     id: string;
+    flags: number;
     json: Partial<Record<Exclude<keyof Constants["Permissions"], "all" | "allGuild" | "allText" | "allVoice">, boolean>>;
     managed: boolean;
     mention: string;
