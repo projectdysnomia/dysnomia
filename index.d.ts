@@ -1823,6 +1823,9 @@ declare namespace Dysnomia {
       GATEWAY_MESSAGE_CONTENT_LIMITED:               524288;
       APPLICATION_COMMAND_BADGE:                     8388608;
     };
+    AttachmentFlags: {
+      IS_REMIX: 4;
+    };
     AuditLogActions: {
       GUILD_UPDATE: 1;
 
@@ -2403,6 +2406,7 @@ declare namespace Dysnomia {
     durationSecs?: number;
     ephemeral?: boolean;
     filename: string;
+    flags?: number;
     height?: number;
     id: string;
     proxyURL: string;
