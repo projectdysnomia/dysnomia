@@ -673,6 +673,7 @@ declare namespace Dysnomia {
   }
   interface OldRole {
     color: number;
+    flags: number;
     hoist: boolean;
     icon: string | null;
     managed: boolean;
