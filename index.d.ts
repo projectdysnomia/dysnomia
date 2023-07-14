@@ -366,6 +366,7 @@ declare namespace Dysnomia {
     availableTags?: (Required<Pick<ForumTag, "name">> & Partial<ForumTag>)[];
     bitrate?: number;
     defaultAutoArchiveDuration?: AutoArchiveDuration;
+    defaultForumLayout?: ForumLayoutTypes;
     defaultReactionEmoji?: ForumDefaultReactionEmoji | null;
     defaultSortOrder?: ThreadSortingOrders | null;
     nsfw?: boolean;
@@ -383,7 +384,6 @@ declare namespace Dysnomia {
     archived?: boolean;
     appliedTags?: string[];
     autoArchiveDuration?: AutoArchiveDuration;
-    defaultForumLayout?: ForumLayoutTypes;
     defaultThreadRateLimitPerUser?: number | null;
     flags?: number;
     invitable?: boolean;
