@@ -1056,6 +1056,7 @@ declare namespace Dysnomia {
     after?: string;
     before?: string;
     limit?: number;
+    withCounts?: boolean;
   }
   interface GuildAuditLog {
     autoModerationRules: AutoModerationRule[];
