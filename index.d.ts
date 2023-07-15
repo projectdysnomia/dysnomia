@@ -767,6 +767,7 @@ declare namespace Dysnomia {
   }
   interface OldRole {
     color: number;
+    flags: number;
     hoist: boolean;
     icon: string | null;
     managed: boolean;
@@ -2370,6 +2371,9 @@ declare namespace Dysnomia {
       BOOLEAN_EQUAL:                  7;
       BOOLEAN_NOT_EQUAL:              8;
     };
+    RoleFlags: {
+      IN_PROMPT: 1;
+    };
     StageInstancePrivacyLevel: {
       /** @deprecated */
       PUBLIC: 1;
@@ -3685,6 +3689,7 @@ declare namespace Dysnomia {
   export class Role extends Base {
     color: number;
     createdAt: number;
+    flags: number;
     guild: Guild;
     hoist: boolean;
     icon: string | null;
