@@ -332,7 +332,7 @@ declare namespace Dysnomia {
   }
   interface ChannelPosition {
     id: string;
-    position: number;
+    position?: number;
     lockPermissions?: boolean;
     parentID?: string;
   }
