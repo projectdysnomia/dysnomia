@@ -117,6 +117,7 @@ declare namespace Dysnomia {
   type GuildScheduledEventPrivacyLevel = Constants["GuildScheduledEventPrivacyLevel"][keyof Constants["GuildScheduledEventPrivacyLevel"]];
   type GuildScheduledEventStatus = Constants["GuildScheduledEventStatus"][keyof Constants["GuildScheduledEventStatus"]];
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
+  type OnboardingModes = Constants["OnboardingModes"][keyof Constants["OnboardingModes"]];
   type OnboardingPromptTypes = Constants["OnboardingPromptTypes"][keyof Constants["OnboardingPromptTypes"]];
   type PossiblyUncachedGuild = Guild | Uncached;
   type PossiblyUncachedGuildScheduledEvent = GuildScheduledEvent | Uncached;
@@ -1023,6 +1024,9 @@ declare namespace Dysnomia {
     level: MFALevel;
     reason?: string;
   }
+  interface EditGuildOnboardingOptions extends Partial<Omit<GuildOnboarding, "guild_id">> {
+    reason?: string;
+  }
   interface GetGuildAuditLogOptions {
     actionType?: number;
     after?: string;
@@ -1076,6 +1080,7 @@ declare namespace Dysnomia {
     enabled: boolean;
     default_channel_ids: string[];
     guild_id: string;
+    mode: OnboardingModes;
     prompts: GuildOnboardingPrompt[];
   }
   interface GuildOnboardingPrompt {
@@ -2291,6 +2296,10 @@ declare namespace Dysnomia {
       INVITED: 1;
       ACCEPTED: 2;
     };
+    OnboardingModes: {
+      ONBOARDING_DEFAULT:  0;
+      ONBOARDING_ADVANCED: 1;
+    };
     OnboardingPromptTypes: {
       MULTIPLE_CHOICE: 0;
       DROPDOWN:        1;
@@ -2783,6 +2792,7 @@ declare namespace Dysnomia {
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     editGuildMFALevel(guildID: string, options: EditGuildMFALevelOptions): Promise<MFALevel>;
+    editGuildOnboarding(guildID: string, options: EditGuildOnboardingOptions): Promise<GuildOnboarding>;
     editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editGuildSticker(guildID: string, stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
@@ -3207,6 +3217,7 @@ declare namespace Dysnomia {
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     editMFALevel(options: EditGuildMFALevelOptions): Promise<MFALevel>;
+    editOnboarding(options: EditGuildOnboardingOptions): Promise<GuildOnboarding>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editScheduledEvent<T extends GuildScheduledEventEntityTypes>(eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editSticker(stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
