@@ -1726,6 +1726,7 @@ declare namespace Dysnomia {
     [key: string]: unknown;
   }
   interface OAuthApplicationInfo {
+    approximate_guild_count?: number;
     bot_public: boolean;
     bot_require_code_grant: boolean;
     cover_image?: string;
@@ -1733,6 +1734,11 @@ declare namespace Dysnomia {
     description: string;
     flags?: number;
     guild_id?: string;
+    // The docs say that there can be a partial guild object attached,
+    // but as of 2023-07-25, there is no guild object attached in either
+    // endpoints, so we cannot determine how partial the guild object really is.
+    // Proceed with caution.
+    guild?: unknown;
     icon: string | null;
     id: string;
     install_params?: OAuthInstallParams;
@@ -2658,6 +2664,7 @@ declare namespace Dysnomia {
     executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
     followChannel(channelID: string, webhookChannelID: string): Promise<ChannelFollow>;
     getActiveGuildThreads(guildID: string): Promise<ListedGuildThreads>;
+    getApplication(): Promise<OAuthApplicationInfo>;
     getArchivedThreads(channelID: string, type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getArchivedThreads(channelID: string, type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
     getAutoModerationRule(guildID: string, ruleID: string): Promise<AutoModerationRule>;
