@@ -62,12 +62,14 @@ rules:
   sort-class-members/sort-class-members:
     - 2
     - order:
+      - "[alphabetical-properties]"
       - constructor
       - update
       - "[alphabetical-getters]"
       - "[alphabetical-methods]"
       - "[alphabetical-conventional-private-methods]"
       - "[everything-else]"
+      - "[alphabetical-private-methods]"
       - "[custom-inspect-method]"
       - toString
       - toJSON
@@ -78,9 +80,15 @@ rules:
         alphabetical-methods:
         - type: method
           sort: alphabetical
+        alphabetical-properties:
+        - type: property
+          sort: alphabetical
         alphabetical-conventional-private-methods:
         - name: "/_.+/"
           type: method
+          sort: alphabetical
+        alphabetical-private-methods:
+        - type: method
           sort: alphabetical
         custom-inspect-method:
         - name: "[util.inspect.custom]"
