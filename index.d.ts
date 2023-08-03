@@ -1952,10 +1952,12 @@ declare namespace Dysnomia {
       GUILD_STAGE_VOICE:    13;
       GUILD_DIRECTORY:      14;
       GUILD_FORUM:          15;
+      GUILD_MEDIA:          16;
     };
     ChannelFlags: {
-      PINNED:      2;
-      REQUIRE_TAG: 16;
+      PINNED:                      2;
+      REQUIRE_TAG:                 16;
+      HIDE_MEDIA_DOWNLOAD_OPTIONS: 32768;
     };
     ComponentTypes: {
       ACTION_ROW:         1;
@@ -2855,7 +2857,7 @@ declare namespace Dysnomia {
     permissionOverwrites: Collection<PermissionOverwrite>;
     rateLimitPerUser: number;
     topic?: string | null;
-    type: Constants["ChannelTypes"]["GUILD_FORUM"];
+    type: Constants["ChannelTypes"]["GUILD_FORUM" | "GUILD_MEDIA"];
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
     createThread(options: CreateThreadWithoutMessageOptions): Promise<PublicThreadChannel>;
     createWebhook(options: Omit<WebhookOptions, "channelID">, reason?: string): Promise<Webhook>;
@@ -3242,6 +3244,10 @@ declare namespace Dysnomia {
     kick(reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
     unban(reason?: string): Promise<void>;
+  }
+
+  export class MediaChannel extends ForumChannel {
+    type: Constants["ChannelTypes"]["GUILD_MEDIA"];
   }
 
   export class Message<T extends PossiblyUncachedTextable = TextableChannel> extends Base {
