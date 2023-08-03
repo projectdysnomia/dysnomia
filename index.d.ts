@@ -1734,11 +1734,6 @@ declare namespace Dysnomia {
     description: string;
     flags?: number;
     guild_id?: string;
-    // The docs say that there can be a partial guild object attached,
-    // but as of 2023-07-25, there is no guild object attached in either
-    // endpoints, so we cannot determine how partial the guild object really is.
-    // Proceed with caution.
-    guild?: unknown;
     icon: string | null;
     id: string;
     install_params?: OAuthInstallParams;
