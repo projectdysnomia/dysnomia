@@ -130,7 +130,7 @@ declare namespace Dysnomia {
 
   // Interaction
   type AnyInteraction = AnyInteractionGateway | PingInteraction;
-  type AnyInteractionGateway = AutocompleteInteraction | CommandInteraction | ComponentInteraction;
+  type AnyInteractionGateway = AutocompleteInteraction | CommandInteraction | ComponentInteraction | ModalSubmitInteraction;
   type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components" | "attachments">;
   type InteractionContentEdit = Omit<InteractionContent, "tts" | "flags">;
   type InteractionDataOption<T extends Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">, V = boolean | number | string> = InteractionDataOptionsBase<Constants["ApplicationCommandOptionTypes"][T], V>;
