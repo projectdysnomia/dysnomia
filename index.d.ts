@@ -2554,6 +2554,18 @@ declare namespace Dysnomia {
     createChannel(
       guildID: string,
       name: string,
+      type: Constants["ChannelTypes"]["GUILD_FORUM"],
+      options?: CreateChannelOptions
+    ): Promise<ForumChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
+      type: Constants["ChannelTypes"]["GUILD_MEDIA"],
+      options?: CreateChannelOptions
+    ): Promise<MediaChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
       type?: number,
       options?: CreateChannelOptions
     ): Promise<unknown>;
@@ -2933,8 +2945,10 @@ declare namespace Dysnomia {
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_TEXT"], options?: CreateChannelOptions): Promise<TextChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_VOICE"], options?: CreateChannelOptions): Promise<TextVoiceChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_CATEGORY"], options?: CreateChannelOptions): Promise<CategoryChannel>;
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_ANNOUNCEMENT"], options?: CreateChannelOptions | string): Promise<NewsChannel>;
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], options?: CreateChannelOptions | string): Promise<StageChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_ANNOUNCEMENT"], options?: CreateChannelOptions): Promise<NewsChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], options?: CreateChannelOptions): Promise<StageChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_FORUM"], options: CreateChannelOptions): Promise<ForumChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_MEDIA"], options: CreateChannelOptions): Promise<MediaChannel>;
     createChannel(name: string, type?: number, options?: CreateChannelOptions): Promise<unknown>;
     createCommand<T extends ApplicationCommandStructure>(command: T): Promise<ApplicationCommandStructureConversion<T, true>>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
