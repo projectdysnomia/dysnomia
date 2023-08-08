@@ -81,6 +81,7 @@ declare namespace Dysnomia {
   type TextChannelTypes = GuildTextChannelTypes | PrivateChannelTypes;
   type GuildTextChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_TEXT" | "GUILD_ANNOUNCEMENT">];
   type GuildThreadChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "ANNOUNCEMENT_THREAD" | "PRIVATE_THREAD" | "PUBLIC_THREAD">];
+  type GuildThreadOnlyChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_FORUM" | "GUILD_MEDIA">];
   type GuildPublicThreadChannelTypes = Exclude<GuildThreadChannelTypes, Constants["ChannelTypes"]["PRIVATE_THREAD"]>;
   type GuildVoiceChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "GUILD_VOICE" | "GUILD_STAGE_VOICE">];
   type PrivateChannelTypes = Constants["ChannelTypes"][keyof Pick<Constants["ChannelTypes"], "DM" | "GROUP_DM">];
@@ -1952,10 +1953,12 @@ declare namespace Dysnomia {
       GUILD_STAGE_VOICE:    13;
       GUILD_DIRECTORY:      14;
       GUILD_FORUM:          15;
+      GUILD_MEDIA:          16;
     };
     ChannelFlags: {
-      PINNED:      2;
-      REQUIRE_TAG: 16;
+      PINNED:                      2;
+      REQUIRE_TAG:                 16;
+      HIDE_MEDIA_DOWNLOAD_OPTIONS: 32768;
     };
     ComponentTypes: {
       ACTION_ROW:         1;
@@ -2551,6 +2554,18 @@ declare namespace Dysnomia {
     createChannel(
       guildID: string,
       name: string,
+      type: Constants["ChannelTypes"]["GUILD_FORUM"],
+      options?: CreateChannelOptions
+    ): Promise<ForumChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
+      type: Constants["ChannelTypes"]["GUILD_MEDIA"],
+      options?: CreateChannelOptions
+    ): Promise<MediaChannel>;
+    createChannel(
+      guildID: string,
+      name: string,
       type?: number,
       options?: CreateChannelOptions
     ): Promise<unknown>;
@@ -2855,7 +2870,7 @@ declare namespace Dysnomia {
     permissionOverwrites: Collection<PermissionOverwrite>;
     rateLimitPerUser: number;
     topic?: string | null;
-    type: Constants["ChannelTypes"]["GUILD_FORUM"];
+    type: GuildThreadOnlyChannelTypes;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
     createThread(options: CreateThreadWithoutMessageOptions): Promise<PublicThreadChannel>;
     createWebhook(options: Omit<WebhookOptions, "channelID">, reason?: string): Promise<Webhook>;
@@ -2930,8 +2945,10 @@ declare namespace Dysnomia {
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_TEXT"], options?: CreateChannelOptions): Promise<TextChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_VOICE"], options?: CreateChannelOptions): Promise<TextVoiceChannel>;
     createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_CATEGORY"], options?: CreateChannelOptions): Promise<CategoryChannel>;
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_ANNOUNCEMENT"], options?: CreateChannelOptions | string): Promise<NewsChannel>;
-    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], options?: CreateChannelOptions | string): Promise<StageChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_ANNOUNCEMENT"], options?: CreateChannelOptions): Promise<NewsChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_STAGE_VOICE"], options?: CreateChannelOptions): Promise<StageChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_FORUM"], options: CreateChannelOptions): Promise<ForumChannel>;
+    createChannel(name: string, type: Constants["ChannelTypes"]["GUILD_MEDIA"], options: CreateChannelOptions): Promise<MediaChannel>;
     createChannel(name: string, type?: number, options?: CreateChannelOptions): Promise<unknown>;
     createCommand<T extends ApplicationCommandStructure>(command: T): Promise<ApplicationCommandStructureConversion<T, true>>;
     createEmoji(options: { image: string; name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
@@ -3242,6 +3259,10 @@ declare namespace Dysnomia {
     kick(reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
     unban(reason?: string): Promise<void>;
+  }
+
+  export class MediaChannel extends ForumChannel {
+    type: Constants["ChannelTypes"]["GUILD_MEDIA"];
   }
 
   export class Message<T extends PossiblyUncachedTextable = TextableChannel> extends Base {
