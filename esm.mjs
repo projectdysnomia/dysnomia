@@ -35,6 +35,7 @@ export const {
   GuildTemplate,
   Interaction,
   Invite,
+  MediaChannel,
   Member,
   Message,
   ModalSubmitInteraction,

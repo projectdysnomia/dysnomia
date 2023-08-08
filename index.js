@@ -36,6 +36,7 @@ Dysnomia.GuildScheduledEvent = require("./lib/structures/GuildScheduledEvent");
 Dysnomia.GuildTemplate = require("./lib/structures/GuildTemplate");
 Dysnomia.Interaction = require("./lib/structures/Interaction");
 Dysnomia.Invite = require("./lib/structures/Invite");
+Dysnomia.MediaChannel = require("./lib/structures/MediaChannel");
 Dysnomia.Member = require("./lib/structures/Member");
 Dysnomia.Message = require("./lib/structures/Message");
 Dysnomia.ModalSubmitInteraction = require("./lib/structures/ModalSubmitInteraction.js");
