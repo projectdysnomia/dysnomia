@@ -177,8 +177,9 @@ declare namespace Dysnomia {
 
   // Presence/Relationship
   type ActivityFlags = Constants["ActivityFlags"][keyof Constants["ActivityFlags"]];
-  type ActivityType = BotActivityType | Constants["ActivityTypes"]["CUSTOM"];
-  type BotActivityType = Constants["ActivityTypes"][Exclude<keyof Constants["ActivityTypes"], "CUSTOM">];
+  type ActivityType = Constants["ActivityTypes"][keyof Constants["ActivityTypes"]];
+  /** @deprecated This is equivalent to ActivityType, use that type instead */
+  type BotActivityType = ActivityType;
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
   type Status = "online" | "idle" | "dnd";
   type SelfStatus = Status | "invisible";
@@ -1612,7 +1613,6 @@ declare namespace Dysnomia {
     instance?: boolean;
     party?: { id?: string; size?: [currentSize: number, maxSize: number] };
     secrets?: { join?: string; spectate?: string; match?: string };
-    state?: string;
     timestamps?: { end?: number; start: number };
     type: T;
     // the stuff attached to this object apparently varies even more than documented, so...
@@ -1622,8 +1622,9 @@ declare namespace Dysnomia {
     label: string;
     url: string;
   }
-  interface ActivityPartial<T extends ActivityType = BotActivityType> {
+  interface ActivityPartial<T extends ActivityType = ActivityType> {
     name: string;
+    state?: string;
     type?: T;
     url?: string;
   }
@@ -2831,8 +2832,8 @@ declare namespace Dysnomia {
     editRolePosition(guildID: string, roleID: string, position: number): Promise<void>;
     editSelf(options: EditSelfOptions): Promise<ExtendedUser>;
     editStageInstance(channelID: string, options: StageInstanceOptions): Promise<StageInstance>;
-    editStatus(status: SelfStatus, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
-    editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    editStatus(status: SelfStatus, activities?: ActivityPartial<ActivityType>[] | ActivityPartial<ActivityType>): void;
+    editStatus(activities?: ActivityPartial<ActivityType>[] | ActivityPartial<ActivityType>): void;
     editWebhook(
       webhookID: string,
       options: WebhookOptions,
@@ -3798,8 +3799,8 @@ declare namespace Dysnomia {
     createGuild(_guild: Guild): Guild;
     disconnect(options?: { reconnect?: boolean | "auto" }, error?: Error): void;
     editAFK(afk: boolean): void;
-    editStatus(status: SelfStatus, activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
-    editStatus(activities?: ActivityPartial<BotActivityType>[] | ActivityPartial<BotActivityType>): void;
+    editStatus(status: SelfStatus, activities?: ActivityPartial<ActivityType>[] | ActivityPartial<ActivityType>): void;
+    editStatus(activities?: ActivityPartial<ActivityType>[] | ActivityPartial<ActivityType>): void;
     // @ts-ignore: Method override
     emit(event: string, ...args: any[]): void;
     emit<K extends keyof ShardEvents>(event: K, ...args: ShardEvents[K]): boolean;
