@@ -767,8 +767,8 @@ declare namespace Dysnomia {
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
     messageDelete: [message: PossiblyUncachedMessage];
     messageDeleteBulk: [messages: PossiblyUncachedMessage[]];
-    messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached];
-    messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string];
+    messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached, isBurst: boolean];
+    messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string, isBurst: boolean];
     messageReactionRemoveAll: [message: PossiblyUncachedMessage];
     messageReactionRemoveEmoji: [message: PossiblyUncachedMessage, emoji: PartialEmoji];
     messageUpdate: [message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null];
@@ -3389,7 +3389,7 @@ declare namespace Dysnomia {
     nonce?: string | number;
     pinned: boolean;
     position?: number;
-    reactions: { [s: string]: { count: number; me: boolean } };
+    reactions: { [s: string]: { burstColors: string[]; count: number; countDetails: { burst: number; normal: number }; me: boolean; meBurst: boolean; } };
     referencedMessage?: Message | null;
     roleMentions: string[];
     roleSubscriptionData?: RoleSubscriptionData;
