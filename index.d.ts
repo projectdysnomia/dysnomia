@@ -3315,7 +3315,7 @@ declare namespace Dysnomia {
     messageReference: MessageReference | null;
     pinned: boolean;
     position?: number;
-    reactions: { [s: string]: { burstColors: string[]; count: number; countDetails: { burst: number; normal: number }; me: boolean; meBurst: boolean; } };
+    reactions: { [s: string]: { burstColors: string[]; count: number; countDetails: { burst: number; normal: number }; me: boolean; meBurst: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
     roleSubscriptionData?: RoleSubscriptionData;
