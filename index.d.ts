@@ -3315,6 +3315,7 @@ declare namespace Dysnomia {
     deleteMemberDays?: number;
     guild: Guild;
     id: string;
+    integrationType?: string;
     member?: Member | Uncached;
     membersRemoved?: number;
     message?: Message<GuildTextableChannel>;
