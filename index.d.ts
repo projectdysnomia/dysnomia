@@ -373,6 +373,7 @@ declare namespace Dysnomia {
     defaultForumLayout?: ForumLayoutTypes;
     defaultReactionEmoji?: ForumDefaultReactionEmoji | null;
     defaultSortOrder?: ThreadSortingOrders | null;
+    defaultThreadRateLimitPerUser?: number | null;
     nsfw?: boolean;
     parentID?: string;
     permissionOverwrites?: Overwrite[];
@@ -388,7 +389,6 @@ declare namespace Dysnomia {
     archived?: boolean;
     appliedTags?: string[];
     autoArchiveDuration?: AutoArchiveDuration;
-    defaultThreadRateLimitPerUser?: number | null;
     flags?: number;
     invitable?: boolean;
     locked?: boolean;
