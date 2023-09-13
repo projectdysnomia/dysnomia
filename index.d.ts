@@ -2919,6 +2919,7 @@ declare namespace Dysnomia {
     getRoleConnectionMetadata(): Promise<ApplicationRoleConnectionMetadata[]>;
     getSelf(): Promise<ExtendedUser>;
     getStageInstance(channelID: string): Promise<StageInstance>;
+    getStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getThreadMember(channelID: string, memberID: string, options: GetThreadMemberOptions): Promise<ThreadMember>;
     getThreadMembers(channelID: string, options: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
