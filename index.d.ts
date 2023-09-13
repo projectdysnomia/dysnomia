@@ -2718,6 +2718,7 @@ declare namespace Dysnomia {
     getMessage(channelID: string, messageID: string): Promise<Message>;
     getMessageReaction(channelID: string, messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     getMessages(channelID: string, options?: GetMessagesOptions): Promise<Message[]>;
+    /** @deprecated */
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
@@ -2739,6 +2740,7 @@ declare namespace Dysnomia {
     getRoleConnectionMetadata(): Promise<ApplicationRoleConnectionMetadata[]>;
     getSelf(): Promise<ExtendedUser>;
     getStageInstance(channelID: string): Promise<StageInstance>;
+    getStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getThreadMember(channelID: string, memberID: string, options: GetThreadMemberOptions): Promise<ThreadMember>;
     getThreadMembers(channelID: string, options: GetThreadMembersOptions): Promise<ThreadMember[]>;
     getVoiceRegions(guildID?: string): Promise<VoiceRegion[]>;
