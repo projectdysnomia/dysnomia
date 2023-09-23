@@ -154,9 +154,9 @@ declare namespace Dysnomia {
   type MessageContent = string | AdvancedMessageContent;
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type PossiblyUncachedMessage = Message | { author?: User | Uncached; channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
-  type SelectMenu = BaseSelectMenu | ChannelSelectMenu | StringSelectMenu;
+  type SelectMenu = BaseSelectMenu | ChannelSelectMenu | StringSelectMenu | UserSelectMenu | RoleSelectMenu | MentionableSelectMenu;
   type SelectMenuTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "USER_SELECT" | "ROLE_SELECT" | "MENTIONABLE_SELECT" | "CHANNEL_SELECT">];
-  type SelectMenuExtendedTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "CHANNEL_SELECT">];
+  type SelectMenuExtendedTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "CHANNEL_SELECT" | "ROLE_SELECT" | "USER_SELECT" | "MENTIONABLE_SELECT">];
 
 
   // Permission
@@ -1364,6 +1364,7 @@ declare namespace Dysnomia {
   }
   interface ChannelSelectMenu extends SelectMenuBase {
     channel_types?: GuildChannelTypes[];
+    default_values?: SelectMenuDefaultValue<"channel">[];
     type: Constants["ComponentTypes"]["CHANNEL_SELECT"];
   }
   interface CreateStickerOptions extends Required<Pick<EditStickerOptions, "name" | "tags" | "description">> {
@@ -1380,6 +1381,18 @@ declare namespace Dysnomia {
     name?: string;
     tags?: string;
   }
+  interface MentionableSelectMenu extends SelectMenuBase {
+    default_values?: SelectMenuDefaultValue<"any">[];
+    type: Constants["ComponentTypes"]["MENTIONABLE_SELECT"];
+  }
+  interface RoleSelectMenu extends SelectMenuBase {
+    default_values?: SelectMenuDefaultValue<"role">[];
+    type: Constants["ComponentTypes"]["ROLE_SELECT"];
+  }
+  interface UserSelectMenu extends SelectMenuBase {
+    default_values?: SelectMenuDefaultValue<"user">[];
+    type: Constants["ComponentTypes"]["USER_SELECT"];
+  }
   interface BaseSelectMenu extends SelectMenuBase {
     type: BaseSelectMenuTypes;
   }
@@ -1394,6 +1407,10 @@ declare namespace Dysnomia {
   interface StringSelectMenu extends SelectMenuBase {
     options: SelectMenuOptions[];
     type: Constants["ComponentTypes"]["STRING_SELECT"];
+  }
+  interface SelectMenuDefaultValue<Type extends ("any" | "user" | "role" | "channel") = "any"> {
+    id: string;
+    type: Type extends "any" ? ("user" | "role" | "channel") : Type;
   }
   interface SelectMenuOptions {
     default?: boolean;
