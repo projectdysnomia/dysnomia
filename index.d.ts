@@ -1249,7 +1249,7 @@ declare namespace Dysnomia {
   }
   interface InteractionResponseMessage {
     data: RawInteractionContent;
-    type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"];
+    type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE" | "PREMIUM_REQUIRED"];
   }
   interface InteractionResponseModal {
     data: InteractionModalContent;
@@ -2227,6 +2227,7 @@ declare namespace Dysnomia {
       UPDATE_MESSAGE:                          7;
       APPLICATION_COMMAND_AUTOCOMPLETE_RESULT: 8;
       MODAL:                                   9;
+      PREMIUM_REQUIRED:                        10;
     };
     InteractionTypes: {
       PING:                             1;
@@ -3365,6 +3366,7 @@ declare namespace Dysnomia {
   export class Interaction extends Base {
     acknowledged: boolean;
     applicationID: string;
+    entitlements: unknown[]; // Untyped for the time being - API design is TBD
     id: string;
     token: string;
     type: number;
