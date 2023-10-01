@@ -1306,9 +1306,13 @@ declare namespace Dysnomia {
     globalName: string | null;
     username: string;
   }
+  interface AvatarDecorationData {
+    sku_id: string;
+    asset: string;
+  }
   interface PartialUser {
     avatar: string | null;
-    avatar_decoration: string | null;
+    avatar_decoration_data: AvatarDecorationData | null;
     discriminator: string;
     id: string;
     username: string;
@@ -3257,6 +3261,8 @@ declare namespace Dysnomia {
     createdAt: number;
     defaultAvatar: string;
     defaultAvatarURL: string;
+    avatarDecorationData: AvatarDecorationData | null;
+    avatarDecorationURL: string | null;
     discriminator: string;
     flags: number;
     game: Activity | null;
@@ -3746,7 +3752,7 @@ declare namespace Dysnomia {
   export class User extends Base {
     accentColor?: number | null;
     avatar: string | null;
-    avatarDecoration?: string | null;
+    avatarDecorationData?: AvatarDecorationData | null;
     avatarDecorationURL: string | null;
     avatarURL: string;
     banner?: string | null;
@@ -3764,7 +3770,6 @@ declare namespace Dysnomia {
     system: boolean;
     username: string;
     constructor(data: BaseData, client: Client);
-    dynamicAvatarDecorationURL(format?: ImageFormat, size?: number): string | null;
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
     dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
     getDMChannel(): Promise<PrivateChannel>;
