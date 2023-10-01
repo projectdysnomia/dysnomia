@@ -1783,17 +1783,17 @@ declare namespace Dysnomia {
     verify_key: string;
   }
 
-  interface EditApplicationOptions extends Partial<Pick<OAuthApplicationInfo, | 
-    "cover_image" |
-    "custom_install_url" |
-    "description" |
-    "flags" |
-    "icon" |
-    "install_params" |
-    "interactions_endpoint_url" |
-    "role_connections_verification_url" |
-    "tags"
-  >> {}
+  type EditApplicationOptions = Partial<Pick<OAuthApplicationInfo, |
+  "cover_image" |
+  "custom_install_url" |
+  "description" |
+  "flags" |
+  "icon" |
+  "install_params" |
+  "interactions_endpoint_url" |
+  "role_connections_verification_url" |
+  "tags"
+  >>;
 
   interface OAuthTeamInfo {
     icon: string | null;
