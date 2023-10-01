@@ -1648,6 +1648,7 @@ declare namespace Dysnomia {
 
   // Voice
   interface CreateStageInstanceOptions extends StageInstanceOptions {
+    guildScheduledEventID?: string;
     sendStartNotification?: boolean;
   }
   interface JoinVoiceChannelOptions {
