@@ -1302,6 +1302,7 @@ declare namespace Dysnomia {
   }
   interface OldUser {
     avatar: string | null;
+    avatarDecorationData: AvatarDecorationData | null;
     discriminator: string;
     globalName: string | null;
     username: string;
