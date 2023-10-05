@@ -197,6 +197,11 @@ declare namespace Dysnomia {
   type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components" | "attachments" | "threadID">;
   type WebhookTypes = Constants["WebhookTypes"][keyof Constants["WebhookTypes"]];
 
+  // Subscriptions
+  type EntitlementOwnerTypes = Constants["EntitlementOwnerTypes"][keyof Constants["EntitlementOwnerTypes"]];
+  type EntitlementTypes = Constants["EntitlementTypes"][keyof Constants["EntitlementTypes"]];
+  type SKUTypes = Constants["SKUTypes"][keyof Constants["SKUTypes"]]
+
   // INTERFACES
   // Internals
   interface JSONCache {
@@ -2111,6 +2116,13 @@ declare namespace Dysnomia {
       ALL_MESSAGES:  0;
       ONLY_MENTIONS: 1;
     };
+    EntitlementOwnerTypes: {
+      GUILD: 1;
+      USER:  2;
+    }
+    EntitlementTypes: {
+      APPLICATION_SUBSCRIPTION: 8;
+    }
     ExplicitContentFilterLevels: {
       DISABLED:              0;
       MEMBERS_WITHOUT_ROLES: 1;
@@ -2421,6 +2433,14 @@ declare namespace Dysnomia {
     RoleFlags: {
       IN_PROMPT: 1;
     };
+    SKUFlags: {
+      GUILD_SUBSCRIPTION: 128;
+      USER_SUBSCRIPTION:  256;
+    }
+    SKUTypes: {
+      SUBSCRIPTION:       5;
+      SUBSCRIPTION_GROUP: 6;
+    }
     StageInstancePrivacyLevel: {
       /** @deprecated */
       PUBLIC: 1;
@@ -2543,6 +2563,31 @@ declare namespace Dysnomia {
     };
   }
   /* eslint-enable @stylistic/key-spacing, @stylistic/no-multi-spaces */
+
+  // Subscriptions
+  interface CreateEntitlementOptions {
+    skuID: string;
+    ownerID: string;
+    ownerType: EntitlementOwnerTypes;
+  }
+
+  interface GetEntitlementsOptions {
+    after?: number;
+    before?: number;
+    excludeEnded?: boolean;
+    guildID?: string;
+    limit?: number;
+    skuIDs?: string[];
+    userID?: string;
+  }
+
+  interface SKU {
+    id: string;
+    type: SKUTypes;
+    name: string;
+    slug: string;
+    flags: number;
+  }
 
   // Classes
   export class AutocompleteInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
@@ -2758,6 +2803,7 @@ declare namespace Dysnomia {
     createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
     createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: CreateStageInstanceOptions): Promise<StageInstance>;
+    createTestEntitlement(options: CreateEntitlementOptions): Promise<Entitlement>;
     createThread(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
@@ -2778,6 +2824,7 @@ declare namespace Dysnomia {
     deleteMessages(channelID: string, messageIDs: string[], reason?: string): Promise<void>;
     deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
     deleteStageInstance(channelID: string): Promise<void>;
+    deleteTestEntitlement(entitlementID: string): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     deleteWebhookMessage(webhookID: string, token: string, messageID: string, threadID?: string): Promise<void>;
     disconnect(options: { reconnect?: boolean | "auto" }): void;
@@ -2864,6 +2911,7 @@ declare namespace Dysnomia {
     getCommandPermissions(guildID: string, commandID: string): Promise<GuildApplicationCommandPermissions>;
     getCommands<W extends boolean = false>(withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
+    getEntitlements(options: GetEntitlementsOptions): Promise<Entitlement[]>;
     getGateway(): Promise<{ url: string }>;
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<GuildBan>;
@@ -2913,6 +2961,7 @@ declare namespace Dysnomia {
     getRESTUser(userID: string): Promise<User>;
     getRoleConnectionMetadata(): Promise<ApplicationRoleConnectionMetadata[]>;
     getSelf(): Promise<ExtendedUser>;
+    getSKUs(): Promise<SKU[]>;
     getStageInstance(channelID: string): Promise<StageInstance>;
     getStickerPack(packID: string): Promise<StickerPack>;
     getStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
@@ -3029,6 +3078,16 @@ declare namespace Dysnomia {
     response: HTTPResponse;
     constructor(req: ClientRequest, res: IncomingMessage, response: HTTPResponse, stack: string);
     flattenErrors(errors: HTTPResponse, keyPrefix?: string): string[];
+  }
+
+  export class Entitlement extends Base {
+    skuID: string;
+    userID?: string;
+    guildID?: string;
+    applicationID: string;
+    type: EntitlementTypes;
+    startsAt: number | null;
+    endsAt: number | null;
   }
 
   export class ExtendedUser extends User {
@@ -3366,7 +3425,7 @@ declare namespace Dysnomia {
   export class Interaction extends Base {
     acknowledged: boolean;
     applicationID: string;
-    entitlements: unknown[]; // Untyped for the time being - API design is TBD
+    entitlements: Entitlement[]; // Untyped for the time being - API design is TBD
     id: string;
     token: string;
     type: number;
