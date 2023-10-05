@@ -200,7 +200,7 @@ declare namespace Dysnomia {
   // Subscriptions
   type EntitlementOwnerTypes = Constants["EntitlementOwnerTypes"][keyof Constants["EntitlementOwnerTypes"]];
   type EntitlementTypes = Constants["EntitlementTypes"][keyof Constants["EntitlementTypes"]];
-  type SKUTypes = Constants["SKUTypes"][keyof Constants["SKUTypes"]]
+  type SKUTypes = Constants["SKUTypes"][keyof Constants["SKUTypes"]];
 
   // INTERFACES
   // Internals
@@ -2119,10 +2119,10 @@ declare namespace Dysnomia {
     EntitlementOwnerTypes: {
       GUILD: 1;
       USER:  2;
-    }
+    };
     EntitlementTypes: {
       APPLICATION_SUBSCRIPTION: 8;
-    }
+    };
     ExplicitContentFilterLevels: {
       DISABLED:              0;
       MEMBERS_WITHOUT_ROLES: 1;
@@ -2436,11 +2436,11 @@ declare namespace Dysnomia {
     SKUFlags: {
       GUILD_SUBSCRIPTION: 128;
       USER_SUBSCRIPTION:  256;
-    }
+    };
     SKUTypes: {
       SUBSCRIPTION:       5;
       SUBSCRIPTION_GROUP: 6;
-    }
+    };
     StageInstancePrivacyLevel: {
       /** @deprecated */
       PUBLIC: 1;
@@ -3081,13 +3081,13 @@ declare namespace Dysnomia {
   }
 
   export class Entitlement extends Base {
-    skuID: string;
-    userID?: string;
-    guildID?: string;
     applicationID: string;
-    type: EntitlementTypes;
-    startsAt: number | null;
     endsAt: number | null;
+    guildID?: string;
+    skuID: string;
+    startsAt: number | null;
+    type: EntitlementTypes;
+    userID?: string;
   }
 
   export class ExtendedUser extends User {
