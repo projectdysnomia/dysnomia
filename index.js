@@ -22,6 +22,7 @@ Dysnomia.Collection = require("./lib/util/Collection");
 Dysnomia.Constants = require("./lib/Constants");
 Dysnomia.DiscordHTTPError = require("./lib/errors/DiscordHTTPError");
 Dysnomia.DiscordRESTError = require("./lib/errors/DiscordRESTError");
+Dysnomia.Entitlement = require("./lib/structures/Entitlement");
 Dysnomia.ExtendedUser = require("./lib/structures/ExtendedUser");
 Dysnomia.ForumChannel = require("./lib/structures/ForumChannel");
 Dysnomia.Guild = require("./lib/structures/Guild");
