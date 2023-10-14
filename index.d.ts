@@ -2327,6 +2327,7 @@ declare namespace Dysnomia {
       IN_PROMPT: 1;
     };
     SKUFlags: {
+      AVAILABLE:          4;
       GUILD_SUBSCRIPTION: 128;
       USER_SUBSCRIPTION:  256;
     };
@@ -2963,6 +2964,7 @@ declare namespace Dysnomia {
 
   export class Entitlement extends Base {
     applicationID: string;
+    deleted: boolean;
     endsAt: number | null;
     guildID?: string;
     skuID: string;
