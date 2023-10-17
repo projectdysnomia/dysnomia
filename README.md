@@ -55,7 +55,7 @@ bot.on("messageCreate", (msg) => { // When a message is created
 bot.connect(); // Get the bot to connect to Discord
 ```
 
-More examples can be found in [the examples folder](https://github.com/projectdysnomia/dysnomia/tree/master/examples).
+More examples can be found in [the examples folder](examples).
 
 Useful Links
 ------------
