@@ -933,7 +933,8 @@ declare namespace Dysnomia {
     level: MFALevel;
     reason?: string;
   }
-  interface EditGuildOnboardingOptions extends Partial<Omit<GuildOnboarding, "guild_id">> {
+  interface EditGuildOnboardingOptions extends Partial<Omit<GuildOnboarding, "guild_id" | "prompts">> {
+    prompts?: EditGuildOnboardingPrompt[];
     reason?: string;
   }
   interface GetGuildAuditLogOptions {
@@ -1008,6 +1009,14 @@ declare namespace Dysnomia {
     id: string;
     role_ids: string[];
     title: string;
+  }
+  interface EditGuildOnboardingPrompt extends Omit<GuildOnboardingPrompt, "options"> {
+    options: EditGuildOnboardingPromptOption[];
+  }
+  interface EditGuildOnboardingPromptOption extends Omit<GuildOnboardingPromptOption, "emoji"> {
+    emoji_id?: string;
+    emoji_name?: string;
+    emoji_animated?: boolean;
   }
   interface GuildOptions {
     afkChannelID?: string;
