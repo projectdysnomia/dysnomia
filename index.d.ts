@@ -1085,6 +1085,17 @@ declare namespace Dysnomia {
     code: string | null;
     uses: number;
   }
+  interface PartialGuild {
+    approximate_member_count?: number;
+    approximate_presence_count?: number;
+    description?: string | null;
+    discovery_splash?: string | null;
+    features?: GuildFeatures[];
+    icon?: string | null;
+    id: string;
+    name?: string;
+    splash?: string | null;
+  }
   interface IntegrationApplication {
     bot?: User;
     description: string;
@@ -1755,14 +1766,7 @@ declare namespace Dysnomia {
     description: string;
     flags?: number;
     guild_id?: string;
-    // The docs say that there can be a partial guild object attached,
-    // but as of 2023-07-25, there is no guild object attached in either
-    // endpoints, so we cannot determine how partial the guild object really is.
-    // Update 2023-10-01: Per a comment on an API Docs PR (https://github.com/discord/discord-api-docs/pull/6297/files#r1318901630)
-    // the guild object seems to be attached only if the guild is discoverable.
-    // Which I (TTtie) don't currently have access to.
-    // Proceed with caution.
-    guild?: unknown;
+    guild?: PartialGuild;
     icon: string | null;
     id: string;
     install_params?: OAuthInstallParams;
