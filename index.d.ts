@@ -1085,6 +1085,17 @@ declare namespace Dysnomia {
     code: string | null;
     uses: number;
   }
+  interface PartialGuild {
+    approximate_member_count?: number;
+    approximate_presence_count?: number;
+    description?: string | null;
+    discovery_splash?: string | null;
+    features?: GuildFeatures[];
+    icon?: string | null;
+    id: string;
+    name?: string;
+    splash?: string | null;
+  }
   interface IntegrationApplication {
     bot?: User;
     description: string;
@@ -1747,6 +1758,7 @@ declare namespace Dysnomia {
   }
   interface OAuthApplicationInfo {
     approximate_guild_count?: number;
+    bot?: PartialUser;
     bot_public: boolean;
     bot_require_code_grant: boolean;
     cover_image?: string;
@@ -1754,18 +1766,16 @@ declare namespace Dysnomia {
     description: string;
     flags?: number;
     guild_id?: string;
-    // The docs say that there can be a partial guild object attached,
-    // but as of 2023-07-25, there is no guild object attached in either
-    // endpoints, so we cannot determine how partial the guild object really is.
-    // Proceed with caution.
-    guild?: unknown;
+    guild?: PartialGuild;
     icon: string | null;
     id: string;
     install_params?: OAuthInstallParams;
+    interactions_endpoint_url?: string;
     name: string;
     owner?: PartialUser;
     primary_sku_id?: string;
     privacy_policy_url?: string;
+    redirect_uris?: string[];
     role_connections_verification_url?: string;
     rpc_origins?: string[];
     slug?: string;
@@ -1776,6 +1786,19 @@ declare namespace Dysnomia {
     terms_of_service_url?: string;
     verify_key: string;
   }
+
+  type EditApplicationOptions = Partial<Pick<OAuthApplicationInfo, |
+  "cover_image" |
+  "custom_install_url" |
+  "description" |
+  "flags" |
+  "icon" |
+  "install_params" |
+  "interactions_endpoint_url" |
+  "role_connections_verification_url" |
+  "tags"
+  >>;
+
   interface OAuthTeamInfo {
     icon: string | null;
     id: string;
@@ -2635,6 +2658,7 @@ declare namespace Dysnomia {
     deleteWebhookMessage(webhookID: string, token: string, messageID: string): Promise<void>;
     disconnect(options: { reconnect?: boolean | "auto" }): void;
     editAFK(afk: boolean): void;
+    editApplication(options: EditApplicationOptions): Promise<OAuthApplicationInfo>;
     editAutoModerationRule(guildID: string, ruleID: string, options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
     editChannel(
       channelID: string,
