@@ -2286,7 +2286,7 @@ declare namespace Dysnomia {
       allGuild:                         29697484783806n;
       allText:                          70904273435729n;
       allVoice:                         40136803878673n;
-      all:                              114349209288703n;
+      all:                              140737488355327n;
     };
     PremiumTiers: {
       NONE:   0;
