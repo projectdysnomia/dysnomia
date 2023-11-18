@@ -2278,13 +2278,15 @@ declare namespace Dysnomia {
       startEmbeddedActivities:          549755813888n;
       moderateMembers:                  1099511627776n;
       viewCreatorMonetizationAnalytics: 2199023255552n;
+      createGuildExpressions:           8796093022208n;
+      createEvents:                     17592186044416n;
       useExternalSounds:                35184372088832n;
       useSoundboard:                    4398046511104n;
       sendVoiceMessages:                70368744177664n;
-      allGuild:                         3309205717182n;
+      allGuild:                         29697484783806n;
       allText:                          70904273435729n;
       allVoice:                         40136803878673n;
-      all:                              114349209288703n;
+      all:                              140737488355327n;
     };
     PremiumTiers: {
       NONE:   0;
