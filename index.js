@@ -1,4 +1,9 @@
 "use strict";
+/**
+ * Import the Client eagerly to allow some of the circularly
+ * imported modules to correctly initialize.
+ */
+const Client = require("./lib/Client.js");
 
 const Dysnomia = {};
 
@@ -12,7 +17,7 @@ Dysnomia.CategoryChannel = require("./lib/structures/CategoryChannel");
 Dysnomia.Channel = require("./lib/structures/Channel");
 Dysnomia.CommandInteraction = require("./lib/structures/CommandInteraction");
 Dysnomia.ComponentInteraction = require("./lib/structures/ComponentInteraction");
-Dysnomia.Client = require("./lib/Client");
+Dysnomia.Client = Client;
 Dysnomia.Collection = require("./lib/util/Collection");
 Dysnomia.Constants = require("./lib/Constants");
 Dysnomia.DiscordHTTPError = require("./lib/errors/DiscordHTTPError");
