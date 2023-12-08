@@ -1745,6 +1745,7 @@ declare namespace Dysnomia {
   }
   interface WebhookPayload {
     allowedMentions?: AllowedMentions;
+    appliedTags?: string[];
     auth?: boolean;
     attachments?: AdvancedMessageContentAttachment[];
     avatarURL?: string;
