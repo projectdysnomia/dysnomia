@@ -2476,6 +2476,7 @@ declare namespace Dysnomia {
 
   interface SKU {
     id: string;
+    application_id: string;
     type: SKUTypes;
     name: string;
     slug: string;
