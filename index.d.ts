@@ -741,6 +741,9 @@ declare namespace Dysnomia {
     connect: [id: number];
     debug: [message: string, id?: number];
     disconnect: [];
+    entitlementCreate: [entitlement: Entitlement];
+    entitlementUpdate: [entitlement: Entitlement];
+    entitlementDelete: [entitlement: Entitlement];
     error: [err: Error, id?: number];
     guildAuditLogEntryCreate: [entry: GuildAuditLogEntry];
     guildAvailable: [guild: Guild];
