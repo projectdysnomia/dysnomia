@@ -3431,7 +3431,7 @@ declare namespace Dysnomia {
   export class Interaction extends Base {
     acknowledged: boolean;
     applicationID: string;
-    entitlements: Entitlement[]; // Untyped for the time being - API design is TBD
+    entitlements: Entitlement[];
     id: string;
     token: string;
     type: number;
