@@ -3038,6 +3038,7 @@ declare namespace Dysnomia {
     editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message>;
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     getOriginalMessage(): Promise<Message>;
+    requirePremium(): Promise<void>;
   }
 
   export class ComponentInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
@@ -3061,6 +3062,7 @@ declare namespace Dysnomia {
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     editParent(content: InteractionContentEdit): Promise<void>;
     getOriginalMessage(): Promise<Message>;
+    requirePremium(): Promise<void>;
   }
 
   export class DiscordHTTPError extends Error {
@@ -3593,6 +3595,7 @@ declare namespace Dysnomia {
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     editParent(content: InteractionContentEdit): Promise<void>;
     getOriginalMessage(): Promise<Message>;
+    requirePremium(): Promise<void>;
   }
 
   // News channel rate limit is always 0
