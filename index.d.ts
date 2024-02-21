@@ -151,7 +151,7 @@ declare namespace Dysnomia {
   type ComponentTypes = Constants["ComponentTypes"][keyof Constants["ComponentTypes"]];
   type ImageFormat = Constants["ImageFormats"][number];
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
-  type MessageContent<T extends "isNonceEnforceable" | "" = ""> = string | AdvancedMessageContent<T>;
+  type MessageContent<T extends "hasNonce" | "" = ""> = string | AdvancedMessageContent<T>;
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type PossiblyUncachedMessage = Message | { author?: User | Uncached; channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
   type SelectMenu = BaseSelectMenu | ChannelSelectMenu | StringSelectMenu | UserSelectMenu | RoleSelectMenu | MentionableSelectMenu;
@@ -438,7 +438,7 @@ declare namespace Dysnomia {
     lastMessageID: string;
     messages: Collection<Message<this>>;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createMessage(content: MessageContent<"isNonceEnforceable">): Promise<Message<this>>;
+    createMessage(content: MessageContent<"hasNonce">): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<this>>;
     getMessage(messageID: string): Promise<Message<this>>;
@@ -1344,16 +1344,16 @@ declare namespace Dysnomia {
     components: TextInput[];
     type: Constants["ComponentTypes"]["ACTION_ROW"];
   }
-  interface AdvancedMessageContent<T extends "isNonceEnforceable" | "" = ""> {
+  interface AdvancedMessageContent<T extends "hasNonce" | "" = ""> {
     allowedMentions?: AllowedMentions;
     attachments?: AdvancedMessageContentAttachment[];
     components?: ActionRow[];
     content?: string;
-    enforceNonce?: T extends "isNonceEnforceable" ? boolean : never;
+    enforceNonce?: T extends "hasNonce" ? boolean : never;
     embeds?: EmbedOptions[];
     flags?: number;
     messageReference?: MessageReferenceReply;
-    nonce?: string | number;
+    nonce?: T extends "hasNonce" ? (string | number) : never;
     stickerIDs?: string[];
     tts?: boolean;
   }
@@ -2645,7 +2645,7 @@ declare namespace Dysnomia {
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
     createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionResponse, file?: FileContent | FileContent[]): Promise<void>;
-    createMessage(channelID: string, content: MessageContent<"isNonceEnforceable">): Promise<Message>;
+    createMessage(channelID: string, content: MessageContent<"hasNonce">): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
     createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: CreateStageInstanceOptions): Promise<StageInstance>;
@@ -3405,7 +3405,7 @@ declare namespace Dysnomia {
     rateLimitPerUser: 0;
     type: Constants["ChannelTypes"]["GUILD_ANNOUNCEMENT"];
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
-    createMessage(content: MessageContent<"isNonceEnforceable">): Promise<Message<this>>;
+    createMessage(content: MessageContent<"hasNonce">): Promise<Message<this>>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel>;
     crosspostMessage(messageID: string): Promise<Message<this>>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<this>>;
@@ -3464,7 +3464,7 @@ declare namespace Dysnomia {
     recipient: User;
     type: PrivateChannelTypes;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createMessage(content: MessageContent<"isNonceEnforceable">): Promise<Message<this>>;
+    createMessage(content: MessageContent<"hasNonce">): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<this>>;
     getMessage(messageID: string): Promise<Message<this>>;
@@ -3677,7 +3677,7 @@ declare namespace Dysnomia {
     constructor(data: BaseData, client: Client, messageLimit: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
-    createMessage(content: MessageContent<"isNonceEnforceable">): Promise<Message<this>>;
+    createMessage(content: MessageContent<"hasNonce">): Promise<Message<this>>;
     createThread(options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
     createWebhook(options: Omit<WebhookOptions, "channelID">, reason?: string): Promise<Webhook>;
@@ -3709,7 +3709,7 @@ declare namespace Dysnomia {
     messages: Collection<Message<this>>;
     rateLimitPerUser: number;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createMessage(content: MessageContent<"isNonceEnforceable">): Promise<Message<this>>;
+    createMessage(content: MessageContent<"hasNonce">): Promise<Message<this>>;
     createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
@@ -3741,7 +3741,7 @@ declare namespace Dysnomia {
     type: GuildThreadChannelTypes;
     constructor(data: BaseData, client: Client, messageLimit?: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createMessage(content: MessageContent<"isNonceEnforceable">): Promise<Message<this>>;
+    createMessage(content: MessageContent<"hasNonce">): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "invitable" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
