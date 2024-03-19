@@ -26,4 +26,25 @@ jobs:
         run: npm i --omit=optional
       - name: Lint ${{ matrix.lang.name }} files
         run: "npm run lint:${{ matrix.lang.lang }}"
-        
+  jsdoc:
+    name: Test JSDoc parsing
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+      - name: Install JSDoc
+        run: npm i -g jsdoc
+      - name: Try to parse the files
+        run: |
+          tee jsdoc.conf.js >/dev/null <<EOF
+          // Add a BigInt JSON serializer as JSDoc fails without one
+          // https://github.com/jsdoc/jsdoc/issues/1918
+          BigInt.prototype.toJSON = function() { return this.toString() + "n"; }
+          EOF
+
+          jsdoc -c jsdoc.conf.js -X ./lib/**/*.js >/dev/null
