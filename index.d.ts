@@ -151,7 +151,7 @@ declare namespace Dysnomia {
   type ComponentTypes = Constants["ComponentTypes"][keyof Constants["ComponentTypes"]];
   type ImageFormat = Constants["ImageFormats"][number];
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
-  type MessageContent = string | AdvancedMessageContent;
+  type MessageContent<T extends "hasNonce" | "" = ""> = string | AdvancedMessageContent<T>;
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type PossiblyUncachedMessage = Message | { author?: User | Uncached; channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
   type SelectMenu = BaseSelectMenu | ChannelSelectMenu | StringSelectMenu | UserSelectMenu | RoleSelectMenu | MentionableSelectMenu;
@@ -438,7 +438,7 @@ declare namespace Dysnomia {
     lastMessageID: string;
     messages: Collection<Message<this>>;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createMessage(content: MessageContent): Promise<Message<this>>;
+    createMessage(content: MessageContent<"hasNonce">): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<this>>;
     getMessage(messageID: string): Promise<Message<this>>;
@@ -933,7 +933,8 @@ declare namespace Dysnomia {
     level: MFALevel;
     reason?: string;
   }
-  interface EditGuildOnboardingOptions extends Partial<Omit<GuildOnboarding, "guild_id">> {
+  interface EditGuildOnboardingOptions extends Partial<Omit<GuildOnboarding, "guild_id" | "prompts">> {
+    prompts?: EditGuildOnboardingPrompt[];
     reason?: string;
   }
   interface GetGuildAuditLogOptions {
@@ -1008,6 +1009,14 @@ declare namespace Dysnomia {
     id: string;
     role_ids: string[];
     title: string;
+  }
+  interface EditGuildOnboardingPrompt extends Omit<GuildOnboardingPrompt, "options"> {
+    options: EditGuildOnboardingPromptOption[];
+  }
+  interface EditGuildOnboardingPromptOption extends Omit<GuildOnboardingPromptOption, "emoji"> {
+    emoji_id?: string;
+    emoji_name?: string;
+    emoji_animated?: boolean;
   }
   interface GuildOptions {
     afkChannelID?: string;
@@ -1084,6 +1093,17 @@ declare namespace Dysnomia {
   interface GuildVanity {
     code: string | null;
     uses: number;
+  }
+  interface PartialGuild {
+    approximate_member_count?: number;
+    approximate_presence_count?: number;
+    description?: string | null;
+    discovery_splash?: string | null;
+    features?: GuildFeatures[];
+    icon?: string | null;
+    id: string;
+    name?: string;
+    splash?: string | null;
   }
   interface IntegrationApplication {
     bot?: User;
@@ -1324,14 +1344,16 @@ declare namespace Dysnomia {
     components: TextInput[];
     type: Constants["ComponentTypes"]["ACTION_ROW"];
   }
-  interface AdvancedMessageContent {
+  interface AdvancedMessageContent<T extends "hasNonce" | "" = ""> {
     allowedMentions?: AllowedMentions;
     attachments?: AdvancedMessageContentAttachment[];
     components?: ActionRow[];
     content?: string;
+    enforceNonce?: T extends "hasNonce" ? boolean : never;
     embeds?: EmbedOptions[];
     flags?: number;
     messageReference?: MessageReferenceReply;
+    nonce?: T extends "hasNonce" ? (string | number) : never;
     stickerIDs?: string[];
     tts?: boolean;
   }
@@ -1648,6 +1670,7 @@ declare namespace Dysnomia {
 
   // Voice
   interface CreateStageInstanceOptions extends StageInstanceOptions {
+    guildScheduledEventID?: string;
     sendStartNotification?: boolean;
   }
   interface JoinVoiceChannelOptions {
@@ -1724,6 +1747,7 @@ declare namespace Dysnomia {
   }
   interface WebhookPayload {
     allowedMentions?: AllowedMentions;
+    appliedTags?: string[];
     auth?: boolean;
     attachments?: AdvancedMessageContentAttachment[];
     avatarURL?: string;
@@ -1746,6 +1770,7 @@ declare namespace Dysnomia {
   }
   interface OAuthApplicationInfo {
     approximate_guild_count?: number;
+    bot?: PartialUser;
     bot_public: boolean;
     bot_require_code_grant: boolean;
     cover_image?: string;
@@ -1753,18 +1778,16 @@ declare namespace Dysnomia {
     description: string;
     flags?: number;
     guild_id?: string;
-    // The docs say that there can be a partial guild object attached,
-    // but as of 2023-07-25, there is no guild object attached in either
-    // endpoints, so we cannot determine how partial the guild object really is.
-    // Proceed with caution.
-    guild?: unknown;
+    guild?: PartialGuild;
     icon: string | null;
     id: string;
     install_params?: OAuthInstallParams;
+    interactions_endpoint_url?: string;
     name: string;
     owner?: PartialUser;
     primary_sku_id?: string;
     privacy_policy_url?: string;
+    redirect_uris?: string[];
     role_connections_verification_url?: string;
     rpc_origins?: string[];
     slug?: string;
@@ -1775,6 +1798,19 @@ declare namespace Dysnomia {
     terms_of_service_url?: string;
     verify_key: string;
   }
+
+  type EditApplicationOptions = Partial<Pick<OAuthApplicationInfo, |
+  "cover_image" |
+  "custom_install_url" |
+  "description" |
+  "flags" |
+  "icon" |
+  "install_params" |
+  "interactions_endpoint_url" |
+  "role_connections_verification_url" |
+  "tags"
+  >>;
+
   interface OAuthTeamInfo {
     icon: string | null;
     id: string;
@@ -2245,13 +2281,15 @@ declare namespace Dysnomia {
       startEmbeddedActivities:          549755813888n;
       moderateMembers:                  1099511627776n;
       viewCreatorMonetizationAnalytics: 2199023255552n;
+      createGuildExpressions:           8796093022208n;
+      createEvents:                     17592186044416n;
       useExternalSounds:                35184372088832n;
       useSoundboard:                    4398046511104n;
       sendVoiceMessages:                70368744177664n;
-      allGuild:                         3309205717182n;
+      allGuild:                         29697484783806n;
       allText:                          70904273435729n;
       allVoice:                         40136803878673n;
-      all:                              114349209288703n;
+      all:                              140737488355327n;
     };
     PremiumTiers: {
       NONE:   0;
@@ -2607,7 +2645,7 @@ declare namespace Dysnomia {
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
     createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionResponse, file?: FileContent | FileContent[]): Promise<void>;
-    createMessage(channelID: string, content: MessageContent): Promise<Message>;
+    createMessage(channelID: string, content: MessageContent<"hasNonce">): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
     createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: CreateStageInstanceOptions): Promise<StageInstance>;
@@ -2634,6 +2672,7 @@ declare namespace Dysnomia {
     deleteWebhookMessage(webhookID: string, token: string, messageID: string): Promise<void>;
     disconnect(options: { reconnect?: boolean | "auto" }): void;
     editAFK(afk: boolean): void;
+    editApplication(options: EditApplicationOptions): Promise<OAuthApplicationInfo>;
     editAutoModerationRule(guildID: string, ruleID: string, options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
     editChannel(
       channelID: string,
@@ -2669,7 +2708,7 @@ declare namespace Dysnomia {
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
-    editGuildWidget(guildID: string, options: Widget): Promise<Widget>;
+    editGuildWidget(guildID: string, options: Partial<Widget> & { reason?: string }): Promise<Widget>;
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
     editRoleConnectionMetadata(metadata: ApplicationRoleConnectionMetadata[]): Promise<ApplicationRoleConnectionMetadata[]>;
@@ -3007,7 +3046,7 @@ declare namespace Dysnomia {
     editTemplate(code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
     editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
     editWelcomeScreen(options: WelcomeScreenOptions): Promise<WelcomeScreen>;
-    editWidget(options: Widget): Promise<Widget>;
+    editWidget(options: Partial<Widget> & { reason?: string }): Promise<Widget>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
     getActiveThreads(): Promise<ListedGuildThreads>;
     getAuditLog(options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
@@ -3312,6 +3351,7 @@ declare namespace Dysnomia {
     mentionEveryone: boolean;
     mentions: User[];
     messageReference: MessageReference | null;
+    nonce?: string | number;
     pinned: boolean;
     position?: number;
     reactions: { [s: string]: { count: number; me: boolean } };
@@ -3365,7 +3405,7 @@ declare namespace Dysnomia {
     rateLimitPerUser: 0;
     type: Constants["ChannelTypes"]["GUILD_ANNOUNCEMENT"];
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
-    createMessage(content: MessageContent): Promise<Message<this>>;
+    createMessage(content: MessageContent<"hasNonce">): Promise<Message<this>>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel>;
     crosspostMessage(messageID: string): Promise<Message<this>>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<this>>;
@@ -3424,7 +3464,7 @@ declare namespace Dysnomia {
     recipient: User;
     type: PrivateChannelTypes;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createMessage(content: MessageContent): Promise<Message<this>>;
+    createMessage(content: MessageContent<"hasNonce">): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<this>>;
     getMessage(messageID: string): Promise<Message<this>>;
@@ -3637,7 +3677,7 @@ declare namespace Dysnomia {
     constructor(data: BaseData, client: Client, messageLimit: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
     createInvite(options?: CreateInviteOptions, reason?: string): Promise<Invite<"withMetadata", this>>;
-    createMessage(content: MessageContent): Promise<Message<this>>;
+    createMessage(content: MessageContent<"hasNonce">): Promise<Message<this>>;
     createThread(options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<PublicThreadChannel>;
     createWebhook(options: Omit<WebhookOptions, "channelID">, reason?: string): Promise<Webhook>;
@@ -3669,7 +3709,7 @@ declare namespace Dysnomia {
     messages: Collection<Message<this>>;
     rateLimitPerUser: number;
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createMessage(content: MessageContent): Promise<Message<this>>;
+    createMessage(content: MessageContent<"hasNonce">): Promise<Message<this>>;
     createWebhook(options: { name: string; avatar?: string | null }, reason?: string): Promise<Webhook>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
@@ -3701,7 +3741,7 @@ declare namespace Dysnomia {
     type: GuildThreadChannelTypes;
     constructor(data: BaseData, client: Client, messageLimit?: number);
     addMessageReaction(messageID: string, reaction: string): Promise<void>;
-    createMessage(content: MessageContent): Promise<Message<this>>;
+    createMessage(content: MessageContent<"hasNonce">): Promise<Message<this>>;
     deleteMessage(messageID: string, reason?: string): Promise<void>;
     deleteMessages(messageIDs: string[], reason?: string): Promise<void>;
     edit(options: Pick<EditChannelOptions, "archived" | "autoArchiveDuration" | "invitable" | "locked" | "name" | "rateLimitPerUser">, reason?: string): Promise<this>;
