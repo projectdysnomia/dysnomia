@@ -888,6 +888,10 @@ declare namespace Dysnomia {
     deleteMessageSeconds?: number;
     reason?: string;
   }
+  interface BulkGuildMemberBanResult {
+    bannedUsers: string[];
+    failedUsers: string[];
+  }
   interface CreateGuildOptions {
     afkChannelID?: string;
     afkTimeout?: number;
@@ -2572,6 +2576,7 @@ declare namespace Dysnomia {
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
     addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, options?: BanMemberOptions): Promise<void>;
+    bulkBanGuildMembers(guildID: string, userIDs: string[], options?: BanMemberOptions): Promise<BulkGuildMemberBanResult>;
     bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
     bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
     closeVoiceConnection(guildID: string): void;
@@ -2999,6 +3004,7 @@ declare namespace Dysnomia {
     addMember(userID: string, accessToken: string, options?: AddGuildMemberOptions): Promise<void>;
     addMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     banMember(userID: string, options?: BanMemberOptions): Promise<void>;
+    bulkBanMembers(guildID: string, userIDs: string[], options?: BanMemberOptions): Promise<BulkGuildMemberBanResult>;
     bulkEditCommands(commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand[]>;
     createAutoModerationRule(rule: CreateAutoModerationRuleOptions): Promise<AutoModerationRule>;
     createChannel(name: string): Promise<TextChannel>;
