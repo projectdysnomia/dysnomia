@@ -2124,6 +2124,13 @@ declare namespace Dysnomia {
       USER:  2;
     };
     EntitlementTypes: {
+      PURCHASE:                 1;
+      PREMIUM_SUBSCRIPTION:     2;
+      DEVELOPER_GIFT:           3;
+      TEST_MODE_PURCHASE:       4;
+      FREE_PURCHASE:            5;
+      USER_GIFT:                6;
+      PREMIUM_PURCHASE:         7;
       APPLICATION_SUBSCRIPTION: 8;
     };
     ExplicitContentFilterLevels: {
@@ -2442,6 +2449,8 @@ declare namespace Dysnomia {
       USER_SUBSCRIPTION:  256;
     };
     SKUTypes: {
+      DURABLE:            2;
+      CONSUMABLE:         3;
       SUBSCRIPTION:       5;
       SUBSCRIPTION_GROUP: 6;
     };
@@ -2734,6 +2743,7 @@ declare namespace Dysnomia {
     bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
     closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
+    consumeEntitlement(entitlementID: string): Promise<void>;
     createApplicationEmoji(options: EmojiOptions): Promise<Emoji>;
     createAutoModerationRule(guildID: string, rule: CreateAutoModerationRuleOptions): Promise<AutoModerationRule>;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
@@ -3089,6 +3099,7 @@ declare namespace Dysnomia {
 
   export class Entitlement extends Base {
     applicationID: string;
+    consumed: boolean;
     deleted: boolean;
     endsAt: number | null;
     guildID?: string;
@@ -3096,6 +3107,7 @@ declare namespace Dysnomia {
     startsAt: number | null;
     type: EntitlementTypes;
     userID?: string;
+    consume(): Promise<void>;
   }
 
   export class ExtendedUser extends User {
