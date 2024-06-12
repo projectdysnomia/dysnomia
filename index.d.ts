@@ -316,9 +316,9 @@ declare namespace Dysnomia {
   }
 
   interface AutoModerationTriggerMetadata {
-    /** valid for KEYWORD */
+    /** valid for KEYWORD, KEYWORD_PRESET, MEMBER_PROFILE */
     allow_list: string[];
-    /** valid for KEYWORD */
+    /** valid for KEYWORD, MEMBER_PROFILE */
     keyword_filter: string[];
     /** valid for MENTION_SPAM */
     mention_total_limit: number;
@@ -326,7 +326,7 @@ declare namespace Dysnomia {
     mention_raid_protection_enabled: boolean;
     /** valid for KEYWORD_PRESET */
     presets: AutoModerationKeywordPresetType[];
-    /** valid for KEYWORD */
+    /** valid for KEYWORD, MEMBER_PROFILE */
     regex_patterns: string[];
   }
   // Channel
@@ -1982,12 +1982,14 @@ declare namespace Dysnomia {
       HOME_SETTINGS_UPDATE: 191;
     };
     AutoModerationActionTypes: {
-      BLOCK_MESSAGE:      1;
-      SEND_ALERT_MESSAGE: 2;
-      TIMEOUT:            3;
+      BLOCK_MESSAGE:            1;
+      SEND_ALERT_MESSAGE:       2;
+      TIMEOUT:                  3;
+      BLOCK_MEMBER_INTERACTION: 4;
     };
     AutoModerationEventTypes: {
-      MESSAGE_SEND: 1;
+      MESSAGE_SEND:  1;
+      MEMBER_UPDATE: 2;
     };
     AutoModerationKeywordPresetTypes: {
       PROFANITY:      1;
@@ -1999,6 +2001,7 @@ declare namespace Dysnomia {
       SPAM:           3;
       KEYWORD_PRESET: 4;
       MENTION_SPAM:   5;
+      MEMBER_PROFILE: 6;
     };
     ButtonStyles: {
       PRIMARY:   1;
