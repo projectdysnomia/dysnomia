@@ -492,6 +492,7 @@ declare namespace Dysnomia {
 
   interface EditSelfOptions {
     avatar?: string | null;
+    banner?: string | null;
     username?: string;
   }
 
