@@ -658,6 +658,7 @@ declare namespace Dysnomia {
   interface OldMember {
     avatar: string | null;
     communicationDisabledUntil: number | null;
+    flags: number;
     nick: string | null;
     pending?: boolean;
     premiumSince?: number | null;
