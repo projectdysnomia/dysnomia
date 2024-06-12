@@ -2310,10 +2310,12 @@ declare namespace Dysnomia {
       useExternalSounds:                35184372088832n;
       useSoundboard:                    4398046511104n;
       sendVoiceMessages:                70368744177664n;
+      sendPolls:                        562949953421312n;
+      useExternalApps:                  1125899906842624n;
       allGuild:                         29697484783806n;
-      allText:                          70904273435729n;
+      allText:                          1759754133699665n;
       allVoice:                         40136803878673n;
-      all:                              140737488355327n;
+      all:                              1829587348619263n;
     };
     PremiumTiers: {
       NONE:   0;
