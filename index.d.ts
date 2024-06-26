@@ -144,10 +144,11 @@ declare namespace Dysnomia {
   // Message
   type ActionRowComponents = Button | SelectMenu;
   type BaseSelectMenuTypes = Exclude<SelectMenuTypes, SelectMenuExtendedTypes>;
-  type Button = InteractionButton | URLButton;
+  type Button = InteractionButton | PremiumButton | URLButton;
   type ButtonStyles = Constants["ButtonStyles"][keyof Constants["ButtonStyles"]];
-  type ButtonStyleNormal = Exclude<ButtonStyles, ButtonStyleLink>;
+  type ButtonStyleNormal = Exclude<ButtonStyles, ButtonStyleLink | ButtonStylePremium>;
   type ButtonStyleLink = Constants["ButtonStyles"]["LINK"];
+  type ButtonStylePremium = Constants["ButtonStyles"]["PREMIUM"];
   type Component = ActionRow | ActionRowComponents;
   type ComponentTypes = Constants["ComponentTypes"][keyof Constants["ComponentTypes"]];
   type ImageFormat = Constants["ImageFormats"][number];
@@ -1406,8 +1407,6 @@ declare namespace Dysnomia {
   }
   interface ButtonBase {
     disabled?: boolean;
-    emoji?: PartialEmoji;
-    label?: string;
     type: Constants["ComponentTypes"]["BUTTON"];
   }
   interface ChannelSelectMenu extends SelectMenuBase {
@@ -1491,6 +1490,8 @@ declare namespace Dysnomia {
 
   interface InteractionButton extends ButtonBase {
     custom_id: string;
+    emoji?: PartialEmoji;
+    label?: string;
     style: ButtonStyleNormal;
   }
   interface MessageActivity {
@@ -1571,6 +1572,11 @@ declare namespace Dysnomia {
     is_finalized: boolean;
     answer_counts: PollAnswerCount[];
   }
+  interface PremiumButton extends ButtonBase {
+    sku_id: string;
+    style: Constants["ButtonStyles"]["PREMIUM"];
+
+  }
   interface RoleSubscriptionData {
     isRenewal: boolean;
     roleSubscriptionListingID: string;
@@ -1605,6 +1611,8 @@ declare namespace Dysnomia {
   }
   interface URLButton extends ButtonBase {
     style: Constants["ButtonStyles"]["LINK"];
+    emoji?: PartialEmoji;
+    label?: string;
     url: string;
   }
 
@@ -2079,6 +2087,7 @@ declare namespace Dysnomia {
       SUCCESS:   3;
       DANGER:    4;
       LINK:      5;
+      PREMIUM:   6;
     };
     ChannelTypes: {
       GUILD_TEXT:           0;
