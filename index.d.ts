@@ -2489,6 +2489,7 @@ declare namespace Dysnomia {
     id: string;
     proxyURL: string;
     size: number;
+    title?: string;
     url: string;
     waveform?: string;
     width?: number;
