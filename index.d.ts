@@ -139,6 +139,7 @@ declare namespace Dysnomia {
 
   // Invite
   type InviteTargetTypes = Constants["InviteTargetTypes"][keyof Constants["InviteTargetTypes"]];
+  type InviteTypes = Constants["InviteTypes"][keyof Constants["InviteTypes"]];
 
   // Message
   type ActionRowComponents = Button | SelectMenu;
@@ -2164,6 +2165,11 @@ declare namespace Dysnomia {
       STREAM:               1;
       EMBEDDED_APPLICATION: 2;
     };
+    InviteTypes: {
+      GUILD:    0;
+      GROUP_DM: 1;
+      FRIEND:   2;
+    };
     MFALevels: {
       NONE:     0;
       ELEVATED: 1;
@@ -3285,6 +3291,7 @@ declare namespace Dysnomia {
     targetType?: InviteTargetTypes;
     targetUser?: User;
     temporary: CT extends "withMetadata" ? boolean : null;
+    type: InviteTypes;
     uses: CT extends "withMetadata" ? number : null;
     constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
