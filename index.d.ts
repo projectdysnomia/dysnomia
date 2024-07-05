@@ -316,9 +316,9 @@ declare namespace Dysnomia {
   }
 
   interface AutoModerationTriggerMetadata {
-    /** valid for KEYWORD */
+    /** valid for KEYWORD, KEYWORD_PRESET, MEMBER_PROFILE */
     allow_list: string[];
-    /** valid for KEYWORD */
+    /** valid for KEYWORD, MEMBER_PROFILE */
     keyword_filter: string[];
     /** valid for MENTION_SPAM */
     mention_total_limit: number;
@@ -326,7 +326,7 @@ declare namespace Dysnomia {
     mention_raid_protection_enabled: boolean;
     /** valid for KEYWORD_PRESET */
     presets: AutoModerationKeywordPresetType[];
-    /** valid for KEYWORD */
+    /** valid for KEYWORD, MEMBER_PROFILE */
     regex_patterns: string[];
   }
   // Channel
@@ -1971,16 +1971,25 @@ declare namespace Dysnomia {
       ROLE_PROMPT_UPDATE: 161;
       ROLE_PROMPT_DELETE: 162;
 
-      GUILD_HOME_FEATURE_ITEM: 171;
-      GUILD_HOME_REMOVE_ITEM:  172;
+      ONBOARDING_PROMPT_CREATE: 163;
+      ONBOARDING_PROMPT_UPDATE: 164;
+      ONBOARDING_PROMPT_DELETE: 165;
+
+      ONBOARDING_CREATE: 166;
+      ONBOARDING_UPDATE: 167;
+
+      HOME_SETTINGS_CREATE: 190;
+      HOME_SETTINGS_UPDATE: 191;
     };
     AutoModerationActionTypes: {
-      BLOCK_MESSAGE:      1;
-      SEND_ALERT_MESSAGE: 2;
-      TIMEOUT:            3;
+      BLOCK_MESSAGE:            1;
+      SEND_ALERT_MESSAGE:       2;
+      TIMEOUT:                  3;
+      BLOCK_MEMBER_INTERACTION: 4;
     };
     AutoModerationEventTypes: {
-      MESSAGE_SEND: 1;
+      MESSAGE_SEND:  1;
+      MEMBER_UPDATE: 2;
     };
     AutoModerationKeywordPresetTypes: {
       PROFANITY:      1;
@@ -1992,6 +2001,7 @@ declare namespace Dysnomia {
       SPAM:           3;
       KEYWORD_PRESET: 4;
       MENTION_SPAM:   5;
+      MEMBER_PROFILE: 6;
     };
     ButtonStyles: {
       PRIMARY:   1;
@@ -2141,9 +2151,11 @@ declare namespace Dysnomia {
       guildScheduledEvents:        65536;
       autoModerationConfiguration: 1048576;
       autoModerationExecution:     2097152;
-      allNonPrivileged:            3243773;
+      guildMessagePolls:           16777216;
+      directMessagePolls:          33554432;
+      allNonPrivileged:            53575417;
       allPrivileged:               33026;
-      all:                         3276799;
+      all:                         53608443;
     };
     InteractionResponseTypes: {
       PONG:                                    1;
@@ -2231,6 +2243,11 @@ declare namespace Dysnomia {
       STAGE_SPEAKER:                                29;
       STAGE_TOPIC:                                  31;
       GUILD_APPLICATION_PREMIUM_SUBSCRIPTION:       32;
+      GUILD_INCIDENT_ALERT_MODE_ENABLED:            36;
+      GUILD_INCIDENT_ALERT_MODE_DISABLED:           37;
+      GUILD_INCIDENT_REPORT_RAID:                   38;
+      GUILD_INCIDENT_REPORT_FALSE_ALARM:            39;
+      PURCHASE_NOTIFICATION:                        44;
     };
     MembershipState: {
       INVITED: 1;
@@ -2298,10 +2315,12 @@ declare namespace Dysnomia {
       useExternalSounds:                35184372088832n;
       useSoundboard:                    4398046511104n;
       sendVoiceMessages:                70368744177664n;
+      sendPolls:                        562949953421312n;
+      useExternalApps:                  1125899906842624n;
       allGuild:                         29697484783806n;
-      allText:                          70904273435729n;
+      allText:                          1759754133699665n;
       allVoice:                         40136803878673n;
-      all:                              140737488355327n;
+      all:                              1829587348619263n;
     };
     PremiumTiers: {
       NONE:   0;
