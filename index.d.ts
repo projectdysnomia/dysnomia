@@ -2768,7 +2768,7 @@ declare namespace Dysnomia {
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string; wait: true }): Promise<Message<GuildTextableChannel>>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<GuildTextableChannel>>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload): Promise<void>;
-    followChannel(channelID: string, webhookChannelID: string): Promise<ChannelFollow>;
+    followChannel(channelID: string, webhookChannelID: string, reason?: string): Promise<ChannelFollow>;
     getActiveGuildThreads(guildID: string): Promise<ListedGuildThreads>;
     getApplication(): Promise<OAuthApplicationInfo>;
     getArchivedThreads(channelID: string, type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
@@ -3444,7 +3444,7 @@ declare namespace Dysnomia {
     createThreadWithMessage(messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel>;
     crosspostMessage(messageID: string): Promise<Message<this>>;
     editMessage(messageID: string, content: MessageContent): Promise<Message<this>>;
-    follow(webhookChannelID: string): Promise<ChannelFollow>;
+    follow(webhookChannelID: string, reason?: string): Promise<ChannelFollow>;
     getInvites(): Promise<(Invite<"withMetadata", this>)[]>;
     getMessage(messageID: string): Promise<Message<this>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
