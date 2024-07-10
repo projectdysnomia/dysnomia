@@ -2702,7 +2702,7 @@ declare namespace Dysnomia {
     deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
     deleteStageInstance(channelID: string): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
-    deleteWebhookMessage(webhookID: string, token: string, messageID: string): Promise<void>;
+    deleteWebhookMessage(webhookID: string, token: string, messageID: string, threadID?: string): Promise<void>;
     disconnect(options: { reconnect?: boolean | "auto" }): void;
     editAFK(afk: boolean): void;
     editApplication(options: EditApplicationOptions): Promise<OAuthApplicationInfo>;
