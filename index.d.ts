@@ -768,9 +768,10 @@ declare namespace Dysnomia {
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
     messageDelete: [message: PossiblyUncachedMessage];
     messageDeleteBulk: [messages: PossiblyUncachedMessage[]];
+    messagePollVoteAdd: [message: PossiblyUncachedMessage, user: User | Uncached, answerID: string];
+    messagePollVoteRemove: [message: PossiblyUncachedMessage, user: User | Uncached, answerID: string];
     messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached, isBurst: boolean];
     messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string, isBurst: boolean];
-    messageReactionRemoveAll: [message: PossiblyUncachedMessage];
     messageReactionRemoveEmoji: [message: PossiblyUncachedMessage, emoji: PartialEmoji];
     messageUpdate: [message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null];
     presenceUpdate: [other: Member, oldPresence: Presence | null];
@@ -1362,6 +1363,7 @@ declare namespace Dysnomia {
     flags?: number;
     messageReference?: MessageReferenceReply;
     nonce?: T extends "hasNonce" ? (string | number) : never;
+    poll?: unknown; // TODO: document poll create object
     stickerIDs?: string[];
     tts?: boolean;
   }
@@ -1464,6 +1466,17 @@ declare namespace Dysnomia {
     after?: string;
     limit?: number;
     type?: ReactionTypes;
+  }
+
+  interface GetPollAnswerVotersOptions {
+    after?: string;
+    limit?: number;
+    type?: ReactionTypes;
+  }
+
+  interface GetPollAnswerVotersOptions {
+    after?: string;
+    limit?: number;
   }
 
   interface InteractionButton extends ButtonBase {
@@ -2324,6 +2337,9 @@ declare namespace Dysnomia {
       allVoice:                         40136803878673n;
       all:                              1829587348619263n;
     };
+    PollTypes: {
+      DEFAULT: 1;
+    };
     PremiumTiers: {
       NONE:   0;
       TIER_1: 1;
@@ -2768,6 +2784,7 @@ declare namespace Dysnomia {
       messageID: string,
       options: MessageWebhookContent
     ): Promise<Message<GuildTextableChannel>>;
+    endPoll(channelID: string, messageID: string): Promise<Message>;
     emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string }): Promise<void>;
@@ -2818,6 +2835,7 @@ declare namespace Dysnomia {
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
+    getPollAnswerVoters(channelID: string, messageID: string, answerID: string, options?: GetPollAnswerVotersOptions): Promise<User[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
     getRESTGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
@@ -3394,6 +3412,7 @@ declare namespace Dysnomia {
     messageReference: MessageReference | null;
     nonce?: string | number;
     pinned: boolean;
+    poll?: unknown; // TODO: document poll object
     position?: number;
     reactions: { [s: string]: { burstColors: string[]; count: number; countDetails: { burst: number; normal: number }; me: boolean; meBurst: boolean } };
     referencedMessage?: Message | null;
@@ -3413,6 +3432,8 @@ declare namespace Dysnomia {
     deleteWebhook(token: string): Promise<void>;
     edit(content: MessageContent): Promise<Message<T>>;
     editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
+    endPoll(): Promise<Message<T>>;
+    getPollAnswerVoters(answerID: string, options?: GetPollAnswerVotersOptions): Promise<User[]>;
     getReaction(reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     pin(): Promise<void>;
     removeReaction(reaction: string, userID?: string): Promise<void>;
