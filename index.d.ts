@@ -2784,9 +2784,9 @@ declare namespace Dysnomia {
       messageID: string,
       options: MessageWebhookContent
     ): Promise<Message<GuildTextableChannel>>;
-    endPoll(channelID: string, messageID: string): Promise<Message>;
     emit<K extends keyof ClientEvents>(event: K, ...args: ClientEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
+    endPoll(channelID: string, messageID: string): Promise<Message>;
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string }): Promise<void>;
     executeSlackWebhook(webhookID: string, token: string, options: Record<string, unknown> & { auth?: boolean; threadID?: string; wait: true }): Promise<Message<GuildTextableChannel>>;
     executeWebhook(webhookID: string, token: string, options: WebhookPayload & { wait: true }): Promise<Message<GuildTextableChannel>>;
