@@ -155,6 +155,7 @@ declare namespace Dysnomia {
   type MessageContent<T extends "hasNonce" | "" = ""> = string | AdvancedMessageContent<T>;
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type PossiblyUncachedMessage = Message | { author?: User | Uncached; channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
+  type ReactionTypes = Constants["ReactionTypes"][keyof Constants["ReactionTypes"]];
   type SelectMenu = BaseSelectMenu | ChannelSelectMenu | StringSelectMenu | UserSelectMenu | RoleSelectMenu | MentionableSelectMenu;
   type SelectMenuTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "USER_SELECT" | "ROLE_SELECT" | "MENTIONABLE_SELECT" | "CHANNEL_SELECT">];
   type SelectMenuExtendedTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "CHANNEL_SELECT" | "ROLE_SELECT" | "USER_SELECT" | "MENTIONABLE_SELECT">];
@@ -1462,6 +1463,7 @@ declare namespace Dysnomia {
   interface GetMessageReactionOptions {
     after?: string;
     limit?: number;
+    type?: ReactionTypes;
   }
 
   interface InteractionButton extends ButtonBase {
@@ -2332,6 +2334,10 @@ declare namespace Dysnomia {
       NONE:          0;
       NITRO_CLASSIC: 1;
       NITRO:         2;
+    };
+    ReactionTypes: {
+      NORMAL: 0;
+      BURST:  1;
     };
     RoleConnectionMetadataTypes: {
       INTEGER_LESS_THAN_OR_EQUAL:     1;
