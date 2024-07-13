@@ -155,6 +155,7 @@ declare namespace Dysnomia {
   type MessageContent<T extends "hasNonce" | "" = ""> = string | AdvancedMessageContent<T>;
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type PossiblyUncachedMessage = Message | { author?: User | Uncached; channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
+  type ReactionTypes = Constants["ReactionTypes"][keyof Constants["ReactionTypes"]];
   type SelectMenu = BaseSelectMenu | ChannelSelectMenu | StringSelectMenu | UserSelectMenu | RoleSelectMenu | MentionableSelectMenu;
   type SelectMenuTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "USER_SELECT" | "ROLE_SELECT" | "MENTIONABLE_SELECT" | "CHANNEL_SELECT">];
   type SelectMenuExtendedTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "CHANNEL_SELECT" | "ROLE_SELECT" | "USER_SELECT" | "MENTIONABLE_SELECT">];
@@ -767,8 +768,8 @@ declare namespace Dysnomia {
     messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
     messageDelete: [message: PossiblyUncachedMessage];
     messageDeleteBulk: [messages: PossiblyUncachedMessage[]];
-    messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached];
-    messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string];
+    messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached, isBurst: boolean];
+    messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string, isBurst: boolean];
     messageReactionRemoveAll: [message: PossiblyUncachedMessage];
     messageReactionRemoveEmoji: [message: PossiblyUncachedMessage, emoji: PartialEmoji];
     messageUpdate: [message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null];
@@ -1462,6 +1463,7 @@ declare namespace Dysnomia {
   interface GetMessageReactionOptions {
     after?: string;
     limit?: number;
+    type?: ReactionTypes;
   }
 
   interface InteractionButton extends ButtonBase {
@@ -2332,6 +2334,10 @@ declare namespace Dysnomia {
       NONE:          0;
       NITRO_CLASSIC: 1;
       NITRO:         2;
+    };
+    ReactionTypes: {
+      NORMAL: 0;
+      BURST:  1;
     };
     RoleConnectionMetadataTypes: {
       INTEGER_LESS_THAN_OR_EQUAL:     1;
@@ -3389,7 +3395,7 @@ declare namespace Dysnomia {
     nonce?: string | number;
     pinned: boolean;
     position?: number;
-    reactions: { [s: string]: { count: number; me: boolean } };
+    reactions: { [s: string]: { burstColors: string[]; count: number; countDetails: { burst: number; normal: number }; me: boolean; meBurst: boolean } };
     referencedMessage?: Message | null;
     roleMentions: string[];
     roleSubscriptionData?: RoleSubscriptionData;
