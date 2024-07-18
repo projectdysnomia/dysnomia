@@ -2337,7 +2337,7 @@ declare namespace Dysnomia {
       allVoice:                         40136803878673n;
       all:                              1829587348619263n;
     };
-    PollTypes: {
+    PollLayoutTypes: {
       DEFAULT: 1;
     };
     PremiumTiers: {
