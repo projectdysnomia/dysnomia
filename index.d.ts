@@ -1521,7 +1521,7 @@ declare namespace Dysnomia {
   }
   interface NewPoll {
     question: PollMedia;
-    answers: PollAnswer[];
+    answers: (Omit<PollAnswer, "answer_id">)[];
     duration?: number;
     allow_multiselect?: boolean;
     layout_type?: PollLayoutTypes;
