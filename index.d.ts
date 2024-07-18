@@ -773,6 +773,7 @@ declare namespace Dysnomia {
     messagePollVoteRemove: [message: PossiblyUncachedMessage, user: User | Uncached, answerID: string];
     messageReactionAdd: [message: PossiblyUncachedMessage, emoji: PartialEmoji, reactor: Member | Uncached, isBurst: boolean];
     messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string, isBurst: boolean];
+    messageReactionRemoveAll: [message: PossiblyUncachedMessage];
     messageReactionRemoveEmoji: [message: PossiblyUncachedMessage, emoji: PartialEmoji];
     messageUpdate: [message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null];
     presenceUpdate: [other: Member, oldPresence: Presence | null];
