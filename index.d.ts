@@ -154,6 +154,7 @@ declare namespace Dysnomia {
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent<T extends "hasNonce" | "" = ""> = string | AdvancedMessageContent<T>;
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
+  type PollLayoutTypes = Constants["PollLayoutTypes"][keyof Constants["PollLayoutTypes"]];
   type PossiblyUncachedMessage = Message | { author?: User | Uncached; channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
   type ReactionTypes = Constants["ReactionTypes"][keyof Constants["ReactionTypes"]];
   type SelectMenu = BaseSelectMenu | ChannelSelectMenu | StringSelectMenu | UserSelectMenu | RoleSelectMenu | MentionableSelectMenu;
@@ -1363,7 +1364,7 @@ declare namespace Dysnomia {
     flags?: number;
     messageReference?: MessageReferenceReply;
     nonce?: T extends "hasNonce" ? (string | number) : never;
-    poll?: unknown; // TODO: document poll create object
+    poll?: NewPoll;
     stickerIDs?: string[];
     tts?: boolean;
   }
@@ -1517,6 +1518,38 @@ declare namespace Dysnomia {
   interface MessageReferenceReply extends MessageReferenceBase {
     messageID: string;
     failIfNotExists?: boolean;
+  }
+  interface NewPoll {
+    question: PollMedia;
+    answers: PollAnswer[];
+    duration?: number;
+    allow_multiselect?: boolean;
+    layout_type?: PollLayoutTypes; 
+  }
+  interface Poll {
+    question: PollMedia;
+    answers: PollAnswer[];
+    expiry: string | null;
+    allow_multiselect: boolean;
+    layout_type: PollLayoutTypes;
+    results?: PollResults;
+  }
+  interface PollAnswer {
+    answer_id: number;
+    poll_media: PollMedia;
+  }
+  interface PollAnswerCount {
+    id: number;
+    count: number;
+    me_voted: boolean;
+  }
+  interface PollMedia {
+    text?: string;
+    emoji?: PartialEmoji;
+  }
+  interface PollResults {
+    is_finalized: boolean;
+    answer_counts: PollAnswerCount[];
   }
   interface RoleSubscriptionData {
     isRenewal: boolean;
@@ -3412,7 +3445,7 @@ declare namespace Dysnomia {
     messageReference: MessageReference | null;
     nonce?: string | number;
     pinned: boolean;
-    poll?: unknown; // TODO: document poll object
+    poll?: Poll;
     position?: number;
     reactions: { [s: string]: { burstColors: string[]; count: number; countDetails: { burst: number; normal: number }; me: boolean; meBurst: boolean } };
     referencedMessage?: Message | null;
