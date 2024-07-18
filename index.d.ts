@@ -1472,7 +1472,6 @@ declare namespace Dysnomia {
   interface GetPollAnswerVotersOptions {
     after?: string;
     limit?: number;
-    type?: ReactionTypes;
   }
 
   interface GetPollAnswerVotersOptions {
