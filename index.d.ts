@@ -1474,11 +1474,6 @@ declare namespace Dysnomia {
     limit?: number;
   }
 
-  interface GetPollAnswerVotersOptions {
-    after?: string;
-    limit?: number;
-  }
-
   interface InteractionButton extends ButtonBase {
     custom_id: string;
     style: ButtonStyleNormal;
