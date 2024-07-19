@@ -3378,7 +3378,7 @@ declare namespace Dysnomia {
     accentColor?: number | null;
     activities?: Activity[];
     avatar: string | null;
-    avatarDecorationData: AvatarDecorationData | null;
+    avatarDecorationData?: AvatarDecorationData | null;
     avatarDecorationURL: string | null;
     avatarURL: string;
     banner?: string | null;
