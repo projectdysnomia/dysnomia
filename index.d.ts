@@ -2863,7 +2863,7 @@ declare namespace Dysnomia {
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
-    getPollAnswerVoters(channelID: string, messageID: string, answerID: string, options?: GetPollAnswerVotersOptions): Promise<User[]>;
+    getPollAnswerVoters(channelID: string, messageID: string, answerID: number, options?: GetPollAnswerVotersOptions): Promise<User[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
     getRESTGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
@@ -3461,7 +3461,7 @@ declare namespace Dysnomia {
     edit(content: MessageContent): Promise<Message<T>>;
     editWebhook(token: string, options: MessageWebhookContent): Promise<Message<T>>;
     endPoll(): Promise<Message<T>>;
-    getPollAnswerVoters(answerID: string, options?: GetPollAnswerVotersOptions): Promise<User[]>;
+    getPollAnswerVoters(answerID: number, options?: GetPollAnswerVotersOptions): Promise<User[]>;
     getReaction(reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     pin(): Promise<void>;
     removeReaction(reaction: string, userID?: string): Promise<void>;
