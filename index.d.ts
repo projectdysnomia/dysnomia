@@ -1333,7 +1333,7 @@ declare namespace Dysnomia {
   }
   interface OldUser {
     avatar: string | null;
-    avatarDecorationData: AvatarDecorationData | null;
+    avatarDecorationData?: AvatarDecorationData | null;
     discriminator: string;
     globalName: string | null;
     username: string;
@@ -1344,7 +1344,7 @@ declare namespace Dysnomia {
   }
   interface PartialUser {
     avatar: string | null;
-    avatar_decoration_data: AvatarDecorationData | null;
+    avatar_decoration_data?: AvatarDecorationData | null;
     discriminator: string;
     id: string;
     username: string;
