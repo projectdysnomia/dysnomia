@@ -1333,13 +1333,18 @@ declare namespace Dysnomia {
   }
   interface OldUser {
     avatar: string | null;
+    avatarDecorationData?: AvatarDecorationData | null;
     discriminator: string;
     globalName: string | null;
     username: string;
   }
+  interface AvatarDecorationData {
+    sku_id: string;
+    asset: string;
+  }
   interface PartialUser {
     avatar: string | null;
-    avatar_decoration: string | null;
+    avatar_decoration_data?: AvatarDecorationData | null;
     discriminator: string;
     id: string;
     username: string;
@@ -3373,6 +3378,8 @@ declare namespace Dysnomia {
     accentColor?: number | null;
     activities?: Activity[];
     avatar: string | null;
+    avatarDecorationData?: AvatarDecorationData | null;
+    avatarDecorationURL: string | null;
     avatarURL: string;
     banner?: string | null;
     bannerURL: string | null;
@@ -3875,6 +3882,8 @@ declare namespace Dysnomia {
   export class User extends Base {
     accentColor?: number | null;
     avatar: string | null;
+    avatarDecorationData?: AvatarDecorationData | null;
+    avatarDecorationURL: string | null;
     avatarURL: string;
     banner?: string | null;
     bannerURL: string | null;
