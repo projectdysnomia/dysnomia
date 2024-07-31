@@ -201,8 +201,6 @@ export default tsConfig.config(
     {
         files: ["index.d.ts"],
         plugins: {
-            "@stylistic": stylistic,
-            "@typescript-eslint": tsConfig.plugin,
             "sort-class-members": sortClassMembers
         },
         rules: {
