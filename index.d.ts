@@ -161,7 +161,6 @@ declare namespace Dysnomia {
   type SelectMenuTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "USER_SELECT" | "ROLE_SELECT" | "MENTIONABLE_SELECT" | "CHANNEL_SELECT">];
   type SelectMenuExtendedTypes = Constants["ComponentTypes"][keyof Pick<Constants["ComponentTypes"], "STRING_SELECT" | "CHANNEL_SELECT" | "ROLE_SELECT" | "USER_SELECT" | "MENTIONABLE_SELECT">];
 
-
   // Permission
   type PermissionType = Constants["PermissionOverwriteTypes"][keyof Constants["PermissionOverwriteTypes"]];
 
@@ -2505,7 +2504,7 @@ declare namespace Dysnomia {
     };
     GuildScheduledEventStatus: {
       SCHEDULED: 1;
-      ACTIVE:	2;
+      ACTIVE: 2;
       COMPLETED: 3;
       CANCELED: 4;
     };
@@ -2552,7 +2551,6 @@ declare namespace Dysnomia {
 
     delete(): Promise<void>;
     edit(options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
-
   }
   export class Attachment extends Base {
     contentType?: string;
@@ -3362,6 +3360,7 @@ declare namespace Dysnomia {
       : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata
         ? Guild // If the invite channel is not partial
         : Guild | undefined; // If the invite channel is partial
+
     // The event might not get included if not valid
     guildScheduledEvent: CT extends "withGuildScheduledEvent" ? GuildScheduledEvent | undefined : never;
     inviter?: User;

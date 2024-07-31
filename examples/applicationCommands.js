@@ -5,7 +5,7 @@ const Constants = Dysnomia.Constants;
 // Replace TOKEN with your bot account's token
 const bot = new Dysnomia.Client("BOT TOKEN", {
     gateway: {
-        intents: [] //No intents are needed for interactions, but you still need to specify either an empty array or 0
+        intents: [] // No intents are needed for interactions, but you still need to specify either an empty array or 0
     }
 });
 
@@ -18,60 +18,60 @@ bot.on("ready", async () => { // When the bot is ready
         bot.createCommand({
             name: "test_chat_input",
             description: "Test command to show how to make commands",
-            options: [ //An array of Chat Input options https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure
+            options: [ // An array of Chat Input options https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-structure
                 {
-                    "name": "animal", //The name of the option
-                    "description": "The type of animal",
-                    "type": Constants.ApplicationCommandOptionTypes.STRING, //This is the type of string, see the types here https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
-                    "required": true,
-                    "choices": [ //The possible choices for the options
+                    name: "animal", // The name of the option
+                    description: "The type of animal",
+                    type: Constants.ApplicationCommandOptionTypes.STRING, // This is the type of string, see the types here https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
+                    required: true,
+                    choices: [ // The possible choices for the options
                         {
-                            "name": "Dog",
-                            "value": "animal_dog"
+                            name: "Dog",
+                            value: "animal_dog"
                         },
                         {
-                            "name": "Cat",
-                            "value": "animal_cat"
+                            name: "Cat",
+                            value: "animal_cat"
                         },
                         {
-                            "name": "Penguin",
-                            "value": "animal_penguin"
+                            name: "Penguin",
+                            value: "animal_penguin"
                         }
                     ]
                 },
                 {
-                    "name": "only_smol",
-                    "description": "Whether to show only baby animals",
-                    "type": Constants.ApplicationCommandOptionTypes.BOOLEAN,
-                    "required": false
+                    name: "only_smol",
+                    description: "Whether to show only baby animals",
+                    type: Constants.ApplicationCommandOptionTypes.BOOLEAN,
+                    required: false
                 }
             ],
-            type: Constants.ApplicationCommandTypes.CHAT_INPUT //Not required for Chat input type, but recommended
-        }); //Create a chat input command
+            type: Constants.ApplicationCommandTypes.CHAT_INPUT // Not required for Chat input type, but recommended
+        }); // Create a chat input command
 
         bot.createCommand({
             name: "Test User Menu",
             type: Constants.ApplicationCommandTypes.USER
-        }); //Create a user context menu
+        }); // Create a user context menu
 
         bot.createCommand({
             name: "Test Message Menu",
             type: Constants.ApplicationCommandTypes.MESSAGE
-        }); //Create a message context menu
+        }); // Create a message context menu
 
         bot.createCommand({
             name: "test_edit_command",
             description: "Test command to show off how to edit commands",
-            type: Constants.ApplicationCommandTypes.CHAT_INPUT //Not required for Chat input type, but recommended
-        }); //Create a chat input command
+            type: Constants.ApplicationCommandTypes.CHAT_INPUT // Not required for Chat input type, but recommended
+        }); // Create a chat input command
 
         bot.createCommand({
             name: "test_delete_command",
             description: "Test command to show off how to delete commands",
-            type: Constants.ApplicationCommandTypes.CHAT_INPUT //Not required for Chat input type, but recommended
-        }); //Create a chat input command
+            type: Constants.ApplicationCommandTypes.CHAT_INPUT // Not required for Chat input type, but recommended
+        }); // Create a chat input command
 
-        //In practice, you should use bulkEditCommands if you need to create multiple commands
+        // In practice, you should use bulkEditCommands if you need to create multiple commands
     }
 });
 
