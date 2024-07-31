@@ -1883,6 +1883,7 @@ declare namespace Dysnomia {
     scopes: string[];
     permissions: string;
   }
+  /* eslint-disable @stylistic/key-spacing, @stylistic/no-multi-spaces */
   interface Constants {
     GATEWAY_VERSION: 10;
     REST_VERSION: 10;
@@ -2522,6 +2523,7 @@ declare namespace Dysnomia {
       APPLICATION:      3;
     };
   }
+  /* eslint-enable @stylistic/key-spacing, @stylistic/no-multi-spaces */
 
   // Classes
   export class AutocompleteInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
