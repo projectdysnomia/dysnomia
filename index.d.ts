@@ -2664,6 +2664,7 @@ declare namespace Dysnomia {
     bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
     closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
+    createApplicationEmoji(options: EmojiOptions): Promise<Emoji>;
     createAutoModerationRule(guildID: string, rule: CreateAutoModerationRuleOptions): Promise<AutoModerationRule>;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
     createChannel(
@@ -2740,6 +2741,7 @@ declare namespace Dysnomia {
     createThread(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
+    deleteApplicationEmoji(emojiID: string): Promise<void>;
     deleteAutoModerationRule(guildID: string, ruleID: string, reason?: string): Promise<void>;
     deleteChannel(channelID: string, reason?: string): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
@@ -2761,6 +2763,7 @@ declare namespace Dysnomia {
     disconnect(options: { reconnect?: boolean | "auto" }): void;
     editAFK(afk: boolean): void;
     editApplication(options: EditApplicationOptions): Promise<OAuthApplicationInfo>;
+    editApplicationEmoji(emojiID: string, options: { name?: string; }): Promise<Emoji>;
     editAutoModerationRule(guildID: string, ruleID: string, options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
     editChannel(
       channelID: string,
@@ -2827,6 +2830,8 @@ declare namespace Dysnomia {
     followChannel(channelID: string, webhookChannelID: string, reason?: string): Promise<ChannelFollow>;
     getActiveGuildThreads(guildID: string): Promise<ListedGuildThreads>;
     getApplication(): Promise<OAuthApplicationInfo>;
+    getApplicationEmoji(emojiID: string): Promise<Emoji>;
+    getApplicationEmojis(): Promise<Emoji[]>;
     getArchivedThreads(channelID: string, type: "private", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getArchivedThreads(channelID: string, type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
     getAutoModerationRule(guildID: string, ruleID: string): Promise<AutoModerationRule>;
