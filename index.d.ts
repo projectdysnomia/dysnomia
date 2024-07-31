@@ -2763,7 +2763,7 @@ declare namespace Dysnomia {
     disconnect(options: { reconnect?: boolean | "auto" }): void;
     editAFK(afk: boolean): void;
     editApplication(options: EditApplicationOptions): Promise<OAuthApplicationInfo>;
-    editApplicationEmoji(emojiID: string, options: { name?: string; }): Promise<Emoji>;
+    editApplicationEmoji(emojiID: string, options: { name?: string }): Promise<Emoji>;
     editAutoModerationRule(guildID: string, ruleID: string, options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
     editChannel(
       channelID: string,
