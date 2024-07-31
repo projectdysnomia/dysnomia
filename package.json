@@ -48,6 +48,7 @@
     "@types/node": "^18.19.41",
     "@types/ws": "^8.5.11",
     "eslint": "^8.57.0",
+    "eslint-plugin-jsdoc": "^48.10.2",
     "eslint-plugin-sort-class-members": "^1.20.0",
     "globals": "^15.8.0",
     "typescript": "^5.5.3",

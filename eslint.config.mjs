@@ -1,8 +1,9 @@
-import jsConfig from "@eslint/js";
+import js from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin";
-import tsConfig from "typescript-eslint";
+import ts from "typescript-eslint";
 import globals from "globals";
 import sortClassMembers from "eslint-plugin-sort-class-members";
+import jsdoc from "eslint-plugin-jsdoc";
 
 const cjsFiles = [
     "lib/**/*.js",
@@ -97,11 +98,11 @@ const classSortCommon = {
     }
 };
 
-export default tsConfig.config(
+export default ts.config(
     {
         files: jsFiles,
         extends: [
-            jsConfig.configs.recommended
+            js.configs.recommended
         ],
         plugins: {
             "sort-class-members": sortClassMembers
@@ -149,6 +150,29 @@ export default tsConfig.config(
         files: cjsFiles,
         languageOptions: {
             sourceType: "commonjs"
+        },
+        plugins: {
+            jsdoc: jsdoc,
+        },
+        settings: {
+            jsdoc: {
+                preferredTypes: {
+                    bigint: "BigInt",
+                    boolean: "Boolean",
+                    number: "Number",
+                    object: "Object",
+                    string: "String"
+                },
+                tagNamePreference: {
+                    property: "prop",
+                    augments: "extends"
+                }
+            }
+        },
+        rules: {
+            "jsdoc/check-types": "error",
+            "jsdoc/check-tag-names": "error",
+            "jsdoc/check-alignment": "error"
         }
     },
     {
@@ -156,7 +180,7 @@ export default tsConfig.config(
             "**/*.ts"
         ],
         extends: [
-            ...tsConfig.configs.recommended
+            ...ts.configs.recommended
         ],
         rules: {
             "@typescript-eslint/consistent-type-definitions": "error"
