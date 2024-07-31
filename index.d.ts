@@ -2201,9 +2201,9 @@ declare namespace Dysnomia {
       autoModerationExecution:     2097152;
       guildMessagePolls:           16777216;
       directMessagePolls:          33554432;
-      allNonPrivileged:            53575417;
+      allNonPrivileged:            53575421;
       allPrivileged:               33026;
-      all:                         53608443;
+      all:                         53608447;
     };
     InteractionResponseTypes: {
       PONG:                                    1;
