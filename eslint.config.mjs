@@ -152,7 +152,7 @@ export default ts.config(
             sourceType: "commonjs"
         },
         plugins: {
-            jsdoc: jsdoc,
+            jsdoc
         },
         settings: {
             jsdoc: {
