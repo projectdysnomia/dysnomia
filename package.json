@@ -19,10 +19,8 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "lint:js": "eslint -c .eslintrc.yml lib examples *.js",
-    "lint:js:fix": "eslint -c .eslintrc.yml lib examples *.js --fix && echo \"\u001b[1m\u001b[32mOK\u001b[39m\u001b[22m\" || echo \"\u001b[1m\u001b[31mNot OK\u001b[39m\u001b[22m\"",
-    "lint:ts": "eslint -c .eslintrc.ts.yml *.ts",
-    "lint:ts:fix": "eslint -c .eslintrc.ts.yml *.ts --fix && echo \"\u001b[1m\u001b[32mOK\u001b[39m\u001b[22m\" || echo \"\u001b[1m\u001b[31mNot OK\u001b[39m\u001b[22m\""
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix && echo \"\u001b[1m\u001b[32mOK\u001b[39m\u001b[22m\" || echo \"\u001b[1m\u001b[31mNot OK\u001b[39m\u001b[22m\""
   },
   "repository": {
     "type": "git",
@@ -45,13 +43,16 @@
     "ws": "^8.18.0"
   },
   "devDependencies": {
+    "@eslint/js": "^8.57.0",
+    "@stylistic/eslint-plugin": "^2.4.0",
     "@types/node": "^18.19.41",
     "@types/ws": "^8.5.11",
-    "@typescript-eslint/eslint-plugin": "^7.16.1",
-    "@typescript-eslint/parser": "^7.16.1",
     "eslint": "^8.57.0",
+    "eslint-plugin-jsdoc": "^48.10.2",
     "eslint-plugin-sort-class-members": "^1.20.0",
-    "typescript": "^5.5.3"
+    "globals": "^15.8.0",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^7.18.0"
   },
   "optionalDependencies": {
     "opusscript": "^0.1.1",
