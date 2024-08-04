@@ -3468,7 +3468,7 @@ declare namespace Dysnomia {
     mentionEveryone: boolean;
     mentions: User[];
     messageReference: MessageReference | null;
-    messageSnapshots: MessageSnapshot[];
+    messageSnapshots?: MessageSnapshot[];
     nonce?: string | number;
     pinned: boolean;
     poll?: Poll;
