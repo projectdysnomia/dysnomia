@@ -153,6 +153,8 @@ declare namespace Dysnomia {
   type ImageFormat = Constants["ImageFormats"][number];
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent<T extends "hasNonce" | "" = ""> = string | AdvancedMessageContent<T>;
+  type MessageReferenceSend = MessageReferenceReply | MessageReferenceForward;
+  type MessageReferenceTypes = Constants["MessageReferenceTypes"][keyof Constants["MessageReferenceTypes"]];
   type MFALevel = Constants["MFALevels"][keyof Constants["MFALevels"]];
   type PollLayoutTypes = Constants["PollLayoutTypes"][keyof Constants["PollLayoutTypes"]];
   type PossiblyUncachedMessage = Message | { author?: User | Uncached; channel: TextableChannel | { id: string; guild?: Uncached }; guildID?: string; id: string };
@@ -1367,7 +1369,7 @@ declare namespace Dysnomia {
     enforceNonce?: T extends "hasNonce" ? boolean : never;
     embeds?: EmbedOptions[];
     flags?: number;
-    messageReference?: MessageReferenceReply;
+    messageReference?: MessageReferenceSend;
     nonce?: T extends "hasNonce" ? (string | number) : never;
     poll?: NewPoll;
     stickerIDs?: string[];
@@ -1513,10 +1515,21 @@ declare namespace Dysnomia {
     channelID?: string;
     guildID?: string;
     messageID?: string;
+    type?: MessageReferenceTypes;
+  }
+  interface MessageReferenceForward extends MessageReferenceBase {
+    channelID: string;
+    messageID: string;
+    failIfNotExists?: boolean;
+    type: Constants["MessageReferenceTypes"]["FORWARD"];
   }
   interface MessageReferenceReply extends MessageReferenceBase {
     messageID: string;
     failIfNotExists?: boolean;
+    type?: Constants["MessageReferenceTypes"]["DEFAULT"];
+  }
+  interface MessageSnapshot {
+    message: Message<TextableChannel, "isSnapshot">;
   }
   interface NewPoll {
     question: PollMedia;
@@ -2258,6 +2271,10 @@ declare namespace Dysnomia {
       FAILED_TO_MENTION_SOME_ROLES_IN_THREAD: 256;
       SUPPRESS_NOTIFICATIONS:                 4096;
       IS_VOICE_MESSAGE:                       8192;
+    };
+    MessageReferenceTypes: {
+      DEFAULT: 0;
+      FORWARD: 1;
     };
     MessageTypes: {
       DEFAULT:                                      0;
@@ -3426,12 +3443,12 @@ declare namespace Dysnomia {
     type: Constants["ChannelTypes"]["GUILD_MEDIA"];
   }
 
-  export class Message<T extends PossiblyUncachedTextable = TextableChannel> extends Base {
+  export class Message<T extends PossiblyUncachedTextable = TextableChannel, U extends "isSnapshot" | "" = ""> extends Base {
     activity?: MessageActivity;
     application?: MessageApplication;
     applicationID?: string;
     attachments: Collection<Attachment>;
-    author: User;
+    author: U extends "isSnapshot" ? (User | undefined) : User;
     channel: T;
     channelMentions: string[];
     /** @deprecated */
@@ -3451,6 +3468,7 @@ declare namespace Dysnomia {
     mentionEveryone: boolean;
     mentions: User[];
     messageReference: MessageReference | null;
+    messageSnapshots?: MessageSnapshot[];
     nonce?: string | number;
     pinned: boolean;
     poll?: Poll;
