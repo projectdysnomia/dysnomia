@@ -2905,6 +2905,7 @@ declare namespace Dysnomia {
     getRESTGuildScheduledEvent(guildID: string, eventID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent>;
     getRESTGuildSticker(guildID: string, stickerID: string): Promise<Sticker>;
     getRESTGuildStickers(guildID: string): Promise<Sticker[]>;
+    getRESTGuildVoiceState(guildID: string, userID: string): Promise<VoiceState>;
     getRESTSticker(stickerID: string): Promise<Sticker>;
     getRESTUser(userID: string): Promise<User>;
     getRoleConnectionMetadata(): Promise<ApplicationRoleConnectionMetadata[]>;
@@ -3186,6 +3187,7 @@ declare namespace Dysnomia {
     getRESTScheduledEvent(eventID: string): Promise<GuildScheduledEvent>;
     getRESTSticker(stickerID: string): Promise<Sticker>;
     getRESTStickers(): Promise<Sticker[]>;
+    getRESTVoiceState(userID: string): Promise<VoiceState>;
     getScheduledEvents(options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent[]>;
     getScheduledEventUsers(eventID: string, options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
     getTemplates(): Promise<GuildTemplate[]>;
