@@ -2899,6 +2899,7 @@ declare namespace Dysnomia {
     getRESTGuildEmojis(guildID: string): Promise<Emoji[]>;
     getRESTGuildMember(guildID: string, memberID: string): Promise<Member>;
     getRESTGuildMembers(guildID: string, options?: GetRESTGuildMembersOptions): Promise<Member[]>;
+    getRESTGuildRole(guildID: string, roleID: string): Promise<Role>;
     getRESTGuildRoles(guildID: string): Promise<Role[]>;
     getRESTGuilds(options?: GetRESTGuildsOptions): Promise<Guild[]>;
     getRESTGuildScheduledEvent(guildID: string, eventID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent>;
@@ -3179,6 +3180,7 @@ declare namespace Dysnomia {
     getRESTEmojis(): Promise<Emoji[]>;
     getRESTMember(memberID: string): Promise<Member>;
     getRESTMembers(options?: GetRESTGuildMembersOptions): Promise<Member[]>;
+    getRESTRole(roleID: string): Promise<Role>;
     getRESTRoles(): Promise<Role[]>;
     getRESTScheduledEvent(eventID: string): Promise<GuildScheduledEvent>;
     getRESTSticker(stickerID: string): Promise<Sticker>;
