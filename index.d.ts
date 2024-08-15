@@ -1837,6 +1837,7 @@ declare namespace Dysnomia {
   }
   interface OAuthApplicationInfo {
     approximate_guild_count?: number;
+    approximate_user_install_count?: number;
     bot?: PartialUser;
     bot_public: boolean;
     bot_require_code_grant: boolean;
