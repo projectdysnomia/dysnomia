@@ -2314,6 +2314,7 @@ declare namespace Dysnomia {
       GUILD_INCIDENT_REPORT_RAID:                   38;
       GUILD_INCIDENT_REPORT_FALSE_ALARM:            39;
       PURCHASE_NOTIFICATION:                        44;
+      POLL_RESULT:                                  46;
     };
     MembershipState: {
       INVITED: 1;
