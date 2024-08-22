@@ -115,7 +115,7 @@ export default ts.config(
         },
         rules: {
             "curly": "error",
-            "no-prototype-builtins": "off",
+            "prefer-object-has-own": "error",
             "no-trailing-spaces": "error",
             "no-var": "error",
             "object-shorthand": [
