@@ -2258,6 +2258,7 @@ declare namespace Dysnomia {
       UPDATE_MESSAGE:                          7;
       APPLICATION_COMMAND_AUTOCOMPLETE_RESULT: 8;
       MODAL:                                   9;
+      /** @deprecated */
       PREMIUM_REQUIRED:                        10;
     };
     InteractionTypes: {
