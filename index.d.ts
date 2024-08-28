@@ -833,6 +833,7 @@ declare namespace Dysnomia {
     error: [err: Error];
     pong: [latency: number];
     ready: [];
+    resumed: [];
     speakingStart: [userID: string];
     speakingStop: [userID: string];
     start: [];
@@ -1916,6 +1917,7 @@ declare namespace Dysnomia {
   interface Constants {
     GATEWAY_VERSION: 10;
     REST_VERSION: 10;
+    VOICE_VERSION: 8;
     ActivityFlags: {
       INSTANCE:                    1;
       JOIN:                        2;
