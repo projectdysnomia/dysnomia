@@ -2935,7 +2935,7 @@ declare namespace Dysnomia {
     getCommandPermissions(guildID: string, commandID: string): Promise<GuildApplicationCommandPermissions>;
     getCommands<W extends boolean = false>(withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
-    getEntitlements(options: GetEntitlementsOptions): Promise<Entitlement[]>;
+    getEntitlements(options?: GetEntitlementsOptions): Promise<Entitlement[]>;
     getGateway(): Promise<{ url: string }>;
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<GuildBan>;
