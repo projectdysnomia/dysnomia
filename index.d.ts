@@ -144,10 +144,11 @@ declare namespace Dysnomia {
   // Message
   type ActionRowComponents = Button | SelectMenu;
   type BaseSelectMenuTypes = Exclude<SelectMenuTypes, SelectMenuExtendedTypes>;
-  type Button = InteractionButton | URLButton;
+  type Button = InteractionButton | PremiumButton | URLButton;
   type ButtonStyles = Constants["ButtonStyles"][keyof Constants["ButtonStyles"]];
-  type ButtonStyleNormal = Exclude<ButtonStyles, ButtonStyleLink>;
+  type ButtonStyleNormal = Exclude<ButtonStyles, ButtonStyleLink | ButtonStylePremium>;
   type ButtonStyleLink = Constants["ButtonStyles"]["LINK"];
+  type ButtonStylePremium = Constants["ButtonStyles"]["PREMIUM"];
   type Component = ActionRow | ActionRowComponents;
   type ComponentTypes = Constants["ComponentTypes"][keyof Constants["ComponentTypes"]];
   type ImageFormat = Constants["ImageFormats"][number];
@@ -196,6 +197,11 @@ declare namespace Dysnomia {
   // Webhook
   type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components" | "attachments" | "threadID">;
   type WebhookTypes = Constants["WebhookTypes"][keyof Constants["WebhookTypes"]];
+
+  // Subscriptions
+  type EntitlementOwnerTypes = Constants["EntitlementOwnerTypes"][keyof Constants["EntitlementOwnerTypes"]];
+  type EntitlementTypes = Constants["EntitlementTypes"][keyof Constants["EntitlementTypes"]];
+  type SKUTypes = Constants["SKUTypes"][keyof Constants["SKUTypes"]];
 
   // INTERFACES
   // Internals
@@ -736,6 +742,9 @@ declare namespace Dysnomia {
     connect: [id: number];
     debug: [message: string, id?: number];
     disconnect: [];
+    entitlementCreate: [entitlement: Entitlement];
+    entitlementUpdate: [entitlement: Entitlement];
+    entitlementDelete: [entitlement: Entitlement];
     error: [err: Error, id?: number];
     guildAuditLogEntryCreate: [entry: GuildAuditLogEntry];
     guildAvailable: [guild: Guild];
@@ -1249,7 +1258,7 @@ declare namespace Dysnomia {
   }
   interface InteractionResponseMessage {
     data: RawInteractionContent;
-    type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"];
+    type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE" | "PREMIUM_REQUIRED"];
   }
   interface InteractionResponseModal {
     data: InteractionModalContent;
@@ -1398,8 +1407,6 @@ declare namespace Dysnomia {
   }
   interface ButtonBase {
     disabled?: boolean;
-    emoji?: PartialEmoji;
-    label?: string;
     type: Constants["ComponentTypes"]["BUTTON"];
   }
   interface ChannelSelectMenu extends SelectMenuBase {
@@ -1483,6 +1490,8 @@ declare namespace Dysnomia {
 
   interface InteractionButton extends ButtonBase {
     custom_id: string;
+    emoji?: PartialEmoji;
+    label?: string;
     style: ButtonStyleNormal;
   }
   interface MessageActivity {
@@ -1563,6 +1572,11 @@ declare namespace Dysnomia {
     is_finalized: boolean;
     answer_counts: PollAnswerCount[];
   }
+  interface PremiumButton extends ButtonBase {
+    sku_id: string;
+    style: Constants["ButtonStyles"]["PREMIUM"];
+
+  }
   interface RoleSubscriptionData {
     isRenewal: boolean;
     roleSubscriptionListingID: string;
@@ -1597,6 +1611,8 @@ declare namespace Dysnomia {
   }
   interface URLButton extends ButtonBase {
     style: Constants["ButtonStyles"]["LINK"];
+    emoji?: PartialEmoji;
+    label?: string;
     url: string;
   }
 
@@ -2071,6 +2087,7 @@ declare namespace Dysnomia {
       SUCCESS:   3;
       DANGER:    4;
       LINK:      5;
+      PREMIUM:   6;
     };
     ChannelTypes: {
       GUILD_TEXT:           0;
@@ -2110,6 +2127,20 @@ declare namespace Dysnomia {
     DefaultMessageNotificationLevels: {
       ALL_MESSAGES:  0;
       ONLY_MENTIONS: 1;
+    };
+    EntitlementOwnerTypes: {
+      GUILD: 1;
+      USER:  2;
+    };
+    EntitlementTypes: {
+      PURCHASE:                 1;
+      PREMIUM_SUBSCRIPTION:     2;
+      DEVELOPER_GIFT:           3;
+      TEST_MODE_PURCHASE:       4;
+      FREE_PURCHASE:            5;
+      USER_GIFT:                6;
+      PREMIUM_PURCHASE:         7;
+      APPLICATION_SUBSCRIPTION: 8;
     };
     ExplicitContentFilterLevels: {
       DISABLED:              0;
@@ -2227,6 +2258,8 @@ declare namespace Dysnomia {
       UPDATE_MESSAGE:                          7;
       APPLICATION_COMMAND_AUTOCOMPLETE_RESULT: 8;
       MODAL:                                   9;
+      /** @deprecated */
+      PREMIUM_REQUIRED:                        10;
     };
     InteractionTypes: {
       PING:                             1;
@@ -2420,6 +2453,17 @@ declare namespace Dysnomia {
     RoleFlags: {
       IN_PROMPT: 1;
     };
+    SKUFlags: {
+      AVAILABLE:          4;
+      GUILD_SUBSCRIPTION: 128;
+      USER_SUBSCRIPTION:  256;
+    };
+    SKUTypes: {
+      DURABLE:            2;
+      CONSUMABLE:         3;
+      SUBSCRIPTION:       5;
+      SUBSCRIPTION_GROUP: 6;
+    };
     StageInstancePrivacyLevel: {
       /** @deprecated */
       PUBLIC: 1;
@@ -2542,6 +2586,32 @@ declare namespace Dysnomia {
     };
   }
   /* eslint-enable @stylistic/key-spacing, @stylistic/no-multi-spaces */
+
+  // Subscriptions
+  interface CreateTestEntitlementOptions {
+    skuID: string;
+    ownerID: string;
+    ownerType: EntitlementOwnerTypes;
+  }
+
+  interface GetEntitlementsOptions {
+    after?: number;
+    before?: number;
+    excludeEnded?: boolean;
+    guildID?: string;
+    limit?: number;
+    skuIDs?: string[];
+    userID?: string;
+  }
+
+  interface SKU {
+    id: string;
+    application_id: string;
+    type: SKUTypes;
+    name: string;
+    slug: string;
+    flags: number;
+  }
 
   // Classes
   export class AutocompleteInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
@@ -2683,6 +2753,7 @@ declare namespace Dysnomia {
     bulkEditGuildCommands(guildID: string, commands: ApplicationCommandStructure[]): Promise<AnyApplicationCommand<true>[]>;
     closeVoiceConnection(guildID: string): void;
     connect(): Promise<void>;
+    consumeEntitlement(entitlementID: string): Promise<void>;
     createApplicationEmoji(options: EmojiOptions): Promise<Emoji>;
     createAutoModerationRule(guildID: string, rule: CreateAutoModerationRuleOptions): Promise<AutoModerationRule>;
     createChannel(guildID: string, name: string): Promise<TextChannel>;
@@ -2757,6 +2828,7 @@ declare namespace Dysnomia {
     createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
     createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: CreateStageInstanceOptions): Promise<StageInstance>;
+    createTestEntitlement(options: CreateTestEntitlementOptions): Promise<Entitlement>;
     createThread(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
@@ -2777,6 +2849,7 @@ declare namespace Dysnomia {
     deleteMessages(channelID: string, messageIDs: string[], reason?: string): Promise<void>;
     deleteRole(guildID: string, roleID: string, reason?: string): Promise<void>;
     deleteStageInstance(channelID: string): Promise<void>;
+    deleteTestEntitlement(entitlementID: string): Promise<void>;
     deleteWebhook(webhookID: string, token?: string, reason?: string): Promise<void>;
     deleteWebhookMessage(webhookID: string, token: string, messageID: string, threadID?: string): Promise<void>;
     disconnect(options: { reconnect?: boolean | "auto" }): void;
@@ -2863,6 +2936,7 @@ declare namespace Dysnomia {
     getCommandPermissions(guildID: string, commandID: string): Promise<GuildApplicationCommandPermissions>;
     getCommands<W extends boolean = false>(withLocalizations?: W): Promise<AnyApplicationCommand<W>[]>;
     getDMChannel(userID: string): Promise<PrivateChannel>;
+    getEntitlements(options?: GetEntitlementsOptions): Promise<Entitlement[]>;
     getGateway(): Promise<{ url: string }>;
     getGuildAuditLog(guildID: string, options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
     getGuildBan(guildID: string, userID: string): Promise<GuildBan>;
@@ -2912,6 +2986,7 @@ declare namespace Dysnomia {
     getRESTUser(userID: string): Promise<User>;
     getRoleConnectionMetadata(): Promise<ApplicationRoleConnectionMetadata[]>;
     getSelf(): Promise<ExtendedUser>;
+    getSKUs(): Promise<SKU[]>;
     getStageInstance(channelID: string): Promise<StageInstance>;
     getStickerPack(packID: string): Promise<StickerPack>;
     getStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
@@ -2983,6 +3058,8 @@ declare namespace Dysnomia {
     editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message>;
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     getOriginalMessage(): Promise<Message>;
+    /** @deprecated */
+    requirePremium(): Promise<void>;
   }
 
   export class ComponentInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
@@ -3006,6 +3083,8 @@ declare namespace Dysnomia {
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     editParent(content: InteractionContentEdit): Promise<void>;
     getOriginalMessage(): Promise<Message>;
+    /** @deprecated */
+    requirePremium(): Promise<void>;
   }
 
   export class DiscordHTTPError extends Error {
@@ -3028,6 +3107,19 @@ declare namespace Dysnomia {
     response: HTTPResponse;
     constructor(req: ClientRequest, res: IncomingMessage, response: HTTPResponse, stack: string);
     flattenErrors(errors: HTTPResponse, keyPrefix?: string): string[];
+  }
+
+  export class Entitlement extends Base {
+    applicationID: string;
+    consumed: boolean;
+    deleted: boolean;
+    endsAt: number | null;
+    guildID?: string;
+    skuID: string;
+    startsAt: number | null;
+    type: EntitlementTypes;
+    userID?: string;
+    consume(): Promise<void>;
   }
 
   export class ExtendedUser extends User {
@@ -3365,6 +3457,7 @@ declare namespace Dysnomia {
   export class Interaction extends Base {
     acknowledged: boolean;
     applicationID: string;
+    entitlements: Entitlement[];
     id: string;
     token: string;
     type: number;
@@ -3526,6 +3619,8 @@ declare namespace Dysnomia {
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     editParent(content: InteractionContentEdit): Promise<void>;
     getOriginalMessage(): Promise<Message>;
+    /** @deprecated */
+    requirePremium(): Promise<void>;
   }
 
   // News channel rate limit is always 0
