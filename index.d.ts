@@ -2588,7 +2588,7 @@ declare namespace Dysnomia {
   /* eslint-enable @stylistic/key-spacing, @stylistic/no-multi-spaces */
 
   // Subscriptions
-  interface CreateEntitlementOptions {
+  interface CreateTestEntitlementOptions {
     skuID: string;
     ownerID: string;
     ownerType: EntitlementOwnerTypes;
@@ -2828,7 +2828,7 @@ declare namespace Dysnomia {
     createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
     createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
     createStageInstance(channelID: string, options: CreateStageInstanceOptions): Promise<StageInstance>;
-    createTestEntitlement(options: CreateEntitlementOptions): Promise<Entitlement>;
+    createTestEntitlement(options: CreateTestEntitlementOptions): Promise<Entitlement>;
     createThread(channelID: string, options: CreateThreadWithoutMessageOptions): Promise<ThreadChannel>;
     createThreadWithMessage(channelID: string, messageID: string, options: CreateThreadOptions): Promise<NewsThreadChannel | PublicThreadChannel>;
     crosspostMessage(channelID: string, messageID: string): Promise<Message>;
