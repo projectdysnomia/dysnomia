@@ -64,7 +64,6 @@
     "dns": false,
     "fs": false,
     "tls": false,
-    "tweetnacl": false,
     "ws": false
   },
   "peerDependencies": {
