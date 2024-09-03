@@ -1145,7 +1145,6 @@ declare namespace Dysnomia {
     icon: string | null;
     id: string;
     name: string;
-    summary: ""; // Returns an empty string
   }
   interface IntegrationOptions {
     enableEmoticons?: string;
@@ -1597,8 +1596,6 @@ declare namespace Dysnomia {
     totalMonthsSubscribed: number;
   }
   interface Sticker extends StickerItem {
-    /** @deprecated */
-    asset: "";
     available?: boolean;
     description: string;
     guild_id?: string;
@@ -1888,8 +1885,6 @@ declare namespace Dysnomia {
     role_connections_verification_url?: string;
     rpc_origins?: string[];
     slug?: string;
-    /** @deprecated */
-    summary: "";
     tags?: string[];
     team: OAuthTeamInfo | null;
     terms_of_service_url?: string;
