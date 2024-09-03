@@ -2296,10 +2296,15 @@ declare namespace Dysnomia {
       ELEVATED: 1;
     };
     MemberFlags: {
-      DID_REJOIN:             1;
-      COMPLETED_ONBOARDING:   2;
-      BYPASSES_VERIFICATION:  4;
-      STARTED_ONBOARDING:     8;
+      DID_REJOIN:                      1;
+      COMPLETED_ONBOARDING:            2;
+      BYPASSES_VERIFICATION:           4;
+      STARTED_ONBOARDING:              8;
+      IS_GUEST:                        16;
+      STARTED_HOME_ACTIONS:            32;
+      COMPLETED_HOME_ACTIONS:          64;
+      AUTOMOD_QUARANTINED_USERNAME:    128;
+      DM_SETTINGS_UPSELL_ACKNOWLEDGED: 512;
     };
     MessageActivityTypes: {
       JOIN:         1;
