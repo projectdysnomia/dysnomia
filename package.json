@@ -55,8 +55,7 @@
     "typescript-eslint": "^8.2.0"
   },
   "optionalDependencies": {
-    "opusscript": "^0.1.1",
-    "tweetnacl": "^1.0.3"
+    "opusscript": "^0.1.1"
   },
   "browser": {
     "@discordjs/opus": false,
@@ -65,7 +64,6 @@
     "dns": false,
     "fs": false,
     "tls": false,
-    "tweetnacl": false,
     "ws": false
   },
   "peerDependencies": {
