@@ -4085,12 +4085,12 @@ declare namespace Dysnomia {
     ssrc?: number;
     ssrcUserMap: { [s: number]: string };
     timestamp: number;
-    wsSequence: number;
     udpIP?: string;
     udpPort?: number;
     udpSocket: DgramSocket | null;
     volume: number;
     ws: BrowserWebSocket | WebSocket | null;
+    wsSequence: number;
     constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
     connect(data: VoiceConnectData): NodeJS.Timer | void;
     disconnect(error?: Error, reconnecting?: boolean): void;
