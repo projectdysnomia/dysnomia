@@ -4076,7 +4076,7 @@ declare namespace Dysnomia {
     reconnecting: boolean;
     samplingRate: number;
     secret: Buffer;
-    sendBuffer: Buffer;
+    sendHeader: Buffer;
     sendNonce: Buffer;
     sequence: number;
     shard: Shard | Record<string, never>;
@@ -4085,6 +4085,7 @@ declare namespace Dysnomia {
     ssrc?: number;
     ssrcUserMap: { [s: number]: string };
     timestamp: number;
+    wsSequence: number;
     udpIP?: string;
     udpPort?: number;
     udpSocket: DgramSocket | null;
