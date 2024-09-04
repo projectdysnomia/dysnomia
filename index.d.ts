@@ -732,7 +732,7 @@ declare namespace Dysnomia {
   }
   interface VoiceChannelEffect {
     guild: Guild | Uncached;
-    channel: TextVoiceChannel | Uncached;
+    channel: AnyVoiceChannel | Uncached;
     user: User | Uncached;
     emoji?: PartialEmoji;
     animationType?: VoiceChannelEffectAnimationType;
