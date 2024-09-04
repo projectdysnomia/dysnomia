@@ -4076,10 +4076,10 @@ declare namespace Dysnomia {
     reconnecting: boolean;
     samplingRate: number;
     secret: Buffer;
-    sessionID?: string;
     sendHeader: Buffer;
     sendNonce: Buffer;
     sequence: number;
+    sessionID?: string;
     shard: Shard | Record<string, never>;
     shared: boolean;
     speaking: boolean;
