@@ -193,6 +193,7 @@ declare namespace Dysnomia {
   // Voice
   type ConverterCommand = "./ffmpeg" | "./avconv" | "ffmpeg" | "avconv";
   type StageInstancePrivacyLevel = Constants["StageInstancePrivacyLevel"][keyof Constants["StageInstancePrivacyLevel"]];
+  type VoiceChannelEffectAnimationType = Constants["VoiceChannelEffectAnimationTypes"][keyof Constants["VoiceChannelEffectAnimationTypes"]];
 
   // Webhook
   type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components" | "attachments" | "threadID">;
@@ -729,6 +730,16 @@ declare namespace Dysnomia {
     selfStream: boolean;
     selfVideo: boolean;
   }
+  interface VoiceChannelEffect {
+    guild: Guild | Uncached;
+    channel: AnyVoiceChannel | Uncached;
+    user: User | Uncached;
+    emoji?: PartialEmoji;
+    animationType?: VoiceChannelEffectAnimationType;
+    animationID?: number;
+    soundID?: string | number;
+    soundVolume?: number;
+  }
   interface EventListeners {
     applicationCommandPermissionsUpdate: [applicationCommandPermissions: GuildApplicationCommandPermissions];
     autoModerationActionExecution: [guild: Guild, action: AutoModerationActionExecution];
@@ -805,6 +816,7 @@ declare namespace Dysnomia {
     unavailableGuildCreate: [guild: UnavailableGuild];
     unknown: [packet: RawPacket, id?: number];
     userUpdate: [user: User, oldUser: OldUser | null];
+    voiceChannelEffectSend: [effect: VoiceChannelEffect];
     voiceChannelJoin: [member: Member, channel: AnyVoiceChannel];
     voiceChannelLeave: [member: Member, channel: AnyVoiceChannel];
     voiceChannelSwitch: [member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel];
@@ -2553,6 +2565,10 @@ declare namespace Dysnomia {
     VideoQualityModes: {
       AUTO: 1;
       FULL: 2;
+    };
+    VoiceChannelEffectAnimationTypes: {
+      PREMIUM: 0;
+      BASIC: 1;
     };
     VoiceOPCodes: {
       IDENTIFY:            0;
