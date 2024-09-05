@@ -678,7 +678,7 @@ declare namespace Dysnomia {
   interface OldMessage {
     attachments: Attachment[];
     channelMentions: string[];
-    components?: ActionRow[];
+    components?: Component[];
     content: string;
     editedTimestamp?: number;
     embeds: Embed[];
@@ -1385,7 +1385,7 @@ declare namespace Dysnomia {
   interface AdvancedMessageContent<T extends "hasNonce" | "" = ""> {
     allowedMentions?: AllowedMentions;
     attachments?: AdvancedMessageContentAttachment[];
-    components?: ActionRow[];
+    components?: Component[];
     content?: string;
     enforceNonce?: T extends "hasNonce" ? boolean : never;
     embeds?: EmbedOptions[];
@@ -1844,7 +1844,7 @@ declare namespace Dysnomia {
     auth?: boolean;
     attachments?: AdvancedMessageContentAttachment[];
     avatarURL?: string;
-    components?: ActionRow[];
+    components?: Component[];
     content?: string;
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
@@ -3571,7 +3571,7 @@ declare namespace Dysnomia {
     channelMentions: string[];
     /** @deprecated */
     cleanContent: string;
-    components?: ActionRow[];
+    components?: Component[];
     content: string;
     createdAt: number;
     crosspostedChannelMentions?: CrosspostedChannelMention[];
