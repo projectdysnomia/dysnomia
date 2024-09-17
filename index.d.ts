@@ -850,6 +850,7 @@ declare namespace Dysnomia {
     speakingStop: [userID: string];
     start: [];
     unknown: [packet: RawPacket];
+    usersConnect: [userIDs: string[]];
     userDisconnect: [userID: string];
     warn: [message: string];
   }
@@ -2581,6 +2582,7 @@ declare namespace Dysnomia {
       RESUME:              7;
       HELLO:               8;
       RESUMED:             9;
+      CLIENTS_CONNECT:     11;
       CLIENT_DISCONNECT:   13;
     };
     GuildScheduledEventStatus: {
