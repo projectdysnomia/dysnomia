@@ -812,7 +812,7 @@ declare namespace Dysnomia {
     threadMemberUpdate: [channel: AnyThreadChannel, member: ThreadMember, oldMember: OldThreadMember];
     threadUpdate: [channel: AnyThreadChannel, oldChannel: OldThread | null];
     typingStart: [channel: GuildTextableChannel | Uncached, user: User | Uncached, member: Member]
-    | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
+        | [channel: PrivateChannel | Uncached, user: User | Uncached, member: null];
     unavailableGuildCreate: [guild: UnavailableGuild];
     unknown: [packet: RawPacket, id?: number];
     userUpdate: [user: User, oldUser: OldUser | null];
