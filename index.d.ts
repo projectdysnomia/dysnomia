@@ -1945,6 +1945,10 @@ declare namespace Dysnomia {
       CUSTOM:    4;
       COMPETING: 5;
     };
+    ApplicationCommandEntryPointHandlerTypes: {
+      APP_HANDLER:             1;
+      DISCORD_LAUNCH_ACTIVITY: 2;
+    };
     ApplicationCommandOptionTypes: {
       SUB_COMMAND:       1;
       SUB_COMMAND_GROUP: 2;
@@ -1964,9 +1968,10 @@ declare namespace Dysnomia {
       CHANNEL: 3;
     };
     ApplicationCommandTypes: {
-      CHAT_INPUT: 1;
-      USER:       2;
-      MESSAGE:    3;
+      CHAT_INPUT:          1;
+      USER:                2;
+      MESSAGE:             3;
+      PRIMARY_ENTRY_POINT: 4;
     };
     ApplicationFlags: {
       APPLICATION_AUTO_MODERATION_RULE_CREATE_BADGE: 64;
@@ -2270,6 +2275,7 @@ declare namespace Dysnomia {
       MODAL:                                   9;
       /** @deprecated */
       PREMIUM_REQUIRED:                        10;
+      LAUNCH_ACTIVITY:                         12;
     };
     InteractionTypes: {
       PING:                             1;
@@ -3078,6 +3084,7 @@ declare namespace Dysnomia {
     editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message>;
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     getOriginalMessage(): Promise<Message>;
+    launchActivity(): Promise<void>;
     /** @deprecated */
     requirePremium(): Promise<void>;
   }
@@ -3103,6 +3110,7 @@ declare namespace Dysnomia {
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     editParent(content: InteractionContentEdit): Promise<void>;
     getOriginalMessage(): Promise<Message>;
+    launchActivity(): Promise<void>;
     /** @deprecated */
     requirePremium(): Promise<void>;
   }
@@ -3639,6 +3647,7 @@ declare namespace Dysnomia {
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     editParent(content: InteractionContentEdit): Promise<void>;
     getOriginalMessage(): Promise<Message>;
+    launchActivity(): Promise<void>;
     /** @deprecated */
     requirePremium(): Promise<void>;
   }
