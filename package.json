@@ -55,6 +55,7 @@
     "typescript-eslint": "^8.6.0"
   },
   "optionalDependencies": {
+    "@stablelib/xchacha20poly1305": "~1.0.1",
     "opusscript": "^0.1.1"
   },
   "browser": {
@@ -76,6 +77,9 @@
   },
   "peerDependenciesMeta": {
     "@discordjs/opus": {
+      "optional": true
+    },
+    "@stablelib/xchacha20poly1305": {
       "optional": true
     },
     "eventemitter3": {
