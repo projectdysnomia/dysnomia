@@ -14,7 +14,8 @@ declare namespace Dysnomia {
   // TYPES
 
   // Application Command
-  type AnyApplicationCommand<W extends boolean = false> = ChatInputApplicationCommand<W> | MessageApplicationCommand<W> | UserApplicationCommand<W>;
+  type AnyApplicationCommand<W extends boolean = false> = ChatInputApplicationCommand<W> | MessageApplicationCommand<W> | UserApplicationCommand<W> | PrimaryEntryPointApplicationCommand<W>;
+  type ApplicationCommandEntryPointHandlerTypes = Constants["ApplicationCommandEntryPointHandlerTypes"][keyof Constants["ApplicationCommandEntryPointHandlerTypes"]];
   type ApplicationCommandOptions = ApplicationCommandOptionsWithOptions | ApplicationCommandOptionsWithValue;
   type ApplicationCommandOptionsTypes = Constants["ApplicationCommandOptionTypes"][keyof Constants["ApplicationCommandOptionTypes"]];
   type ApplicationCommandOptionsTypesWithAutocomplete = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">];
@@ -49,6 +50,7 @@ declare namespace Dysnomia {
   type MessageApplicationCommand<W extends boolean = false> = ApplicationCommand<"MESSAGE", W>;
   type MessageApplicationCommandStructure = ApplicationCommandStructureBase<"MESSAGE">;
   type ModalSubmitInteractionDataComponent = ModalSubmitInteractionDataTextInputComponent;
+  type PrimaryEntryPointApplicationCommand<W extends boolean = false> = ApplicationCommand<"PRIMARY_ENTRY_POINT", W>;
   type UserApplicationCommand<W extends boolean = false> = ApplicationCommand<"USER", W>;
   type UserApplicationCommandStructure = ApplicationCommandStructureBase<"USER">;
 
@@ -3472,6 +3474,7 @@ declare namespace Dysnomia {
     // despite descriptions not being allowed for user & message, localizations are allowed
     descriptionLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
     dmPermission?: boolean;
+    handler?: T extends "PRIMARY_ENTRY_POINT" ? ApplicationCommandEntryPointHandlerTypes : never;
     id: string;
     name: string;
     nameLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
