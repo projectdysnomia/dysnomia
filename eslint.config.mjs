@@ -115,7 +115,7 @@ export default ts.config(
         },
         rules: {
             "curly": "error",
-            "no-prototype-builtins": "off",
+            "prefer-object-has-own": "error",
             "no-trailing-spaces": "error",
             "no-var": "error",
             "object-shorthand": [
@@ -124,6 +124,10 @@ export default ts.config(
             ],
             "prefer-const": "error",
             "require-atomic-updates": "warn",
+            "eqeqeq": [
+                "error",
+                "allow-null"
+            ],
             "sort-class-members/sort-class-members": [
                 "error",
                 {
@@ -176,9 +180,7 @@ export default ts.config(
         }
     },
     {
-        files: [
-            "**/*.ts"
-        ],
+        files: tsFiles,
         extends: [
             ...ts.configs.recommended
         ],
@@ -235,6 +237,7 @@ export default ts.config(
                 "ts-expect-error": "allow-with-description",
                 "ts-ignore": "allow-with-description"
             }],
+            "@typescript-eslint/no-require-imports": "off",
             "sort-class-members/sort-class-members": ["error", {
                 ...classSortCommon,
                 order: [

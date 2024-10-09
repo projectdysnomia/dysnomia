@@ -16,6 +16,7 @@ export const {
     Constants,
     DiscordHTTPError,
     DiscordRESTError,
+    Entitlement,
     ExtendedUser,
     ForumChannel,
     Guild,
