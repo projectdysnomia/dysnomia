@@ -39,11 +39,12 @@ declare namespace Dysnomia {
 
   type ApplicationCommandOptionsWithOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup;
   type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber | ApplicationCommandOptionsAttachment;
-  type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure;
+  type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure | PrimaryEntryPointApplicationCommandStructure;
   type ApplicationCommandStructureConversion<T extends ApplicationCommandStructure, W extends boolean = false> = T extends ChatInputApplicationCommandStructure ?
     ChatInputApplicationCommand<W> : T extends MessageApplicationCommandStructure ?
       MessageApplicationCommand<W> : T extends UserApplicationCommandStructure ?
-        UserApplicationCommand<W> : never;
+        UserApplicationCommand<W> : T extends PrimaryEntryPointApplicationCommandStructure ?
+          PrimaryEntryPointApplicationCommand<W> : never;
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
   type ApplicationRoleConnectionMetadataTypes = Constants["RoleConnectionMetadataTypes"][keyof Constants["RoleConnectionMetadataTypes"]];
   type ChatInputApplicationCommand<W extends boolean = false> = ApplicationCommand<"CHAT_INPUT", W>;
@@ -51,6 +52,7 @@ declare namespace Dysnomia {
   type MessageApplicationCommandStructure = ApplicationCommandStructureBase<"MESSAGE">;
   type ModalSubmitInteractionDataComponent = ModalSubmitInteractionDataTextInputComponent;
   type PrimaryEntryPointApplicationCommand<W extends boolean = false> = ApplicationCommand<"PRIMARY_ENTRY_POINT", W>;
+  type PrimaryEntryPointApplicationCommandStructure = ApplicationCommandStructureBase<"PRIMARY_ENTRY_POINT">;
   type UserApplicationCommand<W extends boolean = false> = ApplicationCommand<"USER", W>;
   type UserApplicationCommandStructure = ApplicationCommandStructureBase<"USER">;
 
