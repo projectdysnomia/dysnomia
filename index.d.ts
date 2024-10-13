@@ -52,7 +52,6 @@ declare namespace Dysnomia {
   type MessageApplicationCommandStructure = ApplicationCommandStructureBase<"MESSAGE">;
   type ModalSubmitInteractionDataComponent = ModalSubmitInteractionDataTextInputComponent;
   type PrimaryEntryPointApplicationCommand<W extends boolean = false> = ApplicationCommand<"PRIMARY_ENTRY_POINT", W>;
-  type PrimaryEntryPointApplicationCommandStructure = ApplicationCommandStructureBase<"PRIMARY_ENTRY_POINT">;
   type UserApplicationCommand<W extends boolean = false> = ApplicationCommand<"USER", W>;
   type UserApplicationCommandStructure = ApplicationCommandStructureBase<"USER">;
 
@@ -283,6 +282,9 @@ declare namespace Dysnomia {
     description: string;
     descriptionLocalizations?: Record<string, string>;
     options?: ApplicationCommandOptions[];
+  }
+  interface PrimaryEntryPointApplicationCommandStructure extends ApplicationCommandStructureBase<"PRIMARY_ENTRY_POINT"> {
+    handler?: ApplicationCommandEntryPointHandlerTypes;
   }
   interface GuildApplicationCommandPermissions {
     application_id: string;
@@ -3485,7 +3487,11 @@ declare namespace Dysnomia {
     type: Constants["ApplicationCommandTypes"][T];
     version: string;
     delete(): Promise<void>;
-    edit(options: Omit<T extends "CHAT_INPUT" ? ChatInputApplicationCommandStructure : T extends "USER" ? UserApplicationCommandStructure : T extends "MESSAGE" ? MessageApplicationCommandStructure : never, "type">): Promise<this>;
+    edit(options: Omit<T extends "CHAT_INPUT" ?
+      ChatInputApplicationCommandStructure : T extends "USER" ?
+        UserApplicationCommandStructure : T extends "MESSAGE" ?
+          MessageApplicationCommandStructure : T extends "PRIMARY_ENTRY_POINT" ?
+            PrimaryEntryPointApplicationCommandStructure : never, "type">): Promise<this>;
   }
   export class Interaction extends Base {
     acknowledged: boolean;
