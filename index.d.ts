@@ -14,7 +14,8 @@ declare namespace Dysnomia {
   // TYPES
 
   // Application Command
-  type AnyApplicationCommand<W extends boolean = false> = ChatInputApplicationCommand<W> | MessageApplicationCommand<W> | UserApplicationCommand<W>;
+  type AnyApplicationCommand<W extends boolean = false> = ChatInputApplicationCommand<W> | MessageApplicationCommand<W> | UserApplicationCommand<W> | PrimaryEntryPointApplicationCommand<W>;
+  type ApplicationCommandEntryPointHandlerTypes = Constants["ApplicationCommandEntryPointHandlerTypes"][keyof Constants["ApplicationCommandEntryPointHandlerTypes"]];
   type ApplicationCommandOptions = ApplicationCommandOptionsWithOptions | ApplicationCommandOptionsWithValue;
   type ApplicationCommandOptionsTypes = Constants["ApplicationCommandOptionTypes"][keyof Constants["ApplicationCommandOptionTypes"]];
   type ApplicationCommandOptionsTypesWithAutocomplete = Constants["ApplicationCommandOptionTypes"][keyof Pick<Constants["ApplicationCommandOptionTypes"], "STRING" | "INTEGER" | "NUMBER">];
@@ -38,17 +39,19 @@ declare namespace Dysnomia {
 
   type ApplicationCommandOptionsWithOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup;
   type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber | ApplicationCommandOptionsAttachment;
-  type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure;
+  type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure | PrimaryEntryPointApplicationCommandStructure;
   type ApplicationCommandStructureConversion<T extends ApplicationCommandStructure, W extends boolean = false> = T extends ChatInputApplicationCommandStructure ?
     ChatInputApplicationCommand<W> : T extends MessageApplicationCommandStructure ?
       MessageApplicationCommand<W> : T extends UserApplicationCommandStructure ?
-        UserApplicationCommand<W> : never;
+        UserApplicationCommand<W> : T extends PrimaryEntryPointApplicationCommandStructure ?
+          PrimaryEntryPointApplicationCommand<W> : never;
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
   type ApplicationRoleConnectionMetadataTypes = Constants["RoleConnectionMetadataTypes"][keyof Constants["RoleConnectionMetadataTypes"]];
   type ChatInputApplicationCommand<W extends boolean = false> = ApplicationCommand<"CHAT_INPUT", W>;
   type MessageApplicationCommand<W extends boolean = false> = ApplicationCommand<"MESSAGE", W>;
   type MessageApplicationCommandStructure = ApplicationCommandStructureBase<"MESSAGE">;
   type ModalSubmitInteractionDataComponent = ModalSubmitInteractionDataTextInputComponent;
+  type PrimaryEntryPointApplicationCommand<W extends boolean = false> = ApplicationCommand<"PRIMARY_ENTRY_POINT", W>;
   type UserApplicationCommand<W extends boolean = false> = ApplicationCommand<"USER", W>;
   type UserApplicationCommandStructure = ApplicationCommandStructureBase<"USER">;
 
@@ -279,6 +282,9 @@ declare namespace Dysnomia {
     description: string;
     descriptionLocalizations?: Record<string, string>;
     options?: ApplicationCommandOptions[];
+  }
+  interface PrimaryEntryPointApplicationCommandStructure extends ApplicationCommandStructureBase<"PRIMARY_ENTRY_POINT"> {
+    handler?: ApplicationCommandEntryPointHandlerTypes;
   }
   interface GuildApplicationCommandPermissions {
     application_id: string;
@@ -1945,6 +1951,10 @@ declare namespace Dysnomia {
       CUSTOM:    4;
       COMPETING: 5;
     };
+    ApplicationCommandEntryPointHandlerTypes: {
+      APP_HANDLER:             1;
+      DISCORD_LAUNCH_ACTIVITY: 2;
+    };
     ApplicationCommandOptionTypes: {
       SUB_COMMAND:       1;
       SUB_COMMAND_GROUP: 2;
@@ -1964,9 +1974,10 @@ declare namespace Dysnomia {
       CHANNEL: 3;
     };
     ApplicationCommandTypes: {
-      CHAT_INPUT: 1;
-      USER:       2;
-      MESSAGE:    3;
+      CHAT_INPUT:          1;
+      USER:                2;
+      MESSAGE:             3;
+      PRIMARY_ENTRY_POINT: 4;
     };
     ApplicationFlags: {
       APPLICATION_AUTO_MODERATION_RULE_CREATE_BADGE: 64;
@@ -2270,6 +2281,7 @@ declare namespace Dysnomia {
       MODAL:                                   9;
       /** @deprecated */
       PREMIUM_REQUIRED:                        10;
+      LAUNCH_ACTIVITY:                         12;
     };
     InteractionTypes: {
       PING:                             1;
@@ -3078,6 +3090,7 @@ declare namespace Dysnomia {
     editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message>;
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     getOriginalMessage(): Promise<Message>;
+    launchActivity(): Promise<void>;
     /** @deprecated */
     requirePremium(): Promise<void>;
   }
@@ -3103,6 +3116,7 @@ declare namespace Dysnomia {
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     editParent(content: InteractionContentEdit): Promise<void>;
     getOriginalMessage(): Promise<Message>;
+    launchActivity(): Promise<void>;
     /** @deprecated */
     requirePremium(): Promise<void>;
   }
@@ -3464,6 +3478,7 @@ declare namespace Dysnomia {
     // despite descriptions not being allowed for user & message, localizations are allowed
     descriptionLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
     dmPermission?: boolean;
+    handler?: T extends "PRIMARY_ENTRY_POINT" ? ApplicationCommandEntryPointHandlerTypes : never;
     id: string;
     name: string;
     nameLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
@@ -3472,7 +3487,11 @@ declare namespace Dysnomia {
     type: Constants["ApplicationCommandTypes"][T];
     version: string;
     delete(): Promise<void>;
-    edit(options: Omit<T extends "CHAT_INPUT" ? ChatInputApplicationCommandStructure : T extends "USER" ? UserApplicationCommandStructure : T extends "MESSAGE" ? MessageApplicationCommandStructure : never, "type">): Promise<this>;
+    edit(options: Omit<T extends "CHAT_INPUT" ?
+      ChatInputApplicationCommandStructure : T extends "USER" ?
+        UserApplicationCommandStructure : T extends "MESSAGE" ?
+          MessageApplicationCommandStructure : T extends "PRIMARY_ENTRY_POINT" ?
+            PrimaryEntryPointApplicationCommandStructure : never, "type">): Promise<this>;
   }
   export class Interaction extends Base {
     acknowledged: boolean;
@@ -3639,6 +3658,7 @@ declare namespace Dysnomia {
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     editParent(content: InteractionContentEdit): Promise<void>;
     getOriginalMessage(): Promise<Message>;
+    launchActivity(): Promise<void>;
     /** @deprecated */
     requirePremium(): Promise<void>;
   }
