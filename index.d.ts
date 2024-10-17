@@ -3082,7 +3082,7 @@ declare namespace Dysnomia {
     user?: User;
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent): Promise<Message>;
-    createMessage(content: string | InteractionContent): Promise<void>;
+    createMessage(content: string | InteractionContent): Promise<Message>;
     createModal(content: InteractionModalContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
@@ -3106,7 +3106,7 @@ declare namespace Dysnomia {
     user?: User;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionContent): Promise<Message>;
-    createMessage(content: string | InteractionContent): Promise<void>;
+    createMessage(content: string | InteractionContent): Promise<Message>;
     createModal(content: InteractionModalContent): Promise<void>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
@@ -3649,7 +3649,7 @@ declare namespace Dysnomia {
     user?: User;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionContent): Promise<Message>;
-    createMessage(content: string | InteractionContent): Promise<void>;
+    createMessage(content: string | InteractionContent): Promise<Message>;
     defer(flags?: number): Promise<void>;
     deferUpdate(): Promise<void>;
     deleteMessage(messageID: string): Promise<void>;
