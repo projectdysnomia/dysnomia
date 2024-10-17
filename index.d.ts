@@ -3114,7 +3114,7 @@ declare namespace Dysnomia {
     deleteOriginalMessage(): Promise<void>;
     editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message>;
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
-    editParent(content: InteractionContentEdit): Promise<void>;
+    editParent(content: InteractionContentEdit): Promise<Message>;
     getOriginalMessage(): Promise<Message>;
     launchActivity(): Promise<void>;
     /** @deprecated */
@@ -3656,7 +3656,7 @@ declare namespace Dysnomia {
     deleteOriginalMessage(): Promise<void>;
     editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message>;
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
-    editParent(content: InteractionContentEdit): Promise<void>;
+    editParent(content: InteractionContentEdit): Promise<Message>;
     getOriginalMessage(): Promise<Message>;
     launchActivity(): Promise<void>;
     /** @deprecated */
