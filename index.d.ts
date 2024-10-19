@@ -114,6 +114,7 @@ declare namespace Dysnomia {
   type OnboardingPromptTypes = Constants["OnboardingPromptTypes"][keyof Constants["OnboardingPromptTypes"]];
   type PossiblyUncachedGuild = Guild | Uncached;
   type PossiblyUncachedGuildScheduledEvent = GuildScheduledEvent | Uncached;
+  type PossiblyUncachedGuildSoundboardSound = SoundboardSound | { id: string; guild: PossiblyUncachedGuild };
   type PremiumTier = Constants["PremiumTiers"][keyof Constants["PremiumTiers"]];
   type VerificationLevel = Constants["VerificationLevels"][keyof Constants["VerificationLevels"]];
   type SystemChannelFlags = Constants["SystemChannelFlags"][keyof Constants["SystemChannelFlags"]];
@@ -667,6 +668,13 @@ declare namespace Dysnomia {
     scheduledStartTime: number;
     status: GuildScheduledEventStatus;
   }
+  interface OldGuildSoundboardSound {
+    available: boolean;
+    emojiID: string | null;
+    emojiName: string | null;
+    name: string;
+    volume: number;
+  }
   interface OldGuildTextChannel extends OldGuildChannel {
     nsfw: boolean;
     rateLimitPerUser: number;
@@ -784,6 +792,10 @@ declare namespace Dysnomia {
     guildScheduledEventUpdate: [event: GuildScheduledEvent, oldEvent: OldGuildScheduledEvent | null];
     guildScheduledEventUserAdd: [event: PossiblyUncachedGuildScheduledEvent, user: User | Uncached];
     guildScheduledEventUserRemove: [event: PossiblyUncachedGuildScheduledEvent, user: User | Uncached];
+    guildSoundboardSoundCreate: [sound: SoundboardSound];
+    guildSoundboardSoundDelete: [sound: PossiblyUncachedGuildSoundboardSound];
+    guildSoundboardSoundUpdate: [sound: SoundboardSound, oldSound: OldGuildSoundboardSound | null];
+    guildSoundboardSoundsUpdate: [guild: PossiblyUncachedGuild, sounds: SoundboardSound[], oldSounds: (OldGuildSoundboardSound | null)[]];
     guildStickersUpdate: [guild: PossiblyUncachedGuild, stickers: Sticker[], oldStickers: Sticker[] | null];
     guildUnavailable: [guild: UnavailableGuild];
     guildUpdate: [guild: Guild, oldGuild: OldGuild];
@@ -809,6 +821,7 @@ declare namespace Dysnomia {
     rawWS: [packet: RawPacket, id: number];
     ready: [];
     shardPreReady: [id: number];
+    soundboardSounds: [guild: PossiblyUncachedGuild, sounds: SoundboardSound[]];
     stageInstanceCreate: [stageInstance: StageInstance];
     stageInstanceDelete: [stageInstance: StageInstance];
     stageInstanceUpdate: [stageInstance: StageInstance, oldStageInstance: OldStageInstance | null];
@@ -909,9 +922,14 @@ declare namespace Dysnomia {
     url: string;
   }
   interface RequestMembersPromise {
-    members: Member;
+    members: Member[];
     received: number;
     res: (value: Member[]) => void;
+    timeout: NodeJS.Timeout;
+  }
+  interface RequestSoundboardSoundsPromise {
+    res: (value: Record<string, SoundboardSound[]>) => void;
+    soundboardSounds: Record<string, SoundboardSound[]>;
     timeout: NodeJS.Timeout;
   }
 
@@ -1127,6 +1145,23 @@ declare namespace Dysnomia {
     guildScheduledEventID: string;
     user: User;
     member?: Member;
+  }
+  interface GuildSoundboardSoundBase {
+    emojiID?: string | null;
+    emojiName?: string | null;
+    name?: string;
+    volume?: number | null;
+  }
+  interface GuildSoundboardSoundCreate extends GuildSoundboardSoundBase {
+    name: string;
+    sound: string;
+  }
+  interface GuildSoundboardSoundEdit extends GuildSoundboardSoundBase {
+    reason?: string;
+  }
+  interface GuildSoundboardSoundSend {
+    soundID: string;
+    sourceGuildID?: string;
   }
   interface GuildTemplateOptions {
     name?: string;
@@ -1408,6 +1443,10 @@ declare namespace Dysnomia {
     id: string;
     username: string;
     public_flags?: number;
+  }
+  interface RequestGuildSoundboardSoundsOptions {
+    guildIDs: string[];
+    timeout?: number;
   }
 
   // Message
@@ -2152,7 +2191,7 @@ declare namespace Dysnomia {
       GROUP_DM:             3;
       GUILD_CATEGORY:       4;
       GUILD_ANNOUNCEMENT:   5;
-
+      // (undocumented types skipped)
       ANNOUNCEMENT_THREAD:  10;
       PUBLIC_THREAD:        11;
       PRIVATE_THREAD:       12;
@@ -2209,20 +2248,20 @@ declare namespace Dysnomia {
       GALLERY_VIEW: 2;
     };
     GatewayOPCodes: {
-      DISPATCH:              0;
-      HEARTBEAT:             1;
-      IDENTIFY:              2;
-      PRESENCE_UPDATE:       3;
-      VOICE_STATE_UPDATE:    4;
-      VOICE_SERVER_PING:     5;
-      RESUME:                6;
-      RECONNECT:             7;
-      REQUEST_GUILD_MEMBERS: 8;
-      INVALID_SESSION:       9;
-      HELLO:                 10;
-      HEARTBEAT_ACK:         11;
-      SYNC_GUILD:            12;
-      SYNC_CALL:             13;
+      DISPATCH:                  0;
+      HEARTBEAT:                 1;
+      IDENTIFY:                  2;
+      PRESENCE_UPDATE:           3;
+      VOICE_STATE_UPDATE:        4;
+      VOICE_SERVER_PING:         5;
+      RESUME:                    6;
+      RECONNECT:                 7;
+      REQUEST_GUILD_MEMBERS:     8;
+      INVALID_SESSION:           9;
+      HELLO:                     10;
+      HEARTBEAT_ACK:             11;
+      // (undocumented op codes skipped)
+      REQUEST_SOUNDBOARD_SOUNDS: 31;
     };
     GuildFeatures: [
       "ANIMATED_BANNER",
@@ -2284,6 +2323,8 @@ declare namespace Dysnomia {
       guilds:                      1;
       guildMembers:                2;
       guildModeration:             4;
+      guildExpressions:            8;
+      /** @deprecated */
       guildEmojisAndStickers:      8;
       guildIntegrations:           16;
       guildWebhooks:               32;
@@ -2888,6 +2929,7 @@ declare namespace Dysnomia {
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
     createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, event: GuildScheduledEventOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
+    createGuildSoundboardSound(guildID: string, sound: GuildSoundboardSoundCreate, reason?: string): Promise<SoundboardSound>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
     createInteractionResponse<T extends InteractionResponse>(interactionID: string, interactionToken: string, options: T, file?: FileContent | FileContent[]): Promise<T["withResponse"] extends true ? InteractionCallbackResponse<T["type"]> : void>;
@@ -2909,6 +2951,7 @@ declare namespace Dysnomia {
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     deleteGuildScheduledEvent(guildID: string, eventID: string): Promise<void>;
+    deleteGuildSoundboardSound(guildID: string, soundID: string, reason?: string): Promise<void>;
     deleteGuildSticker(guildID: string, stickerID: string, reason?: string): Promise<void>;
     deleteGuildTemplate(guildID: string, code: string): Promise<GuildTemplate>;
     deleteInvite(inviteID: string, reason?: string): Promise<void>;
@@ -2954,6 +2997,7 @@ declare namespace Dysnomia {
     editGuildMFALevel(guildID: string, options: EditGuildMFALevelOptions): Promise<MFALevel>;
     editGuildOnboarding(guildID: string, options: EditGuildOnboardingOptions): Promise<GuildOnboarding>;
     editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
+    editGuildSoundboardSound(guildID: string, soundID: string, options: GuildSoundboardSoundEdit): Promise<SoundboardSound>;
     editGuildSticker(guildID: string, stickerID: string, options?: EditStickerOptions, reason?: string): Promise<Sticker>;
     editGuildTemplate(guildID: string, code: string, options: GuildTemplateOptions): Promise<GuildTemplate>;
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
@@ -3017,6 +3061,8 @@ declare namespace Dysnomia {
     getGuildPreview(guildID: string): Promise<GuildPreview>;
     getGuildScheduledEvents(guildID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent[]>;
     getGuildScheduledEventUsers(guildID: string, eventID: string, options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
+    getGuildSoundboardSound(guildID: string, soundID: string): Promise<SoundboardSound>;
+    getGuildSoundboardSounds(guildID: string): Promise<SoundboardSound[]>;
     getGuildTemplate(code: string): Promise<GuildTemplate>;
     getGuildTemplates(guildID: string): Promise<GuildTemplate[]>;
     getGuildVanity(guildID: string): Promise<GuildVanity>;
@@ -3054,6 +3100,7 @@ declare namespace Dysnomia {
     getRoleConnectionMetadata(): Promise<ApplicationRoleConnectionMetadata[]>;
     getSelf(): Promise<ExtendedUser>;
     getSKUs(): Promise<SKU[]>;
+    getSoundboardSounds(): Promise<SoundboardSound<false>[]>;
     getStageInstance(channelID: string): Promise<StageInstance>;
     getStickerPack(packID: string): Promise<StickerPack>;
     getStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
@@ -3081,6 +3128,7 @@ declare namespace Dysnomia {
     removeMessageReactions(channelID: string, messageID: string): Promise<void>;
     searchGuildMembers(guildID: string, query: string, limit?: number): Promise<Member[]>;
     sendChannelTyping(channelID: string): Promise<void>;
+    sendSoundboardSound(channelID: string, options: GuildSoundboardSoundSend): Promise<void>;
     syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     syncGuildTemplate(guildID: string, code: string): Promise<GuildTemplate>;
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
@@ -3259,6 +3307,7 @@ declare namespace Dysnomia {
     rulesChannelID: string | null;
     safetyAlertsChannelID: string | null;
     shard: Shard;
+    soundboardSounds: Collection<SoundboardSound>;
     splash: string | null;
     splashURL: string | null;
     stageInstances: Collection<StageInstance>;
@@ -3294,6 +3343,7 @@ declare namespace Dysnomia {
     createRole(options: RoleOptions, reason?: string): Promise<Role>;
     createRole(options: Role, reason?: string): Promise<Role>;
     createScheduledEvent<T extends GuildScheduledEventEntityTypes>(event: GuildScheduledEventOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
+    createSoundboardSound(sound: GuildSoundboardSoundCreate, reason?: string): Promise<SoundboardSound>;
     createSticker(options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
     delete(): Promise<void>;
@@ -3303,6 +3353,7 @@ declare namespace Dysnomia {
     deleteIntegration(integrationID: string): Promise<void>;
     deleteRole(roleID: string): Promise<void>;
     deleteScheduledEvent(eventID: string): Promise<void>;
+    deleteSoundboardSound(soundID: string, reason?: string): Promise<void>;
     deleteSticker(stickerID: string, reason?: string): Promise<void>;
     deleteTemplate(code: string): Promise<GuildTemplate>;
     dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
@@ -3327,6 +3378,7 @@ declare namespace Dysnomia {
     editWelcomeScreen(options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editWidget(options: Partial<Widget> & { reason?: string }): Promise<Widget>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
+    fetchSoundboardSounds(options?: Omit<RequestGuildSoundboardSoundsOptions, "guildIDs">): Promise<SoundboardSound[]>;
     getActiveThreads(): Promise<ListedGuildThreads>;
     getAuditLog(options?: GetGuildAuditLogOptions): Promise<GuildAuditLog>;
     getAutoModerationRule(guildID: string, ruleID: string): Promise<AutoModerationRule>;
@@ -3353,6 +3405,8 @@ declare namespace Dysnomia {
     getRESTVoiceState(userID?: string): Promise<VoiceState>;
     getScheduledEvents(options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent[]>;
     getScheduledEventUsers(eventID: string, options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
+    getSoundboardSound(soundID: string): Promise<SoundboardSound>;
+    getSoundboardSounds(): Promise<SoundboardSound[]>;
     getTemplates(): Promise<GuildTemplate[]>;
     getVanity(): Promise<GuildVanity>;
     getVoiceRegions(): Promise<VoiceRegion[]>;
@@ -3857,7 +3911,8 @@ declare namespace Dysnomia {
     presenceUpdateBucket: Bucket;
     ready: boolean;
     reconnectInterval: number;
-    requestMembersPromise: { [s: string]: RequestMembersPromise };
+    requestMembersPromise: Record<string, RequestMembersPromise>;
+    requestSoundboardSoundsPromise: Record<string, RequestSoundboardSoundsPromise>;
     resumeURL: string | null;
     seq: number;
     sessionID: string | null;
@@ -3885,6 +3940,7 @@ declare namespace Dysnomia {
     once(event: string, listener: (...args: any[]) => void): this;
     onPacket(packet: RawPacket): void;
     requestGuildMembers(guildID: string, options?: FetchMembersOptions): Promise<Member[]>;
+    requestGuildSoundboardSounds(options: RequestGuildSoundboardSoundsOptions): Promise<Record<string, SoundboardSound[]>>;
     reset(): void;
     restartGuildCreateTimeout(): void;
     resume(): void;
@@ -3936,6 +3992,20 @@ declare namespace Dysnomia {
     stopPlaying(): void;
     on<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
     on(event: string, listener: (...args: any[]) => void): this;
+  }
+
+  export class SoundboardSound<G = true> extends Base {
+    available: G extends false ? true : boolean;
+    emojiID: G extends false ? null : string | null;
+    emojiName: G extends false ? string : string | null;
+    guild: G extends false ? never : PossiblyUncachedGuild;
+    name: string;
+    user: G extends false ? never : User | undefined;
+    volume: number;
+    constructor(data: BaseData, client: Client);
+    delete(reason?: string): Promise<void>;
+    edit(options: GuildSoundboardSoundEdit): Promise<SoundboardSound>;
+    send(channelID: string): Promise<void>;
   }
 
   export class StageChannel extends TextVoiceChannel {
@@ -4119,6 +4189,7 @@ declare namespace Dysnomia {
     getInvites(): Promise<(Invite<"withMetadata", VoiceChannel>)[]>;
     join(options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     leave(): void;
+    sendSoundboardSound(options: GuildSoundboardSoundSend): Promise<void>;
   }
 
   export class VoiceConnection extends EventEmitter implements SimpleJSON {
