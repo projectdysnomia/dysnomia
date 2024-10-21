@@ -138,6 +138,7 @@ declare namespace Dysnomia {
   type InteractionDataOptionsWithOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup;
   type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber;
   type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseMessage;
+  type InteractionResponseTypes = Constants["InteractionResponseTypes"][keyof Constants["InteractionResponseTypes"]];
   type InteractionTypes = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
 
   // Invite
@@ -1241,6 +1242,27 @@ declare namespace Dysnomia {
     values: string[];
     resolved?: InteractionResolvedData;
   }
+  interface InteractionCallbackResponse<T extends InteractionResponseTypes = InteractionResponseTypes> {
+    interaction: {
+      id: string;
+      type: InteractionTypes;
+      activity_instance_id?: string;
+      response_message_id?: string;
+      response_message_loading?: boolean;
+      response_message_ephemeral?: boolean;
+    };
+    resource: T extends Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE" | "LAUNCH_ACTIVITY"]
+      ? {
+        type: T;
+        activity_instance: T extends Constants["InteractionResponseTypes"]["LAUNCH_ACTIVITY"] ? {
+          id: string;
+        } : never;
+        message: T extends Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"] ? {
+          id: string;
+          [key: string]: unknown;
+        } : never;
+      } : never;
+  }
   interface InteractionDataOptionsBase<T extends ApplicationCommandOptionsTypes, V = unknown> {
     focused?: T extends ApplicationCommandOptionsTypesWithAutocomplete ? boolean : never;
     name: string;
@@ -1265,21 +1287,24 @@ declare namespace Dysnomia {
     roles?: Collection<Role>;
     users?: Collection<User>;
   }
-  interface InteractionResponseAutocomplete {
+  interface InteractionResponseAutocomplete extends InteractionResponseBase {
     data: ApplicationCommandOptionsChoice[];
     type: Constants["InteractionResponseTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE_RESULT"];
   }
-  interface InteractionResponseDeferred {
+  interface InteractionResponseBase {
+    withResponse?: boolean;
+  }
+  interface InteractionResponseDeferred extends InteractionResponseBase {
     data?: {
       flags?: number;
     };
     type: Constants["InteractionResponseTypes"]["DEFERRED_UPDATE_MESSAGE" | "DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE"];
   }
-  interface InteractionResponseMessage {
+  interface InteractionResponseMessage extends InteractionResponseBase {
     data: RawInteractionContent;
     type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE" | "PREMIUM_REQUIRED"];
   }
-  interface InteractionResponseModal {
+  interface InteractionResponseModal extends InteractionResponseBase {
     data: InteractionModalContent;
     type: Constants["InteractionResponseTypes"]["MODAL"];
 
@@ -2855,7 +2880,7 @@ declare namespace Dysnomia {
     createGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, event: GuildScheduledEventOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createGuildTemplate(guildID: string, name: string, description?: string | null): Promise<GuildTemplate>;
-    createInteractionResponse(interactionID: string, interactionToken: string, options: InteractionResponse, file?: FileContent | FileContent[]): Promise<void>;
+    createInteractionResponse<T extends InteractionResponse>(interactionID: string, interactionToken: string, options: T, file?: FileContent | FileContent[]): Promise<T["withResponse"] extends true ? InteractionCallbackResponse<T["type"]> : void>;
     createMessage(channelID: string, content: MessageContent<"hasNonce">): Promise<Message>;
     createRole(guildID: string, options?: RoleOptions, reason?: string): Promise<Role>;
     createRole(guildID: string, options?: Role, reason?: string): Promise<Role>;
