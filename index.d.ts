@@ -137,7 +137,7 @@ declare namespace Dysnomia {
   type InteractionDataOptionsUser = InteractionDataOption<"USER", string>;
   type InteractionDataOptionsWithOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup;
   type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber;
-  type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseMessage;
+  type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseLaunchActivity | InteractionResponseMessage | InteractionResponsePong | InteractionResponsePremiumRequired;
   type InteractionResponseTypes = Constants["InteractionResponseTypes"][keyof Constants["InteractionResponseTypes"]];
   type InteractionTypes = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
 
@@ -1300,6 +1300,9 @@ declare namespace Dysnomia {
     };
     type: Constants["InteractionResponseTypes"]["DEFERRED_UPDATE_MESSAGE" | "DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE"];
   }
+  interface InteractionResponseLaunchActivity extends InteractionResponseBase {
+    type: Constants["InteractionResponseTypes"]["LAUNCH_ACTIVITY"];
+  }
   interface InteractionResponseMessage extends InteractionResponseBase {
     data: RawInteractionContent;
     type: Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE" | "PREMIUM_REQUIRED"];
@@ -1309,8 +1312,12 @@ declare namespace Dysnomia {
     type: Constants["InteractionResponseTypes"]["MODAL"];
 
   }
-  interface InteractionResponsePong {
+  interface InteractionResponsePong extends InteractionResponseBase {
     type: Constants["InteractionResponseTypes"]["PONG"];
+  }
+  /** @deprecated */
+  interface InteractionResponsePremiumRequired extends InteractionResponseBase {
+    type: Constants["InteractionResponseTypes"]["PREMIUM_REQUIRED"];
   }
 
   interface RawInteractionContent extends Pick<WebhookPayload, "content" | "embeds" | "tts" | "flags" | "components"> {
