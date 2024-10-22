@@ -1276,6 +1276,9 @@ declare namespace Dysnomia {
     // technically these can have zero options, but it will then not show in the client so it's effectively not possible
     options: (InteractionDataOptionsSubCommand | InteractionDataOptionsWithValue)[];
   }
+  interface InteractionLaunchActivityOptions {
+    withResponse?: boolean;
+  }
   interface InteractionModalContent {
     title: string;
     custom_id: string;
@@ -3122,7 +3125,7 @@ declare namespace Dysnomia {
     editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message>;
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     getOriginalMessage(): Promise<Message>;
-    launchActivity(): Promise<void>;
+    launchActivity<T extends InteractionLaunchActivityOptions>(options?: T): Promise<T["withResponse"] extends true ? InteractionCallbackResponse<Constants["InteractionResponseTypes"]["LAUNCH_ACTIVITY"]> : void>;
     /** @deprecated */
     requirePremium(): Promise<void>;
   }
@@ -3148,7 +3151,7 @@ declare namespace Dysnomia {
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     editParent(content: InteractionContentEdit): Promise<Message>;
     getOriginalMessage(): Promise<Message>;
-    launchActivity(): Promise<void>;
+    launchActivity<T extends InteractionLaunchActivityOptions>(options?: T): Promise<T["withResponse"] extends true ? InteractionCallbackResponse<Constants["InteractionResponseTypes"]["LAUNCH_ACTIVITY"]> : void>;
     /** @deprecated */
     requirePremium(): Promise<void>;
   }
@@ -3690,7 +3693,7 @@ declare namespace Dysnomia {
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     editParent(content: InteractionContentEdit): Promise<Message>;
     getOriginalMessage(): Promise<Message>;
-    launchActivity(): Promise<void>;
+    launchActivity<T extends InteractionLaunchActivityOptions>(options?: T): Promise<T["withResponse"] extends true ? InteractionCallbackResponse<Constants["InteractionResponseTypes"]["LAUNCH_ACTIVITY"]> : void>;
     /** @deprecated */
     requirePremium(): Promise<void>;
   }
