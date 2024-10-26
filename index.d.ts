@@ -1254,9 +1254,7 @@ declare namespace Dysnomia {
     resource: T extends Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE" | "LAUNCH_ACTIVITY"]
       ? {
         type: T;
-        activity_instance: T extends Constants["InteractionResponseTypes"]["LAUNCH_ACTIVITY"] ? {
-          id: string;
-        } : never;
+        activity_instance: T extends Constants["InteractionResponseTypes"]["LAUNCH_ACTIVITY"] ? ActivityInstance : never;
         message: T extends Constants["InteractionResponseTypes"]["CHANNEL_MESSAGE_WITH_SOURCE" | "UPDATE_MESSAGE"] ? {
           id: string;
           [key: string]: unknown;
@@ -1275,9 +1273,6 @@ declare namespace Dysnomia {
   interface InteractionDataOptionsSubCommandGroup extends InteractionDataOptionsBase<Constants["ApplicationCommandOptionTypes"]["SUB_COMMAND_GROUP"]> {
     // technically these can have zero options, but it will then not show in the client so it's effectively not possible
     options: (InteractionDataOptionsSubCommand | InteractionDataOptionsWithValue)[];
-  }
-  interface InteractionLaunchActivityOptions {
-    withResponse?: boolean;
   }
   interface InteractionModalContent {
     title: string;
@@ -1961,6 +1956,11 @@ declare namespace Dysnomia {
   interface OAuthInstallParams {
     scopes: string[];
     permissions: string;
+  }
+
+  // Activities
+  interface ActivityInstance {
+    id: string;
   }
   /* eslint-disable @stylistic/key-spacing, @stylistic/no-multi-spaces */
   interface Constants {
@@ -3125,7 +3125,7 @@ declare namespace Dysnomia {
     editMessage(messageID: string, content: string | InteractionContentEdit): Promise<Message>;
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     getOriginalMessage(): Promise<Message>;
-    launchActivity<T extends InteractionLaunchActivityOptions>(options?: T): Promise<T["withResponse"] extends true ? InteractionCallbackResponse<Constants["InteractionResponseTypes"]["LAUNCH_ACTIVITY"]> : void>;
+    launchActivity(): Promise<ActivityInstance>;
     /** @deprecated */
     requirePremium(): Promise<void>;
   }
@@ -3151,7 +3151,7 @@ declare namespace Dysnomia {
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     editParent(content: InteractionContentEdit): Promise<Message>;
     getOriginalMessage(): Promise<Message>;
-    launchActivity<T extends InteractionLaunchActivityOptions>(options?: T): Promise<T["withResponse"] extends true ? InteractionCallbackResponse<Constants["InteractionResponseTypes"]["LAUNCH_ACTIVITY"]> : void>;
+    launchActivity(): Promise<ActivityInstance>;
     /** @deprecated */
     requirePremium(): Promise<void>;
   }
@@ -3693,7 +3693,7 @@ declare namespace Dysnomia {
     editOriginalMessage(content: string | InteractionContentEdit): Promise<Message>;
     editParent(content: InteractionContentEdit): Promise<Message>;
     getOriginalMessage(): Promise<Message>;
-    launchActivity<T extends InteractionLaunchActivityOptions>(options?: T): Promise<T["withResponse"] extends true ? InteractionCallbackResponse<Constants["InteractionResponseTypes"]["LAUNCH_ACTIVITY"]> : void>;
+    launchActivity(): Promise<ActivityInstance>;
     /** @deprecated */
     requirePremium(): Promise<void>;
   }
