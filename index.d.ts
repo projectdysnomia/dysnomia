@@ -112,6 +112,7 @@ declare namespace Dysnomia {
   type NSFWLevel = Constants["GuildNSFWLevels"][keyof Constants["GuildNSFWLevels"]];
   type OnboardingModes = Constants["OnboardingModes"][keyof Constants["OnboardingModes"]];
   type OnboardingPromptTypes = Constants["OnboardingPromptTypes"][keyof Constants["OnboardingPromptTypes"]];
+  type PossiblyUncachedInteractionGuild = Guild | InteractionGuild;
   type PossiblyUncachedGuild = Guild | Uncached;
   type PossiblyUncachedGuildScheduledEvent = GuildScheduledEvent | Uncached;
   type PossiblyUncachedGuildSoundboardSound = SoundboardSound | { id: string; guild: PossiblyUncachedGuild };
@@ -124,7 +125,9 @@ declare namespace Dysnomia {
   // Interaction
   type AnyInteraction = AnyInteractionGateway | PingInteraction;
   type AnyInteractionGateway = AutocompleteInteraction | CommandInteraction | ComponentInteraction | ModalSubmitInteraction;
-  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components" | "attachments">;
+  type ApplicationIntegrationTypes = Constants["ApplicationIntegrationTypes"][keyof Constants["ApplicationIntegrationTypes"]];
+  type InteractionContextTypes = Constants["InteractionContextTypes"][keyof Constants["InteractionContextTypes"]];
+  type InteractionContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "tts" | "flags" | "components" | "attachments" | "poll">;
   type InteractionContentEdit = Omit<InteractionContent, "tts" | "flags">;
   type InteractionDataOption<T extends Exclude<keyof Constants["ApplicationCommandOptionTypes"], "SUB_COMMAND" | "SUB_COMMAND_GROUP">, V = boolean | number | string> = InteractionDataOptionsBase<Constants["ApplicationCommandOptionTypes"][T], V>;
   type InteractionDataOptions = InteractionDataOptionsWithOptions | InteractionDataOptionsWithValue;
@@ -223,8 +226,11 @@ declare namespace Dysnomia {
 
   // Application Command
   interface ApplicationCommandStructureBase<T extends keyof Constants["ApplicationCommandTypes"] = keyof Constants["ApplicationCommandTypes"]> {
+    contexts?: InteractionContextTypes[];
     defaultMemberPermissions?: bigint | number | string | Permission;
+    /** @deprecated */
     dmPermission?: boolean;
+    integrationTypes?: ApplicationIntegrationTypes[];
     name: string;
     nameLocalizations?: Record<string, string>;
     nsfw?: boolean;
@@ -1309,6 +1315,11 @@ declare namespace Dysnomia {
     // technically these can have zero options, but it will then not show in the client so it's effectively not possible
     options: (InteractionDataOptionsSubCommand | InteractionDataOptionsWithValue)[];
   }
+  interface InteractionGuild {
+    features: GuildFeatures[];
+    id: string;
+    locale: string;
+  }
   interface InteractionModalContent {
     title: string;
     custom_id: string;
@@ -1592,6 +1603,10 @@ declare namespace Dysnomia {
     icon: string | null;
     id: string;
     name: string;
+  }
+  interface MessageCall {
+    participants: string[];
+    endedTimestamp: number | null;
   }
   interface FileContent {
     fieldName?: string;
@@ -1925,6 +1940,7 @@ declare namespace Dysnomia {
     embed?: EmbedOptions;
     embeds?: EmbedOptions[];
     flags?: number;
+    poll?: NewPoll;
     threadID?: string;
     threadName?: string;
     tts?: boolean;
@@ -2052,6 +2068,10 @@ declare namespace Dysnomia {
       USER:                2;
       MESSAGE:             3;
       PRIMARY_ENTRY_POINT: 4;
+    };
+    ApplicationIntegrationTypes: {
+      GUILD_INSTALL: 0;
+      USER_INSTALL: 1;
     };
     ApplicationFlags: {
       APPLICATION_AUTO_MODERATION_RULE_CREATE_BADGE: 64;
@@ -2346,6 +2366,11 @@ declare namespace Dysnomia {
       allNonPrivileged:            53575421;
       allPrivileged:               33026;
       all:                         53608447;
+    };
+    InteractionContextTypes: {
+      GUILD:           0;
+      BOT_DM:          1;
+      PRIVATE_CHANNEL: 2;
     };
     InteractionResponseTypes: {
       PONG:                                    1;
@@ -2722,14 +2747,9 @@ declare namespace Dysnomia {
   }
 
   // Classes
-  export class AutocompleteInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
-    appPermissions?: Permission;
-    channel: T;
+  export class AutocompleteInteraction extends Interaction {
     data: AutocompleteInteractionData;
-    guildID?: string;
-    member?: Member;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND_AUTOCOMPLETE"];
-    user?: User;
     acknowledge(choices: ApplicationCommandOptionsChoice[]): Promise<void>;
     result(choices: ApplicationCommandOptionsChoice[]): Promise<void>;
   }
@@ -3155,14 +3175,9 @@ declare namespace Dysnomia {
     update(obj: T, extra?: unknown, replace?: boolean): T;
   }
 
-  export class CommandInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
-    appPermissions?: Permission;
-    channel: T;
+  export class CommandInteraction extends Interaction {
     data: CommandInteractionData;
-    guildID?: string;
-    member?: Member;
     type: Constants["InteractionTypes"]["APPLICATION_COMMAND"];
-    user?: User;
     acknowledge(flags?: number): Promise<void>;
     createFollowup(content: string | InteractionContent): Promise<Message>;
     createMessage(content: string | InteractionContent): Promise<Message>;
@@ -3178,15 +3193,10 @@ declare namespace Dysnomia {
     requirePremium(): Promise<void>;
   }
 
-  export class ComponentInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
-    appPermissions?: Permission;
-    channel: T;
+  export class ComponentInteraction extends Interaction {
     data: ComponentInteractionButtonData | ComponentInteractionSelectMenuData;
-    guildID?: string;
-    member?: Member;
     message: Message;
     type: Constants["InteractionTypes"]["MESSAGE_COMPONENT"];
-    user?: User;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionContent): Promise<Message>;
     createMessage(content: string | InteractionContent): Promise<Message>;
@@ -3572,13 +3582,16 @@ declare namespace Dysnomia {
 
   export class ApplicationCommand<T extends keyof Constants["ApplicationCommandTypes"] = keyof Constants["ApplicationCommandTypes"], W extends boolean = false> extends Base {
     applicationID: string;
+    contexts?: InteractionContextTypes[] | null;
     defaultMemberPermissions?: string | null;
     description: T extends "CHAT_INPUT" ? string : "";
     // despite descriptions not being allowed for user & message, localizations are allowed
     descriptionLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
+    /** @deprecated */
     dmPermission?: boolean;
     handler?: T extends "PRIMARY_ENTRY_POINT" ? ApplicationCommandEntryPointHandlerTypes : never;
     id: string;
+    integrationTypes?: ApplicationIntegrationTypes[];
     name: string;
     nameLocalizations: W extends true ? Record<string, string> | null : Record<string, string> | null | undefined;
     nsfw?: boolean;
@@ -3595,12 +3608,34 @@ declare namespace Dysnomia {
   export class Interaction extends Base {
     acknowledged: boolean;
     applicationID: string;
+    appPermissions?: Permission;
+    authorizingIntegrationOwners: Record<ApplicationIntegrationTypes, string>;
+    channel?: PossiblyUncachedInteractionChannel;
+    context?: InteractionContextTypes;
+    data?: unknown;
     entitlements: Entitlement[];
+    guild?: PossiblyUncachedInteractionGuild;
+    /** @deprecated */
+    guildID?: string;
+    /** @deprecated */
+    guildLocale?: string;
     id: string;
+    locale: string;
+    member?: Member;
     token: string;
     type: number;
+    user?: User;
     version: number;
     static from(data: BaseData): AnyInteraction;
+  }
+
+  export class InteractionMetadata extends Base {
+    authorizingIntegrationOwners: Record<ApplicationIntegrationTypes, string>;
+    interactedMessageID?: string;
+    originalResponseMessageID?: string;
+    triggeringInteractionMetadata?: InteractionMetadata;
+    type: InteractionTypes;
+    user: User;
   }
 
   // If CT (count) is "withMetadata", it will not have count properties
@@ -3687,6 +3722,7 @@ declare namespace Dysnomia {
     applicationID?: string;
     attachments: Collection<Attachment>;
     author: U extends "isSnapshot" ? (User | undefined) : User;
+    call?: MessageCall;
     channel: T;
     channelMentions: string[];
     /** @deprecated */
@@ -3700,7 +3736,9 @@ declare namespace Dysnomia {
     flags: number;
     guildID: T extends GuildTextableWithThreads ? string : undefined;
     id: string;
+    /** @deprecated */
     interaction: MessageInteraction | null;
+    interactionMetadata?: InteractionMetadata;
     jumpLink: string;
     member: T extends GuildTextableWithThreads ? Member : null;
     mentionEveryone: boolean;
@@ -3739,13 +3777,9 @@ declare namespace Dysnomia {
     unpin(): Promise<void>;
   }
 
-  export class ModalSubmitInteraction<T extends PossiblyUncachedInteractionChannel = TextableChannel> extends Interaction {
-    channel: T;
+  export class ModalSubmitInteraction extends Interaction {
     data: ModalSubmitInteractionData;
-    guildID?: string;
-    member?: Member;
     type: Constants["InteractionTypes"]["MODAL_SUBMIT"];
-    user?: User;
     acknowledge(): Promise<void>;
     createFollowup(content: string | InteractionContent): Promise<Message>;
     createMessage(content: string | InteractionContent): Promise<Message>;
