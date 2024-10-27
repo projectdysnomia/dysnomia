@@ -1124,10 +1124,11 @@ declare namespace Dysnomia {
     byYearDay: number[] | null;
     count: number | null;
   }
-  interface GuildScheduledEventRecurrenceRuleEdit extends GuildScheduledEventRecurrenceRule {
+  interface GuildScheduledEventRecurrenceRuleEdit extends Partial<Omit<GuildScheduledEventRecurrenceRule, "start">> {
     byYearDay: never;
     count: never;
     end: never;
+    start?: Date;
   }
   interface GuildScheduledEventEditOptionsBase<T extends GuildScheduledEventEntityTypes = GuildScheduledEventEntityTypes> {
     channelID?: T extends Constants["GuildScheduledEventEntityTypes"]["EXTERNAL"] ? null : string;
