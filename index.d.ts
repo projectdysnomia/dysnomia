@@ -66,7 +66,7 @@ declare namespace Dysnomia {
   interface Uncached { id: string }
 
   // Channel
-  type AnyChannel = AnyGuildChannel | PrivateChannel;
+  type AnyChannel = AnyGuildChannel | GroupChannel | PrivateChannel;
   type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = TextVoiceChannel | StageChannel;
@@ -77,7 +77,7 @@ declare namespace Dysnomia {
   type PossiblyUncachedSpeakableChannel = VoiceChannel | StageChannel | Uncached;
   type PossiblyUncachedTextable = Textable | Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
-  type TextableChannel = (GuildTextable & GuildTextableChannel) | (ThreadTextable & AnyThreadChannel) | (Textable & PrivateChannel);
+  type TextableChannel = (GuildTextable & GuildTextableChannel) | (ThreadTextable & AnyThreadChannel) | (Textable & (PrivateChannel | GroupChannel));
   type VideoQualityMode = Constants["VideoQualityModes"][keyof Constants["VideoQualityModes"]];
   type ChannelTypes = GuildChannelTypes | PrivateChannelTypes;
   type GuildChannelTypes = Exclude<Constants["ChannelTypes"][keyof Constants["ChannelTypes"]], PrivateChannelTypes>;
@@ -3263,6 +3263,16 @@ declare namespace Dysnomia {
     getArchivedThreads(type: "public", options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PublicThreadChannel>>;
     getInvites(): Promise<(Invite<"withMetadata", this>)[]>;
     getWebhooks(): Promise<Webhook[]>;
+  }
+
+  export class GroupChannel extends PrivateChannel {
+    icon: string | null;
+    iconURL: string | null;
+    name: string;
+    ownerID: string;
+    recipients: Collection<User>;
+    type: Constants["ChannelTypes"]["GROUP_DM"];
+    dynamicIconURL(format?: ImageFormat, size?: number): string | null;
   }
 
   export class Guild extends Base {

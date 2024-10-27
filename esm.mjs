@@ -19,6 +19,7 @@ export const {
     Entitlement,
     ExtendedUser,
     ForumChannel,
+    GroupChannel,
     Guild,
     GuildChannel,
     GuildIntegration,

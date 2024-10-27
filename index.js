@@ -25,6 +25,7 @@ Dysnomia.DiscordRESTError = require("./lib/errors/DiscordRESTError");
 Dysnomia.Entitlement = require("./lib/structures/Entitlement");
 Dysnomia.ExtendedUser = require("./lib/structures/ExtendedUser");
 Dysnomia.ForumChannel = require("./lib/structures/ForumChannel");
+Dysnomia.GroupChannel = require("./lib/structures/GroupChannel.js");
 Dysnomia.Guild = require("./lib/structures/Guild");
 Dysnomia.GuildChannel = require("./lib/structures/GuildChannel");
 Dysnomia.GuildIntegration = require("./lib/structures/GuildIntegration");
