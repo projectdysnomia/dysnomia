@@ -26,6 +26,7 @@ export const {
     GuildScheduledEvent,
     GuildTemplate,
     Interaction,
+    InteractionMetadata,
     Invite,
     MediaChannel,
     Member,
