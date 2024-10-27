@@ -3709,6 +3709,7 @@ declare namespace Dysnomia {
     addRole(roleID: string, reason?: string): Promise<void>;
     ban(options?: BanMemberOptions): Promise<void>;
     dynamicAvatarURL(format?: ImageFormat, size?: number): string;
+    dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
     edit(options: MemberOptions, reason?: string): Promise<void>;
     kick(reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
