@@ -1968,6 +1968,9 @@ declare namespace Dysnomia {
     icon: string | null;
     id: string;
     install_params?: OAuthInstallParams;
+    integration_types_config?: Record<ApplicationIntegrationTypes, {
+      install_params?: OAuthInstallParams;
+    }>;
     interactions_endpoint_url?: string;
     name: string;
     owner?: PartialUser;
