@@ -2331,6 +2331,20 @@ declare namespace Dysnomia {
       SAFE:           2;
       AGE_RESTRICTED: 3;
     };
+    GuildScheduledEventEntityTypes: {
+      STAGE_INSTANCE: 1;
+      VOICE: 2;
+      EXTERNAL: 3;
+    };
+    GuildScheduledEventPrivacyLevel: {
+      GUILD_ONLY: 2;
+    };
+    GuildScheduledEventStatus: {
+      SCHEDULED: 1;
+      ACTIVE: 2;
+      COMPLETED: 3;
+      CANCELED: 4;
+    };
     ImageFormats: [
       "jpg",
       "jpeg",
@@ -2700,20 +2714,6 @@ declare namespace Dysnomia {
       RESUMED:             9;
       CLIENTS_CONNECT:     11;
       CLIENT_DISCONNECT:   13;
-    };
-    GuildScheduledEventStatus: {
-      SCHEDULED: 1;
-      ACTIVE: 2;
-      COMPLETED: 3;
-      CANCELED: 4;
-    };
-    GuildScheduledEventEntityTypes: {
-      STAGE_INSTANCE: 1;
-      VOICE: 2;
-      EXTERNAL: 3;
-    };
-    GuildScheduledEventPrivacyLevel: {
-      GUILD_ONLY: 2;
     };
     WebhookTypes: {
       INCOMING:         1;
