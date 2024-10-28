@@ -52,6 +52,7 @@ Dysnomia.Role = require("./lib/structures/Role");
 Dysnomia.SequentialBucket = require("./lib/util/SequentialBucket");
 Dysnomia.Shard = require("./lib/gateway/Shard");
 Dysnomia.SharedStream = require("./lib/voice/SharedStream");
+Dysnomia.SKU = require("./lib/structures/SKU.js");
 Dysnomia.SoundboardSound = require("./lib/structures/SoundboardSound");
 Dysnomia.StageChannel = require("./lib/structures/StageChannel");
 Dysnomia.StageInstance = require("./lib/structures/StageInstance");
