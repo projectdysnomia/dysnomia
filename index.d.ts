@@ -2680,9 +2680,9 @@ declare namespace Dysnomia {
       GUILD:    2;
     };
     SubscriptionStatus: {
-      ACTIVE:   1;
-      ENDING:   2;
-      INACTIVE: 3;
+      ACTIVE:   0;
+      ENDING:   1;
+      INACTIVE: 2;
     };
     SystemChannelFlags: {
       SUPPRESS_JOIN_NOTIFICATIONS:                              1;
