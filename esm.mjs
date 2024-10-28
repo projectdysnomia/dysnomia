@@ -49,6 +49,7 @@ export const {
     SoundboardSound,
     StageChannel,
     StageInstance,
+    Subscription,
     TextChannel,
     TextVoiceChannel,
     ThreadChannel,

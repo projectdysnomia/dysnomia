@@ -55,6 +55,7 @@ Dysnomia.SharedStream = require("./lib/voice/SharedStream");
 Dysnomia.SoundboardSound = require("./lib/structures/SoundboardSound");
 Dysnomia.StageChannel = require("./lib/structures/StageChannel");
 Dysnomia.StageInstance = require("./lib/structures/StageInstance");
+Dysnomia.Subscription = require("./lib/structures/Subscription.js");
 Dysnomia.TextChannel = require("./lib/structures/TextChannel");
 Dysnomia.TextVoiceChannel = require("./lib/structures/TextVoiceChannel");
 Dysnomia.ThreadChannel = require("./lib/structures/ThreadChannel");
