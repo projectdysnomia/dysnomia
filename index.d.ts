@@ -214,6 +214,7 @@ declare namespace Dysnomia {
   type EntitlementOwnerTypes = Constants["EntitlementOwnerTypes"][keyof Constants["EntitlementOwnerTypes"]];
   type EntitlementTypes = Constants["EntitlementTypes"][keyof Constants["EntitlementTypes"]];
   type SKUTypes = Constants["SKUTypes"][keyof Constants["SKUTypes"]];
+  type SubscriptionStatus = Constants["SubscriptionStatus"][keyof Constants["SubscriptionStatus"]];
 
   // INTERFACES
   // Internals
@@ -834,6 +835,9 @@ declare namespace Dysnomia {
     stageInstanceCreate: [stageInstance: StageInstance];
     stageInstanceDelete: [stageInstance: StageInstance];
     stageInstanceUpdate: [stageInstance: StageInstance, oldStageInstance: OldStageInstance | null];
+    subscriptionCreate: [subscription: Subscription];
+    subscriptionDelete: [subscription: Subscription];
+    subscriptionUpdate: [subscription: Subscription];
     threadCreate: [channel: AnyThreadChannel];
     threadDelete: [channel: AnyThreadChannel];
     threadListSync: [guild: Guild, deletedThreads: (AnyThreadChannel | Uncached)[], activeThreads: AnyThreadChannel[], joinedThreadsMember: ThreadMember[]];
@@ -2675,6 +2679,11 @@ declare namespace Dysnomia {
       STANDARD: 1;
       GUILD:    2;
     };
+    SubscriptionStatus: {
+      ACTIVE:   1;
+      ENDING:   2;
+      INACTIVE: 3;
+    };
     SystemChannelFlags: {
       SUPPRESS_JOIN_NOTIFICATIONS:                              1;
       SUPPRESS_PREMIUM_SUBSCRIPTIONS:                           2;
@@ -2791,13 +2800,11 @@ declare namespace Dysnomia {
     userID?: string;
   }
 
-  interface SKU {
-    id: string;
-    application_id: string;
-    type: SKUTypes;
-    name: string;
-    slug: string;
-    flags: number;
+  interface GetSKUSubscriptionsOptions {
+    after?: number;
+    before?: number;
+    limit?: number;
+    userID: string; // optional only when an OAuth token is used to get the subscription list
   }
 
   // Classes
@@ -3174,6 +3181,8 @@ declare namespace Dysnomia {
     getRoleConnectionMetadata(): Promise<ApplicationRoleConnectionMetadata[]>;
     getSelf(): Promise<ExtendedUser>;
     getSKUs(): Promise<SKU[]>;
+    getSKUSubscription(skuID: string, subscriptionID: string): Promise<Subscription>;
+    getSKUSubscriptions(skuID: string, options: GetSKUSubscriptionsOptions): Promise<Subscription[]>;
     getSoundboardSounds(): Promise<SoundboardSound<false>[]>;
     getStageInstance(channelID: string): Promise<StageInstance>;
     getStickerPack(packID: string): Promise<StickerPack>;
@@ -4093,6 +4102,15 @@ declare namespace Dysnomia {
     on<K extends keyof StreamEvents>(event: K, listener: (...args: StreamEvents[K]) => void): this;
     on(event: string, listener: (...args: any[]) => void): this;
   }
+  export class SKU extends Base {
+    applicationID: string;
+    flags: number;
+    name: string;
+    slug: string;
+    type: SKUTypes;
+    getSubscription(subscriptionID: string): Promise<Subscription>;
+    getSubscriptions(options: GetSKUSubscriptionsOptions): Promise<Subscription[]>;
+  }
 
   export class SoundboardSound<G = true> extends Base {
     available: G extends false ? true : boolean;
@@ -4130,6 +4148,17 @@ declare namespace Dysnomia {
     delete(): Promise<void>;
     edit(options: StageInstanceOptions): Promise<StageInstance>;
     update(data: BaseData): void;
+  }
+
+  export class Subscription extends Base {
+    canceledAt: number | null;
+    country?: string;
+    currentPeriodEnd: number;
+    currentPeriodStart: number;
+    entitlementIDs: string[];
+    skuIDs: string[];
+    status: SubscriptionStatus;
+    userID: string;
   }
 
   export class TextChannel extends GuildChannel implements GuildTextable, Invitable, GuildPinnable {
