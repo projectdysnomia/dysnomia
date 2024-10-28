@@ -55,6 +55,9 @@ declare namespace Dysnomia {
   type UserApplicationCommand<W extends boolean = false> = ApplicationCommand<"USER", W>;
   type UserApplicationCommandStructure = ApplicationCommandStructureBase<"USER">;
 
+  // Application
+  type ApplicationEventWebhookStatus = Constants["ApplicationEventWebhookStatus"][keyof Constants["ApplicationEventWebhookStatus"]];
+
   // Auto Moderation
   type AutoModerationActionType = Constants["AutoModerationActionTypes"][keyof Constants["AutoModerationActionTypes"]];
   type AutoModerationEventType = Constants["AutoModerationEventTypes"][keyof Constants["AutoModerationEventTypes"]];
@@ -1988,6 +1991,9 @@ declare namespace Dysnomia {
     cover_image?: string;
     custom_install_url?: string;
     description: string;
+    event_webhooks_status: ApplicationEventWebhookStatus;
+    event_webhooks_types?: string[];
+    event_webhooks_url?: string | null;
     flags?: number;
     guild_id?: string;
     guild?: PartialGuild;
@@ -2098,9 +2104,10 @@ declare namespace Dysnomia {
       MESSAGE:             3;
       PRIMARY_ENTRY_POINT: 4;
     };
-    ApplicationIntegrationTypes: {
-      GUILD_INSTALL: 0;
-      USER_INSTALL: 1;
+    ApplicationEventWebhookStatus: {
+      DISABLED:            1;
+      ENABLED:             2;
+      DISABLED_BY_DISCORD: 3;
     };
     ApplicationFlags: {
       APPLICATION_AUTO_MODERATION_RULE_CREATE_BADGE: 64;
@@ -2113,6 +2120,10 @@ declare namespace Dysnomia {
       GATEWAY_MESSAGE_CONTENT:                       262144;
       GATEWAY_MESSAGE_CONTENT_LIMITED:               524288;
       APPLICATION_COMMAND_BADGE:                     8388608;
+    };
+    ApplicationIntegrationTypes: {
+      GUILD_INSTALL: 0;
+      USER_INSTALL: 1;
     };
     AttachmentFlags: {
       IS_REMIX: 4;
