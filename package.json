@@ -70,6 +70,7 @@
   },
   "peerDependencies": {
     "@discordjs/opus": "^0.10.0",
+    "@stablelib/xchacha20poly1305": "~1.0.1",
     "erlpack": "github:discord/erlpack",
     "eventemitter3": "^5.0.1",
     "pako": "^2.1.0",
@@ -78,6 +79,9 @@
   },
   "peerDependenciesMeta": {
     "@discordjs/opus": {
+      "optional": true
+    },
+    "@stablelib/xchacha20poly1305": {
       "optional": true
     },
     "eventemitter3": {
