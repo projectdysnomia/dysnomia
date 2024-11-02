@@ -3708,6 +3708,8 @@ declare namespace Dysnomia {
     authorizingIntegrationOwners: Record<ApplicationIntegrationTypes, string>;
     interactedMessageID?: string;
     originalResponseMessageID?: string;
+    targetMessageID?: string;
+    targetUser?: User;
     triggeringInteractionMetadata?: InteractionMetadata;
     type: InteractionTypes;
     user: User;
