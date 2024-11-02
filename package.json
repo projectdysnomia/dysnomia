@@ -56,7 +56,7 @@
   },
   "optionalDependencies": {
     "@snazzah/davey": "^0.1.12",
-    "@stablelib/xchacha20poly1305": "~1.0.1",
+    "@projectdysnomia/libsodium": "github:projectdysnomia/libsodium#acefd1b44526953eed4f0a87e31149963d052d21",
     "opusscript": "^0.1.1"
   },
   "browser": {
