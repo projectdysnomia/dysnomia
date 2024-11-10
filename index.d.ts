@@ -2001,7 +2001,7 @@ declare namespace Dysnomia {
     id: string;
     install_params?: OAuthInstallParams;
     integration_types_config?: Record<ApplicationIntegrationTypes, {
-      install_params?: OAuthInstallParams;
+      oauth2_install_params?: OAuthInstallParams;
     }>;
     interactions_endpoint_url?: string;
     name: string;
