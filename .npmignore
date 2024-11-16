@@ -9,3 +9,4 @@ docs
 node_modules
 test
 .github
+eslint.config.mjs
