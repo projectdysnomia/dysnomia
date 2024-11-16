@@ -1,0 +1,36 @@
+name: Release
+on:
+  release:
+    types: [released]
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Release to NPM
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with: 
+          node-version: lts/*
+          registry-url: 'https://registry.npmjs.org'
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+      - name: Package the project
+        run: |
+            mkdir -p ${{ runner.temp }}/gha-dist
+            npm pack . --pack-destination ${{ runner.temp }}/gha-dist/
+      - name: Upload the built package as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-package
+          path:
+            ${{ runner.temp }}/gha-dist/*.tgz
+      - name: Publish the package to NPM
+        if: github.event_name == 'release'
+        env:
+          NODE_AUTH_TOKEN: ${{ github.event_name == 'release' && secrets.NPM_TOKEN || '' }}
+        run: npm publish --provenance --access public
