@@ -1,6 +1,6 @@
 {
   "name": "@projectdysnomia/dysnomia",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A fork of Eris focused on keeping up with the latest Discord API changes.",
   "main": "./index.js",
   "exports": {
