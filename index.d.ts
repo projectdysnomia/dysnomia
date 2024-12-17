@@ -4169,6 +4169,7 @@ declare namespace Dysnomia {
     currentPeriodEnd: number;
     currentPeriodStart: number;
     entitlementIDs: string[];
+    renewalSKUIDs: string[] | null;
     skuIDs: string[];
     status: SubscriptionStatus;
     userID: string;
