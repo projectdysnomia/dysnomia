@@ -2019,15 +2019,15 @@ declare namespace Dysnomia {
   }
 
   type EditApplicationOptions = Partial<Pick<OAuthApplicationInfo, |
-  "cover_image" |
-  "custom_install_url" |
-  "description" |
-  "flags" |
-  "icon" |
-  "install_params" |
-  "interactions_endpoint_url" |
-  "role_connections_verification_url" |
-  "tags"
+      "cover_image" |
+      "custom_install_url" |
+      "description" |
+      "flags" |
+      "icon" |
+      "install_params" |
+      "interactions_endpoint_url" |
+      "role_connections_verification_url" |
+      "tags"
   >>;
 
   interface OAuthTeamInfo {
