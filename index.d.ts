@@ -3474,7 +3474,7 @@ declare namespace Dysnomia {
     editCommand<T extends ApplicationCommandStructure>(commandID: string, command: Omit<T, "type">): Promise<ApplicationCommandStructureConversion<T, true>>;
     editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
-    editIncidentActions(options: EditGuildIncidentActionsOptions): Promise<GuildIncidentsData>
+    editIncidentActions(options: EditGuildIncidentActionsOptions): Promise<GuildIncidentsData>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     editMFALevel(options: EditGuildMFALevelOptions): Promise<MFALevel>;
