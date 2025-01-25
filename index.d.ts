@@ -626,6 +626,7 @@ declare namespace Dysnomia {
     explicitContentFilter: ExplicitContentFilter;
     features: GuildFeatures[];
     icon: string | null;
+    incidentsData: GuildIncidentsData | null;
     large: boolean;
     maxMembers?: number;
     maxStageVideoChannelUsers?: number;
@@ -1061,6 +1062,12 @@ declare namespace Dysnomia {
   interface GuildBan {
     reason?: string;
     user: User;
+  }
+  interface GuildIncidentsData {
+    invitesDisabledUntil: number | null;
+    dmsDisabledUntil: number | null;
+    dmSpamDetectedAt: number | null;
+    raidDetectedAt: number | null;
   }
   interface GuildOnboarding {
     enabled: boolean;
@@ -3381,6 +3388,7 @@ declare namespace Dysnomia {
     icon: string | null;
     iconURL: string | null;
     id: string;
+    incidentsData: GuildIncidentsData | null;
     joinedAt: number;
     large: boolean;
     maxMembers: number;
