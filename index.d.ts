@@ -1006,6 +1006,10 @@ declare namespace Dysnomia {
     category_id: number;
     guild_id: string;
   }
+  interface EditGuildIncidentActionsOptions {
+    invitesDisabledUntil?: Date | null;
+    dmsDisabledUntil?: Date | null;
+  }
   interface EditGuildMFALevelOptions {
     level: MFALevel;
     reason?: string;
@@ -3092,6 +3096,7 @@ declare namespace Dysnomia {
       options: { name?: string; roles?: string[] },
       reason?: string
     ): Promise<Emoji>;
+    editGuildIncidentActions(guildID: string, options: EditGuildIncidentActionsOptions): Promise<GuildIncidentsData>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     editGuildMFALevel(guildID: string, options: EditGuildMFALevelOptions): Promise<MFALevel>;
@@ -3469,6 +3474,7 @@ declare namespace Dysnomia {
     editCommand<T extends ApplicationCommandStructure>(commandID: string, command: Omit<T, "type">): Promise<ApplicationCommandStructureConversion<T, true>>;
     editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
+    editIncidentActions(options: EditGuildIncidentActionsOptions): Promise<GuildIncidentsData>
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
     editMFALevel(options: EditGuildMFALevelOptions): Promise<MFALevel>;
