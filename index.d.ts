@@ -156,14 +156,15 @@ declare namespace Dysnomia {
   type InviteTypes = Constants["InviteTypes"][keyof Constants["InviteTypes"]];
 
   // Message
-  type ActionRowComponents = Button | SelectMenu | SectionComponent | TextDisplayComponent | MediaGalleryComponent | SeparatorComponent | FileComponent | ContainerComponent;
+  type ActionRowComponents = Button | SelectMenu;
   type BaseSelectMenuTypes = Exclude<SelectMenuTypes, SelectMenuExtendedTypes>;
   type Button = InteractionButton | PremiumButton | URLButton;
   type ButtonStyles = Constants["ButtonStyles"][keyof Constants["ButtonStyles"]];
   type ButtonStyleNormal = Exclude<ButtonStyles, ButtonStyleLink | ButtonStylePremium>;
   type ButtonStyleLink = Constants["ButtonStyles"]["LINK"];
   type ButtonStylePremium = Constants["ButtonStyles"]["PREMIUM"];
-  type Component = ActionRow | ActionRowComponents;
+  type Component = ActionRow | ActionRowComponents | ComponentV2;
+  type ComponentV2 = SectionComponent | TextDisplayComponent | MediaGalleryComponent | SeparatorComponent | FileComponent | ContainerComponent;
   type ComponentTypes = Constants["ComponentTypes"][keyof Constants["ComponentTypes"]];
   type ImageFormat = Constants["ImageFormats"][number];
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
@@ -1557,7 +1558,7 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["CONTAINER"];
     accent_color?: number;
     spoiler?: boolean;
-    components: (ActionRow | TextDisplayComponent | SectionComponent | MediaGalleryComponent | SeparatorComponent | FileComponent);
+    components: (ActionRow | TextDisplayComponent | SectionComponent | MediaGalleryComponent | SeparatorComponent | FileComponent)[];
   }
   interface ComponentBase {
     type: ComponentTypes;
