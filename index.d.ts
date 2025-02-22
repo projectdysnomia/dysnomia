@@ -2033,6 +2033,7 @@ declare namespace Dysnomia {
     tts?: boolean;
     username?: string;
     wait?: boolean;
+    withComponents?: boolean;
   }
 
   // TODO: Does this have more stuff?
