@@ -211,7 +211,7 @@ declare namespace Dysnomia {
   type VoiceChannelEffectAnimationType = Constants["VoiceChannelEffectAnimationTypes"][keyof Constants["VoiceChannelEffectAnimationTypes"]];
 
   // Webhook
-  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components" | "attachments" | "threadID">;
+  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components" | "attachments" | "threadID" | "withComponents">;
   type WebhookTypes = Constants["WebhookTypes"][keyof Constants["WebhookTypes"]];
 
   // Subscriptions
