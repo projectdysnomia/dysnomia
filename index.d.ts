@@ -3780,6 +3780,7 @@ declare namespace Dysnomia {
     discriminator: string;
     flags: number;
     game: Activity | null;
+    globalName: string | null;
     guild: Guild;
     id: string;
     joinedAt: number | null;
