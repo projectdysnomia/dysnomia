@@ -28,25 +28,25 @@ bot.on("interactionCreate", async (interaction) => { // When an interaction is c
             // Send a message containing v2 components
             // Note that you cannot use "content" and "embeds" when sending v2 components
             await interaction.createMessage({
-                flags: Dysnomia.Constants.MessageFlags.IS_COMPONENTS_V2, // This flag is required to be able to send v2 components
+                flags: Constants.MessageFlags.IS_COMPONENTS_V2, // This flag is required to be able to send v2 components
                 components: [
                     // A text display component displays text
                     {
-                        type: Dysnomia.Constants.ComponentTypes.TEXT_DISPLAY,
+                        type: Constants.ComponentTypes.TEXT_DISPLAY,
                         content: "# Welcome to Components v2!"
                     },
                     // A container component groups components together in a box, similar to an embed
                     {
-                        type: Dysnomia.Constants.ComponentTypes.CONTAINER,
+                        type: Constants.ComponentTypes.CONTAINER,
                         accent_color: 0x008000,
                         components: [
                             {
-                                type: Dysnomia.Constants.ComponentTypes.TEXT_DISPLAY,
+                                type: Constants.ComponentTypes.TEXT_DISPLAY,
                                 content: "A container groups content together, similar to an embed. It can have an accent color and various components included in it. You can find some files and images below."
                             },
                             // A media gallery components displays a bunch of media items (images, videos, etc.) in a grid
                             {
-                                type: Dysnomia.Constants.ComponentTypes.MEDIA_GALLERY,
+                                type: Constants.ComponentTypes.MEDIA_GALLERY,
                                 items: [
                                     {
                                         media: {
@@ -58,21 +58,21 @@ bot.on("interactionCreate", async (interaction) => { // When an interaction is c
                             },
                             // A separator component creates a horizontal line in the message
                             {
-                                type: Dysnomia.Constants.ComponentTypes.SEPARATOR,
+                                type: Constants.ComponentTypes.SEPARATOR,
                                 divider: true,
-                                spacing: Dysnomia.Constants.SeparatorSpacingSize.LARGE
+                                spacing: Constants.SeparatorSpacingSize.LARGE
                             },
                             // A section component displays text content with an optional accessory
                             {
-                                type: Dysnomia.Constants.ComponentTypes.SECTION,
+                                type: Constants.ComponentTypes.SECTION,
                                 components: [
                                     {
-                                        type: Dysnomia.Constants.ComponentTypes.TEXT_DISPLAY,
+                                        type: Constants.ComponentTypes.TEXT_DISPLAY,
                                         content: "Above is a divider with large spacing, and your avatar is to the right of this text. v1 components are still supported in v2 messages. For example, here's an user select component:"
                                     }
                                 ],
                                 accessory: { // A thumbnail accessory displays an image to the right of the section
-                                    type: Dysnomia.Constants.ComponentTypes.THUMBNAIL,
+                                    type: Constants.ComponentTypes.THUMBNAIL,
                                     media: {
                                         url: interaction.user.avatarURL
                                     }
@@ -80,11 +80,11 @@ bot.on("interactionCreate", async (interaction) => { // When an interaction is c
                             },
                             // An action row (v1 component)
                             {
-                                type: Dysnomia.Constants.ComponentTypes.ACTION_ROW,
+                                type: Constants.ComponentTypes.ACTION_ROW,
                                 components: [
                                     // A user select component allows the user to select a user
                                     {
-                                        type: Dysnomia.Constants.ComponentTypes.USER_SELECT,
+                                        type: Constants.ComponentTypes.USER_SELECT,
                                         custom_id: "user_select",
                                         placeholder: "Select a user"
                                     }
@@ -94,23 +94,23 @@ bot.on("interactionCreate", async (interaction) => { // When an interaction is c
                     },
                     // A file component displays a file attachment
                     {
-                        type: Dysnomia.Constants.ComponentTypes.FILE,
+                        type: Constants.ComponentTypes.FILE,
                         file: {
                             url: "attachment://hello_world.txt"
                         },
                         spoiler: true
                     },
                     {
-                        type: Dysnomia.Constants.ComponentTypes.SECTION,
+                        type: Constants.ComponentTypes.SECTION,
                         components: [
                             {
-                                type: Dysnomia.Constants.ComponentTypes.TEXT_DISPLAY,
+                                type: Constants.ComponentTypes.TEXT_DISPLAY,
                                 content: "A section can have a button displayed next to it."
                             }
                         ],
                         accessory: {
-                            type: Dysnomia.Constants.ComponentTypes.BUTTON,
-                            style: Dysnomia.Constants.ButtonStyles.PRIMARY,
+                            type: Constants.ComponentTypes.BUTTON,
+                            style: Constants.ButtonStyles.PRIMARY,
                             custom_id: "click_me",
                             label: "Click me!"
                         }
@@ -125,7 +125,7 @@ bot.on("interactionCreate", async (interaction) => { // When an interaction is c
     } else if(interaction instanceof Dysnomia.ComponentInteraction) { // If the interaction is a component interaction
         await interaction.createMessage({
             content: "A component interaction was received!",
-            flags: Dysnomia.Constants.MessageFlags.EPHEMERAL
+            flags: Constants.MessageFlags.EPHEMERAL
         });
     }
 });
