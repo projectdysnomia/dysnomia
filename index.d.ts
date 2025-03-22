@@ -4358,6 +4358,9 @@ declare namespace Dysnomia {
     connecting: boolean;
     connectionTimeout: NodeJS.Timeout | null;
     current?: VoiceStreamCurrent | null;
+    daveProtocolVersion?: number;
+    /** Optional dependencies DAVESession (@snazzah/davey) */
+    daveSession: unknown | null;
     ended?: boolean;
     endpoint: URL;
     frameDuration: number;
