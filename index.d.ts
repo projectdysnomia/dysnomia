@@ -3699,6 +3699,7 @@ declare namespace Dysnomia {
     acknowledged: boolean;
     applicationID: string;
     appPermissions?: Permission;
+    attachmentSizeLimit: number;
     authorizingIntegrationOwners: Record<ApplicationIntegrationTypes, string>;
     channel?: PossiblyUncachedInteractionChannel;
     context?: InteractionContextTypes;
