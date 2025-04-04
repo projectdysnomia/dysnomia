@@ -211,7 +211,7 @@ declare namespace Dysnomia {
   type VoiceChannelEffectAnimationType = Constants["VoiceChannelEffectAnimationTypes"][keyof Constants["VoiceChannelEffectAnimationTypes"]];
 
   // Webhook
-  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components" | "attachments" | "threadID">;
+  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components" | "attachments" | "threadID" | "withComponents">;
   type WebhookTypes = Constants["WebhookTypes"][keyof Constants["WebhookTypes"]];
 
   // Subscriptions
@@ -2033,6 +2033,7 @@ declare namespace Dysnomia {
     tts?: boolean;
     username?: string;
     wait?: boolean;
+    withComponents?: boolean;
   }
 
   // TODO: Does this have more stuff?
@@ -3839,6 +3840,7 @@ declare namespace Dysnomia {
     discriminator: string;
     flags: number;
     game: Activity | null;
+    globalName: string | null;
     guild: Guild;
     id: string;
     joinedAt: number | null;
