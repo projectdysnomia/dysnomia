@@ -4428,6 +4428,7 @@ declare namespace Dysnomia {
     sendAudioFrame(frame: Buffer): void;
     sendUDPPacket(packet: Buffer): void;
     sendWS(op: number, data: Record<string, unknown>): void;
+    sendWSBinary(op: number, data: Buffer): void;
     setSpeaking(value: boolean): void;
     setVolume(volume: number): void;
     stopPlaying(): void;
