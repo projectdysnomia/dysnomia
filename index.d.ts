@@ -1796,6 +1796,10 @@ declare namespace Dysnomia {
   }
   interface UnfurledMediaItem {
     url: string;
+    proxy_url?: string;
+    height?: number | null;
+    width?: number | null;
+    content_type?: string;
   }
   interface URLButton extends ButtonBase {
     style: Constants["ButtonStyles"]["LINK"];
