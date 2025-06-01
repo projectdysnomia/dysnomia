@@ -69,10 +69,12 @@ declare namespace Dysnomia {
   interface Uncached { id: string }
 
   // Channel
-  type AnyChannel = AnyGuildChannel | GroupChannel | PrivateChannel;
-  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel;
+  type AnyChannel = AnyNonThreadChannel | AnyThreadChannel;
+  type AnyGuildChannel = GuildTextableChannel | AnyVoiceChannel | CategoryChannel | GuildThreadOnlyChannel;
+  type AnyNonThreadChannel = AnyGuildChannel | GroupChannel | PrivateChannel;
   type AnyThreadChannel = NewsThreadChannel | PrivateThreadChannel | PublicThreadChannel | ThreadChannel;
   type AnyVoiceChannel = TextVoiceChannel | StageChannel;
+  type GuildThreadOnlyChannel = ForumChannel | MediaChannel;
   type GuildTextableChannel = TextChannel | TextVoiceChannel | NewsChannel | StageChannel;
   type GuildTextableWithThreads = GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
@@ -163,7 +165,8 @@ declare namespace Dysnomia {
   type ButtonStyleNormal = Exclude<ButtonStyles, ButtonStyleLink | ButtonStylePremium>;
   type ButtonStyleLink = Constants["ButtonStyles"]["LINK"];
   type ButtonStylePremium = Constants["ButtonStyles"]["PREMIUM"];
-  type Component = ActionRow | ActionRowComponents;
+  type Component = ActionRow | ActionRowComponents | ComponentV2;
+  type ComponentV2 = SectionComponent | TextDisplayComponent | MediaGalleryComponent | SeparatorComponent | FileComponent | ContainerComponent;
   type ComponentTypes = Constants["ComponentTypes"][keyof Constants["ComponentTypes"]];
   type ImageFormat = Constants["ImageFormats"][number];
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
@@ -210,7 +213,7 @@ declare namespace Dysnomia {
   type VoiceChannelEffectAnimationType = Constants["VoiceChannelEffectAnimationTypes"][keyof Constants["VoiceChannelEffectAnimationTypes"]];
 
   // Webhook
-  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components" | "attachments" | "threadID">;
+  type MessageWebhookContent = Pick<WebhookPayload, "content" | "embeds" | "allowedMentions" | "components" | "attachments" | "threadID" | "withComponents">;
   type WebhookTypes = Constants["WebhookTypes"][keyof Constants["WebhookTypes"]];
 
   // Subscriptions
@@ -777,7 +780,7 @@ declare namespace Dysnomia {
     autoModerationRuleDelete: [guild: Guild, rule: AutoModerationRule];
     autoModerationRuleUpdate: [guild: Guild, rule: AutoModerationRule | null, newRule: AutoModerationRule];
     channelCreate: [channel: AnyGuildChannel];
-    channelDelete: [channel: AnyChannel];
+    channelDelete: [channel: AnyNonThreadChannel];
     channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
     channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldVoiceChannel];
     connect: [id: number];
@@ -1502,7 +1505,7 @@ declare namespace Dysnomia {
   }
 
   // Message
-  interface ActionRow {
+  interface ActionRow extends ComponentBase {
     components: ActionRowComponents[];
     type: Constants["ComponentTypes"]["ACTION_ROW"];
   }
@@ -1545,7 +1548,7 @@ declare namespace Dysnomia {
     roles?: boolean | string[];
     users?: boolean | string[];
   }
-  interface ButtonBase {
+  interface ButtonBase extends ComponentBase {
     disabled?: boolean;
     type: Constants["ComponentTypes"]["BUTTON"];
   }
@@ -1553,6 +1556,16 @@ declare namespace Dysnomia {
     channel_types?: GuildChannelTypes[];
     default_values?: SelectMenuDefaultValue<"channel">[];
     type: Constants["ComponentTypes"]["CHANNEL_SELECT"];
+  }
+  interface ContainerComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["CONTAINER"];
+    accent_color?: number;
+    spoiler?: boolean;
+    components: (ActionRow | TextDisplayComponent | SectionComponent | MediaGalleryComponent | SeparatorComponent | FileComponent)[];
+  }
+  interface ComponentBase {
+    type: ComponentTypes;
+    id?: number;
   }
   interface CreateStickerOptions extends Required<Pick<EditStickerOptions, "name" | "tags" | "description">> {
     file: FileContent;
@@ -1567,6 +1580,20 @@ declare namespace Dysnomia {
     description?: string;
     name?: string;
     tags?: string;
+  }
+  interface FileComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["FILE"];
+    file: UnfurledMediaItem;
+    spoiler?: boolean;
+  }
+  interface MediaGalleryItem {
+    media: UnfurledMediaItem;
+    description?: string;
+    spoiler?: boolean;
+  }
+  interface MediaGalleryComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["MEDIA_GALLERY"];
+    items: MediaGalleryItem[];
   }
   interface MentionableSelectMenu extends SelectMenuBase {
     default_values?: SelectMenuDefaultValue<"any">[];
@@ -1583,7 +1610,7 @@ declare namespace Dysnomia {
   interface BaseSelectMenu extends SelectMenuBase {
     type: BaseSelectMenuTypes;
   }
-  interface SelectMenuBase {
+  interface SelectMenuBase extends ComponentBase {
     custom_id: string;
     disabled?: boolean;
     max_values?: number;
@@ -1594,6 +1621,11 @@ declare namespace Dysnomia {
   interface StringSelectMenu extends SelectMenuBase {
     options: SelectMenuOptions[];
     type: Constants["ComponentTypes"]["STRING_SELECT"];
+  }
+  interface SectionComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["SECTION"];
+    components: TextDisplayComponent[];
+    accessory: ThumbnailComponent | Button;
   }
   interface SelectMenuDefaultValue<Type extends ("any" | "user" | "role" | "channel") = "any"> {
     id: string;
@@ -1606,6 +1638,15 @@ declare namespace Dysnomia {
     label: string;
     value: string;
   }
+  interface SeparatorComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["SEPARATOR"];
+    divider?: boolean;
+    spacing?: Constants["SeparatorSpacingSize"][keyof Constants["SeparatorSpacingSize"]];
+  }
+  interface TextDisplayComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["TEXT_DISPLAY"];
+    content: string;
+  }
   interface TextInput {
     type: Constants["ComponentTypes"]["TEXT_INPUT"];
     custom_id: string;
@@ -1616,6 +1657,12 @@ declare namespace Dysnomia {
     required?: boolean;
     value?: string;
     placeholder?: string;
+  }
+  interface ThumbnailComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["THUMBNAIL"];
+    media: UnfurledMediaItem;
+    description?: string;
+    spoiler?: boolean;
   }
   interface GetMessageReactionOptions {
     after?: string;
@@ -1719,7 +1766,6 @@ declare namespace Dysnomia {
   interface PremiumButton extends ButtonBase {
     sku_id: string;
     style: Constants["ButtonStyles"]["PREMIUM"];
-
   }
   interface RoleSubscriptionData {
     isRenewal: boolean;
@@ -1750,6 +1796,13 @@ declare namespace Dysnomia {
     name: string;
     sku_id: string;
     stickers: Sticker[];
+  }
+  interface UnfurledMediaItem {
+    url: string;
+    proxy_url?: string;
+    height?: number | null;
+    width?: number | null;
+    content_type?: string;
   }
   interface URLButton extends ButtonBase {
     style: Constants["ButtonStyles"]["LINK"];
@@ -1988,6 +2041,7 @@ declare namespace Dysnomia {
     tts?: boolean;
     username?: string;
     wait?: boolean;
+    withComponents?: boolean;
   }
 
   // TODO: Does this have more stuff?
@@ -2287,6 +2341,13 @@ declare namespace Dysnomia {
       ROLE_SELECT:        6;
       MENTIONABLE_SELECT: 7;
       CHANNEL_SELECT:     8;
+      SECTION:            9;
+      TEXT_DISPLAY:       10;
+      THUMBNAIL:          11;
+      MEDIA_GALLERY:      12;
+      FILE:               13;
+      SEPARATOR:          14;
+      CONTAINER:          17;
     };
     ConnectionVisibilityTypes: {
       NONE:     0;
@@ -2530,6 +2591,7 @@ declare namespace Dysnomia {
       SUPPRESS_NOTIFICATIONS:                 4096;
       IS_VOICE_MESSAGE:                       8192;
       HAS_SNAPSHOT:                           16384;
+      IS_COMPONENTS_V2:                       32768;
     };
     MessageReferenceTypes: {
       DEFAULT: 0;
@@ -2677,6 +2739,10 @@ declare namespace Dysnomia {
     };
     RoleFlags: {
       IN_PROMPT: 1;
+    };
+    SeparatorSpacingSize: {
+      SMALL: 1;
+      LARGE: 2;
     };
     SKUFlags: {
       AVAILABLE:          4;
@@ -3712,6 +3778,7 @@ declare namespace Dysnomia {
     acknowledged: boolean;
     applicationID: string;
     appPermissions?: Permission;
+    attachmentSizeLimit: number;
     authorizingIntegrationOwners: Record<ApplicationIntegrationTypes, string>;
     channel?: PossiblyUncachedInteractionChannel;
     context?: InteractionContextTypes;
