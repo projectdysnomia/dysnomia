@@ -504,6 +504,7 @@ declare namespace Dysnomia {
     gateway?: GatewayOptions;
     messageLimit?: number;
     opusOnly?: boolean;
+    daveEncryption?: boolean;
     requestTimeout?: number;
     rest?: RequestHandlerOptions;
     restMode?: boolean;
@@ -1898,6 +1899,7 @@ declare namespace Dysnomia {
     sendStartNotification?: boolean;
   }
   interface JoinVoiceChannelOptions {
+    daveEncryption?: boolean;
     opusOnly?: boolean;
     selfDeaf?: boolean;
     selfMute?: boolean;
@@ -4369,6 +4371,7 @@ declare namespace Dysnomia {
     connecting: boolean;
     connectionTimeout: NodeJS.Timeout | null;
     current?: VoiceStreamCurrent | null;
+    daveEnabled: boolean;
     daveProtocolVersion?: number;
     /** Optional dependencies DAVESession (@snazzah/davey) */
     daveSession: unknown | null;
@@ -4410,7 +4413,7 @@ declare namespace Dysnomia {
     volume: number;
     ws: BrowserWebSocket | WebSocket | null;
     wsSequence: number;
-    constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
+    constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean; daveEncryption?: boolean });
     connect(data: VoiceConnectData): NodeJS.Timer | void;
     disconnect(error?: Error, reconnecting?: boolean): void;
     emit<K extends keyof VoiceEvents>(event: K, ...args: VoiceEvents[K]): boolean;
