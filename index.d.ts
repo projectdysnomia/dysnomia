@@ -1584,6 +1584,8 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["FILE"];
     file: UnfurledMediaItem;
     spoiler?: boolean;
+    name?: string;
+    size?: number;
   }
   interface MediaGalleryItem {
     media: UnfurledMediaItem;
