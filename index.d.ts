@@ -1802,6 +1802,7 @@ declare namespace Dysnomia {
     height?: number | null;
     width?: number | null;
     content_type?: string;
+    attachment_id?: string;
   }
   interface URLButton extends ButtonBase {
     style: Constants["ButtonStyles"]["LINK"];
