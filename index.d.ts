@@ -1585,6 +1585,8 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["FILE"];
     file: UnfurledMediaItem;
     spoiler?: boolean;
+    name?: string;
+    size?: number;
   }
   interface MediaGalleryItem {
     media: UnfurledMediaItem;
@@ -1803,6 +1805,7 @@ declare namespace Dysnomia {
     height?: number | null;
     width?: number | null;
     content_type?: string;
+    attachment_id?: string;
   }
   interface URLButton extends ButtonBase {
     style: Constants["ButtonStyles"]["LINK"];
@@ -2051,6 +2054,7 @@ declare namespace Dysnomia {
   }
   interface OAuthApplicationInfo {
     approximate_guild_count?: number;
+    approximate_user_authorization_count?: number;
     approximate_user_install_count?: number;
     bot?: PartialUser;
     bot_public: boolean;
