@@ -1482,6 +1482,7 @@ declare namespace Dysnomia {
   interface OldUser {
     avatar: string | null;
     avatarDecorationData?: AvatarDecorationData | null;
+    collectibles: UserCollectibles | null;
     discriminator: string;
     globalName: string | null;
     username: string;
@@ -1946,6 +1947,18 @@ declare namespace Dysnomia {
   interface ModalSubmitInteractionData {
     custom_id: string;
     components: ModalSubmitInteractionDataComponents[];
+  }
+
+  // User
+  interface UserCollectibles {
+    nameplate?: UserNameplate;
+  }
+
+  interface UserNameplate {
+    sku_id: string;
+    asset: string;
+    label: string;
+    palette: string; // TODO: should this be specified more exactly as the API docs state?
   }
 
   // Voice
@@ -4389,6 +4402,7 @@ declare namespace Dysnomia {
     banner?: string | null;
     bannerURL: string | null;
     bot: boolean;
+    collectibles: UserCollectibles | null;
     createdAt: number;
     defaultAvatar: string;
     defaultAvatarURL: string;
