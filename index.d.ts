@@ -432,6 +432,10 @@ declare namespace Dysnomia {
     limit?: number;
     withMember?: boolean;
   }
+  interface GetPinsOptions {
+    before?: Date;
+    limit?: number;
+  }
   interface GuildPinnable extends Pinnable {
     lastPinTimestamp: number | null;
     topic?: string | null;
@@ -461,6 +465,14 @@ declare namespace Dysnomia {
     getPins(): Promise<Message[]>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
+  }
+  interface GetPinsResponse {
+    hasMore: boolean;
+    items: MessagePin[];
+  }
+  interface MessagePin {
+    pinnedAt: number;
+    message: Message;
   }
   interface PurgeChannelOptions {
     after?: string;
@@ -3278,6 +3290,7 @@ declare namespace Dysnomia {
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
+    getPinsPaginated(channelID: string, options?: GetPinsOptions): Promise<GetPinsResponse>;
     getPollAnswerVoters(channelID: string, messageID: string, answerID: number, options?: GetPollAnswerVotersOptions): Promise<User[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
