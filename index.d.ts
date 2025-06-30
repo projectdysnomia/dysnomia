@@ -2431,6 +2431,7 @@ declare namespace Dysnomia {
       "DEVELOPER_SUPPORT_SERVER",
       "DISCOVERABLE",
       "FEATURABLE",
+      "GUESTS_ENABLED",
       "INVITES_DISABLED",
       "INVITE_SPLASH",
       "MEMBER_VERIFICATION_GATE_ENABLED",
