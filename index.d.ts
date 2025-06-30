@@ -1965,7 +1965,7 @@ declare namespace Dysnomia {
     sku_id: string;
     asset: string;
     label: string;
-    palette: string; // TODO: should this be specified more exactly as the API docs state?
+    palette: string;
   }
 
   // Voice
