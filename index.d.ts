@@ -722,6 +722,7 @@ declare namespace Dysnomia {
   }
   interface OldRole {
     color: number;
+    colors: RoleColors;
     flags: number;
     hoist: boolean;
     icon: string | null;
@@ -1880,8 +1881,14 @@ declare namespace Dysnomia {
     permissions?: number;
     position?: number;
   }
+  interface RoleColors {
+    primaryColor: number;
+    secondaryColor: number | null;
+    tertiaryColor: number | null;
+  }
   interface RoleOptions {
     color?: number;
+    colors?: RoleColors;
     hoist?: boolean;
     icon?: string;
     mentionable?: boolean;
@@ -4080,6 +4087,7 @@ declare namespace Dysnomia {
 
   export class Role extends Base {
     color: number;
+    colors: RoleColors;
     createdAt: number;
     flags: number;
     guild: Guild;
