@@ -2570,6 +2570,9 @@ declare namespace Dysnomia {
       APPLICATION_COMMAND_AUTOCOMPLETE: 4;
       MODAL_SUBMIT:                     5;
     };
+    InviteFlags: {
+      IS_GUEST_INVITE: 1;
+    };
     InviteTargetTypes: {
       STREAM:               1;
       EMBEDDED_APPLICATION: 2;
@@ -3828,6 +3831,7 @@ declare namespace Dysnomia {
     // @ts-ignore: Property is only not null when invite metadata is supplied
     createdAt: CT extends "withMetadata" ? number : null;
     expiresAt?: CT extends "withMetadata" | "withoutExpiration" ? never : number;
+    flags?: number;
     guild: CT extends "withMetadata"
       ? Guild // Invite with Metadata always has guild prop
       : CH extends Exclude<InviteChannel, InvitePartialChannel> // Invite without Metadata
