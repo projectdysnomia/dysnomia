@@ -463,6 +463,7 @@ declare namespace Dysnomia {
   }
   interface Pinnable {
     getPins(): Promise<Message[]>;
+    getPins(options: GetPinsOptions): Promise<GetPinsResponse>;
     pinMessage(messageID: string): Promise<void>;
     unpinMessage(messageID: string): Promise<void>;
   }
@@ -3290,7 +3291,7 @@ declare namespace Dysnomia {
     getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
-    getPinsPaginated(channelID: string, options?: GetPinsOptions): Promise<GetPinsResponse>;
+    getPins(channelID: string, options: GetPinsOptions): Promise<GetPinsResponse>;
     getPollAnswerVoters(channelID: string, messageID: string, answerID: number, options?: GetPollAnswerVotersOptions): Promise<User[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
@@ -4014,6 +4015,7 @@ declare namespace Dysnomia {
     getMessage(messageID: string): Promise<Message<this>>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     getPins(): Promise<Message<this>[]>;
+    getPins(options: GetPinsOptions): Promise<GetPinsResponse>;
   }
 
   export class NewsThreadChannel extends ThreadChannel {
@@ -4071,6 +4073,7 @@ declare namespace Dysnomia {
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     getPins(): Promise<Message<this>[]>;
+    getPins(options: GetPinsOptions): Promise<GetPinsResponse>;
     leave(): Promise<void>;
     pinMessage(messageID: string): Promise<void>;
     removeMessageReaction(messageID: string, reaction: string): Promise<void>;
@@ -4331,6 +4334,7 @@ declare namespace Dysnomia {
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     getPins(): Promise<Message<this>[]>;
+    getPins(options: GetPinsOptions): Promise<GetPinsResponse>;
     getWebhooks(): Promise<Webhook[]>;
     pinMessage(messageID: string): Promise<void>;
     purge(options: PurgeChannelOptions): Promise<number>;
@@ -4390,6 +4394,7 @@ declare namespace Dysnomia {
     getMessageReaction(messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     getMessages(options?: GetMessagesOptions): Promise<Message<this>[]>;
     getPins(): Promise<Message<this>[]>;
+    getPins(options: GetPinsOptions): Promise<GetPinsResponse>;
     join(userID?: string): Promise<void>;
     leave(userID?: string): Promise<void>;
     pinMessage(messageID: string): Promise<void>;
