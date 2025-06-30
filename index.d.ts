@@ -3864,6 +3864,7 @@ declare namespace Dysnomia {
     bannerURL: string | null;
     bot: boolean;
     clientStatus?: ClientStatus;
+    collectibles: UserCollectibles | null;
     communicationDisabledUntil: number | null;
     createdAt: number;
     defaultAvatar: string;
