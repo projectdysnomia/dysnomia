@@ -1981,6 +1981,13 @@ declare namespace Dysnomia {
     palette: string;
   }
 
+  interface UserPrimaryGuild {
+    identityGuildID: string | null;
+    identityEnabled: boolean | null;
+    tag: string | null;
+    badge: string | null;
+  }
+
   // Voice
   interface CreateStageInstanceOptions extends StageInstanceOptions {
     guildScheduledEventID?: string;
@@ -4445,6 +4452,7 @@ declare namespace Dysnomia {
     globalName: string | null;
     id: string;
     mention: string;
+    primaryGuild: UserPrimaryGuild | null;
     publicFlags?: number;
     staticAvatarURL: string;
     system: boolean;
