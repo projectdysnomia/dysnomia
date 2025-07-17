@@ -1499,6 +1499,7 @@ declare namespace Dysnomia {
     collectibles: UserCollectibles | null;
     discriminator: string;
     globalName: string | null;
+    primaryGuild: UserPrimaryGuild | null;
     username: string;
   }
   interface AvatarDecorationData {
