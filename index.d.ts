@@ -1983,10 +1983,10 @@ declare namespace Dysnomia {
   }
 
   interface UserPrimaryGuild {
-    identityGuildID: string | null;
-    identityEnabled: boolean | null;
-    tag: string | null;
     badge: string | null;
+    identityEnabled: boolean | null;
+    identityGuildID: string | null;
+    tag: string | null;
   }
 
   // Voice
