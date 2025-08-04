@@ -2455,6 +2455,7 @@ declare namespace Dysnomia {
       "ENHANCED_ROLE_COLORS",
       "FEATURABLE",
       "GUESTS_ENABLED",
+      "GUILD_TAGS",
       "INVITES_DISABLED",
       "INVITE_SPLASH",
       "MEMBER_VERIFICATION_GATE_ENABLED",
