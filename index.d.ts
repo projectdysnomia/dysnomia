@@ -50,7 +50,6 @@ declare namespace Dysnomia {
   type ChatInputApplicationCommand<W extends boolean = false> = ApplicationCommand<"CHAT_INPUT", W>;
   type MessageApplicationCommand<W extends boolean = false> = ApplicationCommand<"MESSAGE", W>;
   type MessageApplicationCommandStructure = ApplicationCommandStructureBase<"MESSAGE">;
-  type ModalSubmitInteractionDataComponent = ModalSubmitInteractionDataTextInputComponent;
   type PrimaryEntryPointApplicationCommand<W extends boolean = false> = ApplicationCommand<"PRIMARY_ENTRY_POINT", W>;
   type UserApplicationCommand<W extends boolean = false> = ApplicationCommand<"USER", W>;
   type UserApplicationCommandStructure = ApplicationCommandStructureBase<"USER">;
@@ -1388,7 +1387,9 @@ declare namespace Dysnomia {
   interface InteractionModalContent {
     title: string;
     custom_id: string;
-    components: ModalContentActionRow[];
+    components: ((Omit<ActionRow, "components"> & {
+      components: TextInput[];
+    }) | LabelComponent)[];
   }
   interface InteractionResolvedData {
     channels?: Collection<AnyChannel>;
@@ -1532,10 +1533,6 @@ declare namespace Dysnomia {
     components: ActionRowComponents[];
     type: Constants["ComponentTypes"]["ACTION_ROW"];
   }
-  interface ModalContentActionRow {
-    components: TextInput[];
-    type: Constants["ComponentTypes"]["ACTION_ROW"];
-  }
   interface AdvancedMessageContent<T extends "hasNonce" | "" = ""> {
     allowedMentions?: AllowedMentions;
     attachments?: AdvancedMessageContentAttachment[];
@@ -1611,6 +1608,14 @@ declare namespace Dysnomia {
     name?: string;
     size?: number;
   }
+  interface LabelComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["LABEL"];
+    label: string;
+    description?: string;
+    component: (StringSelectMenu & {
+      required?: boolean;
+    }) | Omit<TextInput, "label">;
+  }
   interface MediaGalleryItem {
     media: UnfurledMediaItem;
     description?: string;
@@ -1676,6 +1681,7 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["TEXT_INPUT"];
     custom_id: string;
     style: Constants["TextInputStyles"][keyof Constants["TextInputStyles"]];
+    /** @deprecated */
     label: string;
     min_length?: number;
     max_length?: number;
@@ -1962,20 +1968,33 @@ declare namespace Dysnomia {
   }
 
   // Modals
-  interface ModalSubmitInteractionDataComponents {
-    components: ModalSubmitInteractionDataComponent[];
+  interface ModalSubmitInteractionDataActionRow extends Required<ComponentBase> {
+    components: ModalSubmitInteractionDataTextInputComponent[];
     type: Constants["ComponentTypes"]["ACTION_ROW"];
   }
 
-  interface ModalSubmitInteractionDataTextInputComponent {
+  interface ModalSubmitInteractionDataValueComponent extends Required<ComponentBase> {
     custom_id: string;
+  }
+
+  interface ModalSubmitInteractionDataStringSelectComponent extends ModalSubmitInteractionDataValueComponent {
+    type: Constants["ComponentTypes"]["STRING_SELECT"];
+    values: string[];
+  }
+
+  interface ModalSubmitInteractionDataTextInputComponent extends ModalSubmitInteractionDataValueComponent {
     type: Constants["ComponentTypes"]["TEXT_INPUT"];
     value: string;
   }
 
+  interface ModalSubmitInteractionDataLabelComponent extends Required<ComponentBase> {
+    type: Constants["ComponentTypes"]["LABEL"];
+    component: (ModalSubmitInteractionDataTextInputComponent | ModalSubmitInteractionDataStringSelectComponent);
+  }
+
   interface ModalSubmitInteractionData {
     custom_id: string;
-    components: ModalSubmitInteractionDataComponents[];
+    components: (ModalSubmitInteractionDataActionRow | ModalSubmitInteractionDataLabelComponent)[];
   }
 
   // User
@@ -2399,6 +2418,7 @@ declare namespace Dysnomia {
       FILE:               13;
       SEPARATOR:          14;
       CONTAINER:          17;
+      LABEL:              18;
     };
     ConnectionVisibilityTypes: {
       NONE:     0;
