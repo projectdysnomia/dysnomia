@@ -1612,7 +1612,7 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["LABEL"];
     label: string;
     description?: string;
-    component: (StringSelectMenu & {
+    component: (Omit<StringSelectMenu, "disabled"> & {
       required?: boolean;
     }) | Omit<TextInput, "label">;
   }
