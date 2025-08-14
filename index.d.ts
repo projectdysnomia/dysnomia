@@ -519,6 +519,7 @@ declare namespace Dysnomia {
     defaultImageSize?: number;
     gateway?: GatewayOptions;
     messageLimit?: number;
+    /** @deprecated */
     opusOnly?: boolean;
     requestTimeout?: number;
     rest?: RequestHandlerOptions;
@@ -536,6 +537,10 @@ declare namespace Dysnomia {
     port?: number;
     ratelimiterOffset?: number;
     requestTimeout?: number;
+  }
+  interface VoiceOptions {
+    opusOnly?: boolean;
+    ws?: unknown;
   }
 
   interface EditSelfOptions {
@@ -2000,6 +2005,7 @@ declare namespace Dysnomia {
     selfDeaf?: boolean;
     selfMute?: boolean;
     shared?: boolean;
+    ws?: unknown;
   }
   interface StageInstanceOptions {
     privacyLevel?: StageInstancePrivacyLevel;
