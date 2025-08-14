@@ -524,6 +524,7 @@ declare namespace Dysnomia {
     requestTimeout?: number;
     rest?: RequestHandlerOptions;
     restMode?: boolean;
+    voice?: VoiceOptions;
     ws?: unknown;
   }
   interface RequestHandlerOptions {
