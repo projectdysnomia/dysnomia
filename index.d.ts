@@ -4542,6 +4542,7 @@ declare namespace Dysnomia {
     udpSocket: DgramSocket | null;
     volume: number;
     ws: BrowserWebSocket | WebSocket | null;
+    wsOptions: unknown;
     wsSequence: number;
     constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
     connect(data: VoiceConnectData): NodeJS.Timer | void;
