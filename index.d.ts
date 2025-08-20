@@ -2764,10 +2764,11 @@ declare namespace Dysnomia {
       sendVoiceMessages:                70368744177664n;
       sendPolls:                        562949953421312n;
       useExternalApps:                  1125899906842624n;
+      pinMessages:                      2251799813685248n;
       allGuild:                         29697484783806n;
-      allText:                          1759754133699665n;
+      allText:                          4011553947384913n;
       allVoice:                         40136803878673n;
-      all:                              1829587348619263n;
+      all:                              4081387162304511n;
     };
     PollLayoutTypes: {
       DEFAULT: 1;
