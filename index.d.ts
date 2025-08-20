@@ -541,6 +541,7 @@ declare namespace Dysnomia {
   }
   interface VoiceOptions {
     opusOnly?: boolean;
+    udpTimeout?: number;
     ws?: unknown;
   }
 
@@ -2001,12 +2002,10 @@ declare namespace Dysnomia {
     guildScheduledEventID?: string;
     sendStartNotification?: boolean;
   }
-  interface JoinVoiceChannelOptions {
-    opusOnly?: boolean;
+  interface JoinVoiceChannelOptions extends VoiceOptions {
     selfDeaf?: boolean;
     selfMute?: boolean;
     shared?: boolean;
-    ws?: unknown;
   }
   interface StageInstanceOptions {
     privacyLevel?: StageInstancePrivacyLevel;
