@@ -1612,9 +1612,7 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["LABEL"];
     label: string;
     description?: string;
-    component: (Omit<StringSelectMenu, "disabled"> & {
-      required?: boolean;
-    }) | Omit<TextInput, "label">;
+    component: Omit<StringSelectMenu, "disabled"> | Omit<TextInput, "label">;
   }
   interface MediaGalleryItem {
     media: UnfurledMediaItem;
@@ -1651,6 +1649,7 @@ declare namespace Dysnomia {
   interface StringSelectMenu extends SelectMenuBase {
     options: SelectMenuOptions[];
     type: Constants["ComponentTypes"]["STRING_SELECT"];
+    required?: boolean;
   }
   interface SectionComponent extends ComponentBase {
     type: Constants["ComponentTypes"]["SECTION"];
