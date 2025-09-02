@@ -514,6 +514,7 @@ declare namespace Dysnomia {
   // Client
   interface ClientOptions {
     allowedMentions?: AllowedMentions;
+    caching?: CachingOptions;
     defaultImageFormat?: string;
     defaultImageSize?: number;
     gateway?: GatewayOptions;
@@ -543,7 +544,9 @@ declare namespace Dysnomia {
     udpTimeout?: number;
     ws?: unknown;
   }
-
+  interface CachingOptions {
+    disableChannelMaps?: boolean;
+  }
   interface EditSelfOptions {
     avatar?: string | null;
     banner?: string | null;
