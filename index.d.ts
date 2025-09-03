@@ -50,7 +50,6 @@ declare namespace Dysnomia {
   type ChatInputApplicationCommand<W extends boolean = false> = ApplicationCommand<"CHAT_INPUT", W>;
   type MessageApplicationCommand<W extends boolean = false> = ApplicationCommand<"MESSAGE", W>;
   type MessageApplicationCommandStructure = ApplicationCommandStructureBase<"MESSAGE">;
-  type ModalSubmitInteractionDataComponent = ModalSubmitInteractionDataTextInputComponent;
   type PrimaryEntryPointApplicationCommand<W extends boolean = false> = ApplicationCommand<"PRIMARY_ENTRY_POINT", W>;
   type UserApplicationCommand<W extends boolean = false> = ApplicationCommand<"USER", W>;
   type UserApplicationCommandStructure = ApplicationCommandStructureBase<"USER">;
@@ -519,11 +518,13 @@ declare namespace Dysnomia {
     defaultImageSize?: number;
     gateway?: GatewayOptions;
     messageLimit?: number;
+    /** @deprecated */
     opusOnly?: boolean;
     daveEncryption?: boolean;
     requestTimeout?: number;
     rest?: RequestHandlerOptions;
     restMode?: boolean;
+    voice?: VoiceOptions;
     ws?: unknown;
   }
   interface RequestHandlerOptions {
@@ -537,6 +538,12 @@ declare namespace Dysnomia {
     port?: number;
     ratelimiterOffset?: number;
     requestTimeout?: number;
+  }
+  interface VoiceOptions {
+    daveEncryption?: boolean;
+    opusOnly?: boolean;
+    udpTimeout?: number;
+    ws?: unknown;
   }
 
   interface EditSelfOptions {
@@ -1382,7 +1389,9 @@ declare namespace Dysnomia {
   interface InteractionModalContent {
     title: string;
     custom_id: string;
-    components: ModalContentActionRow[];
+    components: ((Omit<ActionRow, "components"> & {
+      components: TextInput[];
+    }) | LabelComponent)[];
   }
   interface InteractionResolvedData {
     channels?: Collection<AnyChannel>;
@@ -1526,10 +1535,6 @@ declare namespace Dysnomia {
     components: ActionRowComponents[];
     type: Constants["ComponentTypes"]["ACTION_ROW"];
   }
-  interface ModalContentActionRow {
-    components: TextInput[];
-    type: Constants["ComponentTypes"]["ACTION_ROW"];
-  }
   interface AdvancedMessageContent<T extends "hasNonce" | "" = ""> {
     allowedMentions?: AllowedMentions;
     attachments?: AdvancedMessageContentAttachment[];
@@ -1605,6 +1610,12 @@ declare namespace Dysnomia {
     name?: string;
     size?: number;
   }
+  interface LabelComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["LABEL"];
+    label: string;
+    description?: string;
+    component: Omit<StringSelectMenu, "disabled"> | Omit<TextInput, "label">;
+  }
   interface MediaGalleryItem {
     media: UnfurledMediaItem;
     description?: string;
@@ -1640,6 +1651,7 @@ declare namespace Dysnomia {
   interface StringSelectMenu extends SelectMenuBase {
     options: SelectMenuOptions[];
     type: Constants["ComponentTypes"]["STRING_SELECT"];
+    required?: boolean;
   }
   interface SectionComponent extends ComponentBase {
     type: Constants["ComponentTypes"]["SECTION"];
@@ -1670,6 +1682,7 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["TEXT_INPUT"];
     custom_id: string;
     style: Constants["TextInputStyles"][keyof Constants["TextInputStyles"]];
+    /** @deprecated */
     label: string;
     min_length?: number;
     max_length?: number;
@@ -1956,20 +1969,33 @@ declare namespace Dysnomia {
   }
 
   // Modals
-  interface ModalSubmitInteractionDataComponents {
-    components: ModalSubmitInteractionDataComponent[];
+  interface ModalSubmitInteractionDataActionRow extends Required<ComponentBase> {
+    components: ModalSubmitInteractionDataTextInputComponent[];
     type: Constants["ComponentTypes"]["ACTION_ROW"];
   }
 
-  interface ModalSubmitInteractionDataTextInputComponent {
+  interface ModalSubmitInteractionDataValueComponent extends Required<ComponentBase> {
     custom_id: string;
+  }
+
+  interface ModalSubmitInteractionDataStringSelectComponent extends ModalSubmitInteractionDataValueComponent {
+    type: Constants["ComponentTypes"]["STRING_SELECT"];
+    values: string[];
+  }
+
+  interface ModalSubmitInteractionDataTextInputComponent extends ModalSubmitInteractionDataValueComponent {
     type: Constants["ComponentTypes"]["TEXT_INPUT"];
     value: string;
   }
 
+  interface ModalSubmitInteractionDataLabelComponent extends Required<ComponentBase> {
+    type: Constants["ComponentTypes"]["LABEL"];
+    component: (ModalSubmitInteractionDataTextInputComponent | ModalSubmitInteractionDataStringSelectComponent);
+  }
+
   interface ModalSubmitInteractionData {
     custom_id: string;
-    components: ModalSubmitInteractionDataComponents[];
+    components: (ModalSubmitInteractionDataActionRow | ModalSubmitInteractionDataLabelComponent)[];
   }
 
   // User
@@ -1996,9 +2022,7 @@ declare namespace Dysnomia {
     guildScheduledEventID?: string;
     sendStartNotification?: boolean;
   }
-  interface JoinVoiceChannelOptions {
-    daveEncryption?: boolean;
-    opusOnly?: boolean;
+  interface JoinVoiceChannelOptions extends VoiceOptions {
     selfDeaf?: boolean;
     selfMute?: boolean;
     shared?: boolean;
@@ -2395,6 +2419,7 @@ declare namespace Dysnomia {
       FILE:               13;
       SEPARATOR:          14;
       CONTAINER:          17;
+      LABEL:              18;
     };
     ConnectionVisibilityTypes: {
       NONE:     0;
@@ -2760,10 +2785,11 @@ declare namespace Dysnomia {
       sendVoiceMessages:                70368744177664n;
       sendPolls:                        562949953421312n;
       useExternalApps:                  1125899906842624n;
+      pinMessages:                      2251799813685248n;
       allGuild:                         29697484783806n;
-      allText:                          1759754133699665n;
+      allText:                          4011553947384913n;
       allVoice:                         40136803878673n;
-      all:                              1829587348619263n;
+      all:                              4081387162304511n;
     };
     PollLayoutTypes: {
       DEFAULT: 1;
@@ -4552,6 +4578,7 @@ declare namespace Dysnomia {
     udpSocket: DgramSocket | null;
     volume: number;
     ws: BrowserWebSocket | WebSocket | null;
+    wsOptions: unknown;
     wsSequence: number;
     constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean; daveEncryption?: boolean });
     connect(data: VoiceConnectData): NodeJS.Timer | void;
