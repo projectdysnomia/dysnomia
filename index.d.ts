@@ -911,6 +911,7 @@ declare namespace Dysnomia {
     speakingStart: [userID: string];
     speakingStop: [userID: string];
     start: [];
+    transitioned: [transitionID: number];
     unknown: [packet: RawPacket];
     usersConnect: [userIDs: string[]];
     userDisconnect: [userID: string];
