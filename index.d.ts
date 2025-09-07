@@ -4577,6 +4577,7 @@ declare namespace Dysnomia {
     udpIP?: string;
     udpPort?: number;
     udpSocket: DgramSocket | null;
+    voicePrivacyCode?: string;
     volume: number;
     ws: BrowserWebSocket | WebSocket | null;
     wsOptions: unknown;
@@ -4586,6 +4587,7 @@ declare namespace Dysnomia {
     disconnect(error?: Error, reconnecting?: boolean): void;
     emit<K extends keyof VoiceEvents>(event: K, ...args: VoiceEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
+    getVerificationCode(userID: string): Promise<string>;
     heartbeat(): void;
     off<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
     off(event: string, listener: (...args: any[]) => void): this;
