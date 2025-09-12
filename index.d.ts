@@ -520,7 +520,6 @@ declare namespace Dysnomia {
     messageLimit?: number;
     /** @deprecated */
     opusOnly?: boolean;
-    daveEncryption?: boolean;
     requestTimeout?: number;
     rest?: RequestHandlerOptions;
     restMode?: boolean;
