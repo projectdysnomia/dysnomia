@@ -540,6 +540,7 @@ declare namespace Dysnomia {
     requestTimeout?: number;
   }
   interface VoiceOptions {
+    daveEncryption?: boolean;
     opusOnly?: boolean;
     udpTimeout?: number;
     ws?: unknown;
@@ -912,6 +913,7 @@ declare namespace Dysnomia {
     speakingStart: [userID: string];
     speakingStop: [userID: string];
     start: [];
+    transitioned: [transitionID: number];
     unknown: [packet: RawPacket];
     usersConnect: [userIDs: string[]];
     userDisconnect: [userID: string];
@@ -2936,18 +2938,29 @@ declare namespace Dysnomia {
       BASIC: 1;
     };
     VoiceOPCodes: {
-      IDENTIFY:            0;
-      SELECT_PROTOCOL:     1;
-      READY:               2;
-      HEARTBEAT:           3;
-      SESSION_DESCRIPTION: 4;
-      SPEAKING:            5;
-      HEARTBEAT_ACK:       6;
-      RESUME:              7;
-      HELLO:               8;
-      RESUMED:             9;
-      CLIENTS_CONNECT:     11;
-      CLIENT_DISCONNECT:   13;
+      IDENTIFY:                       0;
+      SELECT_PROTOCOL:                1;
+      READY:                          2;
+      HEARTBEAT:                      3;
+      SESSION_DESCRIPTION:            4;
+      SPEAKING:                       5;
+      HEARTBEAT_ACK:                  6;
+      RESUME:                         7;
+      HELLO:                          8;
+      RESUMED:                        9;
+      CLIENTS_CONNECT:                11;
+      CLIENT_DISCONNECT:              13;
+      DAVE_PREPARE_TRANSITION:        21;
+      DAVE_EXECUTE_TRANSITION:        22;
+      DAVE_TRANSITION_READY:          23;
+      DAVE_PREPARE_EPOCH:             24;
+      MLS_EXTERNAL_SENDER:            25;
+      MLS_KEY_PACKAGE:                26;
+      MLS_PROPOSALS:                  27;
+      MLS_COMMIT_WELCOME:             28;
+      MLS_ANNOUNCE_COMMIT_TRANSITION: 29;
+      MLS_WELCOME:                    30;
+      MLS_INVALID_COMMIT_WELCOME:     31;
     };
     WebhookTypes: {
       INCOMING:         1;
@@ -4527,6 +4540,10 @@ declare namespace Dysnomia {
     connecting: boolean;
     connectionTimeout: NodeJS.Timeout | null;
     current?: VoiceStreamCurrent | null;
+    daveEnabled: boolean;
+    daveProtocolVersion?: number;
+    /** Optional dependencies DAVESession (@snazzah/davey) */
+    daveSession: unknown | null;
     ended?: boolean;
     endpoint: URL;
     frameDuration: number;
@@ -4562,15 +4579,17 @@ declare namespace Dysnomia {
     udpIP?: string;
     udpPort?: number;
     udpSocket: DgramSocket | null;
+    voicePrivacyCode?: string;
     volume: number;
     ws: BrowserWebSocket | WebSocket | null;
     wsOptions: unknown;
     wsSequence: number;
-    constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean });
+    constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean; daveEncryption?: boolean });
     connect(data: VoiceConnectData): NodeJS.Timer | void;
     disconnect(error?: Error, reconnecting?: boolean): void;
     emit<K extends keyof VoiceEvents>(event: K, ...args: VoiceEvents[K]): boolean;
     emit(event: string, ...args: any[]): boolean;
+    getVerificationCode(userID: string): Promise<string>;
     heartbeat(): void;
     off<K extends keyof VoiceEvents>(event: K, listener: (...args: VoiceEvents[K]) => void): this;
     off(event: string, listener: (...args: any[]) => void): this;
@@ -4584,6 +4603,7 @@ declare namespace Dysnomia {
     sendAudioFrame(frame: Buffer): void;
     sendUDPPacket(packet: Buffer): void;
     sendWS(op: number, data: Record<string, unknown>): void;
+    sendWSBinary(op: number, data: Buffer): void;
     setSpeaking(value: boolean): void;
     setVolume(volume: number): void;
     stopPlaying(): void;
