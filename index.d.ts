@@ -1993,9 +1993,13 @@ declare namespace Dysnomia {
     component: (ModalSubmitInteractionDataTextInputComponent | ModalSubmitInteractionDataSelectComponent);
   }
 
+  interface ModalSubmitInteractionDataTextDisplayComponent extends Required<ComponentBase> {
+    type: Constants["ComponentTypes"]["TEXT_DISPLAY"];
+  }
+
   interface ModalSubmitInteractionData {
     custom_id: string;
-    components: (ModalSubmitInteractionDataActionRow | ModalSubmitInteractionDataLabelComponent)[];
+    components: (ModalSubmitInteractionDataActionRow | ModalSubmitInteractionDataLabelComponent | ModalSubmitInteractionDataTextDisplayComponent)[];
     resolved?: InteractionResolvedData;
   }
 
