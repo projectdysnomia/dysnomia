@@ -1334,7 +1334,6 @@ declare namespace Dysnomia {
     options?: InteractionDataOptions[];
   }
   interface CommandInteractionResolvedData extends InteractionResolvedData {
-    attachments?: Collection<Attachment>;
     messages?: Collection<Message>;
   }
 
@@ -1398,6 +1397,7 @@ declare namespace Dysnomia {
     members?: Collection<Member>;
     roles?: Collection<Role>;
     users?: Collection<User>;
+    attachments?: Collection<Attachment>;
   }
   interface InteractionResponseAutocomplete extends InteractionResponseBase {
     data: ApplicationCommandOptionsChoice[];
@@ -1617,7 +1617,7 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["LABEL"];
     label: string;
     description?: string;
-    component: Omit<SelectMenu, "disabled"> | Omit<TextInput, "label">;
+    component: Omit<SelectMenu, "disabled"> | Omit<TextInput, "label"> | FileUploadComponent;
   }
   interface MediaGalleryItem {
     media: UnfurledMediaItem;
@@ -1698,6 +1698,13 @@ declare namespace Dysnomia {
     media: UnfurledMediaItem;
     description?: string;
     spoiler?: boolean;
+  }
+  interface FileUploadComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["FILE_UPLOAD"];
+    custom_id: string;
+    min_values?: number;
+    max_values?: number;
+    required?: boolean;
   }
   interface GetMessageReactionOptions {
     after?: string;
@@ -1993,11 +2000,16 @@ declare namespace Dysnomia {
 
   interface ModalSubmitInteractionDataLabelComponent extends Required<ComponentBase> {
     type: Constants["ComponentTypes"]["LABEL"];
-    component: (ModalSubmitInteractionDataTextInputComponent | ModalSubmitInteractionDataSelectComponent);
+    component: (ModalSubmitInteractionDataTextInputComponent | ModalSubmitInteractionDataSelectComponent | ModalSubmitInteractionDataFileUploadComponent);
   }
 
   interface ModalSubmitInteractionDataTextDisplayComponent extends Required<ComponentBase> {
     type: Constants["ComponentTypes"]["TEXT_DISPLAY"];
+  }
+
+  interface ModalSubmitInteractionDataFileUploadComponent extends ModalSubmitInteractionDataValueComponent {
+    type: Constants["ComponentTypes"]["FILE_UPLOAD"];
+    values: string[];
   }
 
   interface ModalSubmitInteractionData {
@@ -2428,6 +2440,7 @@ declare namespace Dysnomia {
       SEPARATOR:          14;
       CONTAINER:          17;
       LABEL:              18;
+      FILE_UPLOAD:        19;
     };
     ConnectionVisibilityTypes: {
       NONE:     0;
