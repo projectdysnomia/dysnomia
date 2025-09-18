@@ -1394,7 +1394,7 @@ declare namespace Dysnomia {
     custom_id: string;
     components: ((Omit<ActionRow, "components"> & {
       components: TextInput[];
-    }) | LabelComponent)[];
+    }) | LabelComponent | TextDisplayComponent)[];
   }
   interface InteractionResolvedData {
     channels?: Collection<AnyChannel>;
@@ -1492,6 +1492,9 @@ declare namespace Dysnomia {
     userIDs?: string[];
   }
   interface MemberOptions {
+    avatar?: string | null;
+    banner?: string | null;
+    bio?: string | null;
     channelID?: string | null;
     communicationDisabledUntil?: Date | null;
     deaf?: boolean;
@@ -1617,7 +1620,7 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["LABEL"];
     label: string;
     description?: string;
-    component: Omit<StringSelectMenu, "disabled"> | Omit<TextInput, "label">;
+    component: Omit<SelectMenu, "disabled"> | Omit<TextInput, "label">;
   }
   interface MediaGalleryItem {
     media: UnfurledMediaItem;
@@ -1649,12 +1652,12 @@ declare namespace Dysnomia {
     max_values?: number;
     min_values?: number;
     placeholder?: string;
+    required?: boolean;
     type: SelectMenuTypes;
   }
   interface StringSelectMenu extends SelectMenuBase {
     options: SelectMenuOptions[];
     type: Constants["ComponentTypes"]["STRING_SELECT"];
-    required?: boolean;
   }
   interface SectionComponent extends ComponentBase {
     type: Constants["ComponentTypes"]["SECTION"];
@@ -1981,8 +1984,8 @@ declare namespace Dysnomia {
     custom_id: string;
   }
 
-  interface ModalSubmitInteractionDataStringSelectComponent extends ModalSubmitInteractionDataValueComponent {
-    type: Constants["ComponentTypes"]["STRING_SELECT"];
+  interface ModalSubmitInteractionDataSelectComponent extends ModalSubmitInteractionDataValueComponent {
+    type: SelectMenuTypes;
     values: string[];
   }
 
@@ -1993,12 +1996,17 @@ declare namespace Dysnomia {
 
   interface ModalSubmitInteractionDataLabelComponent extends Required<ComponentBase> {
     type: Constants["ComponentTypes"]["LABEL"];
-    component: (ModalSubmitInteractionDataTextInputComponent | ModalSubmitInteractionDataStringSelectComponent);
+    component: (ModalSubmitInteractionDataTextInputComponent | ModalSubmitInteractionDataSelectComponent);
+  }
+
+  interface ModalSubmitInteractionDataTextDisplayComponent extends Required<ComponentBase> {
+    type: Constants["ComponentTypes"]["TEXT_DISPLAY"];
   }
 
   interface ModalSubmitInteractionData {
     custom_id: string;
-    components: (ModalSubmitInteractionDataActionRow | ModalSubmitInteractionDataLabelComponent)[];
+    components: (ModalSubmitInteractionDataActionRow | ModalSubmitInteractionDataLabelComponent | ModalSubmitInteractionDataTextDisplayComponent)[];
+    resolved?: InteractionResolvedData;
   }
 
   // User
