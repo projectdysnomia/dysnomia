@@ -152,7 +152,7 @@ declare namespace Dysnomia {
   type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseLaunchActivity | InteractionResponseMessage | InteractionResponsePong | InteractionResponsePremiumRequired;
   type InteractionResponseTypes = Constants["InteractionResponseTypes"][keyof Constants["InteractionResponseTypes"]];
   type InteractionTypes = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
-  interface InteractionDataOptionIdTypeMap {
+  interface InteractionDataOptionTypeIDTypeMap {
     [Constants.ApplicationCommandOptionTypes.SUB_COMMAND]: InteractionDataOptionsSubCommand;
     [Constants.ApplicationCommandOptionTypes.SUB_COMMAND_GROUP]: InteractionDataOptionsSubCommandGroup;
     [Constants.ApplicationCommandOptionTypes.STRING]: InteractionDataOptionsString;
