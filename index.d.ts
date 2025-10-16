@@ -146,11 +146,25 @@ declare namespace Dysnomia {
   type InteractionDataOptionsRole = InteractionDataOption<"ROLE", string>;
   type InteractionDataOptionsString = InteractionDataOption<"STRING", string>;
   type InteractionDataOptionsUser = InteractionDataOption<"USER", string>;
+  type InteractionDataOptionsAttachment = InteractionDataOption<"ATTACHMENT", string>;
   type InteractionDataOptionsWithOptions = InteractionDataOptionsSubCommand | InteractionDataOptionsSubCommandGroup;
-  type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber;
+  type InteractionDataOptionsWithValue = InteractionDataOptionsString | InteractionDataOptionsInteger | InteractionDataOptionsBoolean | InteractionDataOptionsUser | InteractionDataOptionsChannel | InteractionDataOptionsRole | InteractionDataOptionsMentionable | InteractionDataOptionsNumber | InteractionDataOptionsAttachment;
   type InteractionResponse = InteractionResponseAutocomplete | InteractionResponseDeferred | InteractionResponseLaunchActivity | InteractionResponseMessage | InteractionResponsePong | InteractionResponsePremiumRequired;
   type InteractionResponseTypes = Constants["InteractionResponseTypes"][keyof Constants["InteractionResponseTypes"]];
   type InteractionTypes = Constants["InteractionTypes"][keyof Constants["InteractionTypes"]];
+  interface InteractionDataOptionTypeIDTypeMap {
+    [Constants.ApplicationCommandOptionTypes.SUB_COMMAND]: InteractionDataOptionsSubCommand;
+    [Constants.ApplicationCommandOptionTypes.SUB_COMMAND_GROUP]: InteractionDataOptionsSubCommandGroup;
+    [Constants.ApplicationCommandOptionTypes.STRING]: InteractionDataOptionsString;
+    [Constants.ApplicationCommandOptionTypes.INTEGER]: InteractionDataOptionsInteger;
+    [Constants.ApplicationCommandOptionTypes.BOOLEAN]: InteractionDataOptionsBoolean;
+    [Constants.ApplicationCommandOptionTypes.USER]: InteractionDataOptionsUser;
+    [Constants.ApplicationCommandOptionTypes.CHANNEL]: InteractionDataOptionsChannel;
+    [Constants.ApplicationCommandOptionTypes.ROLE]: InteractionDataOptionsRole;
+    [Constants.ApplicationCommandOptionTypes.MENTIONABLE]: InteractionDataOptionsMentionable;
+    [Constants.ApplicationCommandOptionTypes.NUMBER]: InteractionDataOptionsNumber;
+    [Constants.ApplicationCommandOptionTypes.ATTACHMENT]: InteractionDataOptionsAttachment;
+  }
 
   // Invite
   type InviteTargetTypes = Constants["InviteTargetTypes"][keyof Constants["InviteTargetTypes"]];
