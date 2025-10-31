@@ -4634,6 +4634,7 @@ declare namespace Dysnomia {
     pause(): void;
     play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
     receive(type: "opus" | "pcm"): VoiceDataStream;
+    recoverFromInvalidTransition(transitionID: number): void;
     registerReceiveEventHandler(): void;
     resume(): void;
     sendAudioFrame(frame: Buffer): void;
