@@ -4570,6 +4570,7 @@ declare namespace Dysnomia {
     bitrate: number;
     channelID: string | null;
     channels: number;
+    consecutiveDecryptionFailures: number;
     connecting: boolean;
     connectionTimeout: NodeJS.Timeout | null;
     current?: VoiceStreamCurrent | null;
