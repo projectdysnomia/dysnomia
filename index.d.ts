@@ -4570,9 +4570,9 @@ declare namespace Dysnomia {
     bitrate: number;
     channelID: string | null;
     channels: number;
-    consecutiveDecryptionFailures: number;
     connecting: boolean;
     connectionTimeout: NodeJS.Timeout | null;
+    consecutiveDecryptionFailures: number;
     current?: VoiceStreamCurrent | null;
     daveEnabled: boolean;
     daveProtocolVersion?: number;
