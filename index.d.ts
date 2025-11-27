@@ -2822,10 +2822,11 @@ declare namespace Dysnomia {
       sendPolls:                        562949953421312n;
       useExternalApps:                  1125899906842624n;
       pinMessages:                      2251799813685248n;
+      bypassSlowmode:                   4503599627370496n;
       allGuild:                         29697484783806n;
-      allText:                          4011553947384913n;
+      allText:                          8515153574755409n;
       allVoice:                         40136803878673n;
-      all:                              4081387162304511n;
+      all:                              8584986789675007n;
     };
     PollLayoutTypes: {
       DEFAULT: 1;
