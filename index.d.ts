@@ -560,7 +560,7 @@ declare namespace Dysnomia {
     ws?: unknown;
   }
   interface CachingOptions {
-    disableChannelMaps?: boolean;
+    disableMaps?: boolean;
   }
   interface EditSelfOptions {
     avatar?: string | null;
