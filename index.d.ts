@@ -557,6 +557,7 @@ declare namespace Dysnomia {
     daveEncryption?: boolean;
     opusOnly?: boolean;
     udpTimeout?: number;
+    decryptionFailureTolerance?: number;
     ws?: unknown;
   }
   interface CachingOptions {
@@ -1351,7 +1352,6 @@ declare namespace Dysnomia {
     options?: InteractionDataOptions[];
   }
   interface CommandInteractionResolvedData extends InteractionResolvedData {
-    attachments?: Collection<Attachment>;
     messages?: Collection<Message>;
   }
 
@@ -1415,6 +1415,7 @@ declare namespace Dysnomia {
     members?: Collection<Member>;
     roles?: Collection<Role>;
     users?: Collection<User>;
+    attachments?: Collection<Attachment>;
   }
   interface InteractionResponseAutocomplete extends InteractionResponseBase {
     data: ApplicationCommandOptionsChoice[];
@@ -1634,7 +1635,7 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["LABEL"];
     label: string;
     description?: string;
-    component: Omit<SelectMenu, "disabled"> | Omit<TextInput, "label">;
+    component: Omit<SelectMenu, "disabled"> | Omit<TextInput, "label"> | FileUploadComponent;
   }
   interface MediaGalleryItem {
     media: UnfurledMediaItem;
@@ -1715,6 +1716,13 @@ declare namespace Dysnomia {
     media: UnfurledMediaItem;
     description?: string;
     spoiler?: boolean;
+  }
+  interface FileUploadComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["FILE_UPLOAD"];
+    custom_id: string;
+    min_values?: number;
+    max_values?: number;
+    required?: boolean;
   }
   interface GetMessageReactionOptions {
     after?: string;
@@ -2010,11 +2018,16 @@ declare namespace Dysnomia {
 
   interface ModalSubmitInteractionDataLabelComponent extends Required<ComponentBase> {
     type: Constants["ComponentTypes"]["LABEL"];
-    component: (ModalSubmitInteractionDataTextInputComponent | ModalSubmitInteractionDataSelectComponent);
+    component: (ModalSubmitInteractionDataTextInputComponent | ModalSubmitInteractionDataSelectComponent | ModalSubmitInteractionDataFileUploadComponent);
   }
 
   interface ModalSubmitInteractionDataTextDisplayComponent extends Required<ComponentBase> {
     type: Constants["ComponentTypes"]["TEXT_DISPLAY"];
+  }
+
+  interface ModalSubmitInteractionDataFileUploadComponent extends ModalSubmitInteractionDataValueComponent {
+    type: Constants["ComponentTypes"]["FILE_UPLOAD"];
+    values: string[];
   }
 
   interface ModalSubmitInteractionData {
@@ -2445,6 +2458,7 @@ declare namespace Dysnomia {
       SEPARATOR:          14;
       CONTAINER:          17;
       LABEL:              18;
+      FILE_UPLOAD:        19;
     };
     ConnectionVisibilityTypes: {
       NONE:     0;
@@ -2811,10 +2825,11 @@ declare namespace Dysnomia {
       sendPolls:                        562949953421312n;
       useExternalApps:                  1125899906842624n;
       pinMessages:                      2251799813685248n;
+      bypassSlowmode:                   4503599627370496n;
       allGuild:                         29697484783806n;
-      allText:                          4011553947384913n;
+      allText:                          8515153574755409n;
       allVoice:                         40136803878673n;
-      all:                              4081387162304511n;
+      all:                              8584986789675007n;
     };
     PollLayoutTypes: {
       DEFAULT: 1;
@@ -3354,6 +3369,7 @@ declare namespace Dysnomia {
     getGuildInvites(guildID: string): Promise<Invite[]>;
     getGuildOnboarding(guildID: string): Promise<GuildOnboarding>;
     getGuildPreview(guildID: string): Promise<GuildPreview>;
+    getGuildRoleMemberCounts(guildID: string): Promise<Record<string, number>>;
     getGuildScheduledEvents(guildID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent[]>;
     getGuildScheduledEventUsers(guildID: string, eventID: string, options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
     getGuildSoundboardSound(guildID: string, soundID: string): Promise<SoundboardSound>;
@@ -3705,6 +3721,7 @@ declare namespace Dysnomia {
     getRESTSticker(stickerID: string): Promise<Sticker>;
     getRESTStickers(): Promise<Sticker[]>;
     getRESTVoiceState(userID?: string): Promise<VoiceState>;
+    getRoleMemberCounts(): Promise<Record<string, number>>;
     getScheduledEvents(options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent[]>;
     getScheduledEventUsers(eventID: string, options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
     getSoundboardSound(soundID: string): Promise<SoundboardSound>;
@@ -4561,6 +4578,7 @@ declare namespace Dysnomia {
     channels: number;
     connecting: boolean;
     connectionTimeout: NodeJS.Timeout | null;
+    consecutiveDecryptionFailures: number;
     current?: VoiceStreamCurrent | null;
     daveEnabled: boolean;
     daveProtocolVersion?: number;
@@ -4568,10 +4586,12 @@ declare namespace Dysnomia {
     daveSession: unknown | null;
     ended?: boolean;
     endpoint: URL;
+    failureTolerance: number;
     frameDuration: number;
     frameSize: number;
     heartbeatInterval: NodeJS.Timeout | null;
     id: string;
+    lastTransitionID: number | null;
     mode?: string;
     modes?: string;
     /** Optional dependencies OpusScript (opusscript) or OpusEncoder (@discordjs/opus) */
@@ -4585,6 +4605,7 @@ declare namespace Dysnomia {
     receiveStreamOpus?: VoiceDataStream | null;
     receiveStreamPCM?: VoiceDataStream | null;
     reconnecting: boolean;
+    reinitializing: boolean;
     samplingRate: number;
     secret: Buffer;
     sendHeader: Buffer;
@@ -4606,7 +4627,7 @@ declare namespace Dysnomia {
     ws: BrowserWebSocket | WebSocket | null;
     wsOptions: unknown;
     wsSequence: number;
-    constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean; daveEncryption?: boolean });
+    constructor(id: string, options?: { shard?: Shard; shared?: boolean; opusOnly?: boolean; decryptionFailureTolerance?: number; udpTimeout?: number; daveEncryption?: boolean });
     connect(data: VoiceConnectData): NodeJS.Timer | void;
     disconnect(error?: Error, reconnecting?: boolean): void;
     emit<K extends keyof VoiceEvents>(event: K, ...args: VoiceEvents[K]): boolean;
@@ -4620,6 +4641,7 @@ declare namespace Dysnomia {
     pause(): void;
     play(resource: ReadableStream | string, options?: VoiceResourceOptions): void;
     receive(type: "opus" | "pcm"): VoiceDataStream;
+    recoverFromInvalidTransition(transitionID: number): void;
     registerReceiveEventHandler(): void;
     resume(): void;
     sendAudioFrame(frame: Buffer): void;
