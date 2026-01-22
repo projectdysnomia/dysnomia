@@ -1733,14 +1733,12 @@ declare namespace Dysnomia {
     options: RadioOption[];
     required?: boolean;
   }
-
   interface RadioOption {
     label: string;
     value: string;
     description?: string;
     default?: boolean;
   }
-
   interface CheckboxGroupComponent extends ComponentBase {
     type: Constants["ComponentTypes"]["CHECKBOX_GROUP"];
     custom_id: string;
@@ -1749,14 +1747,12 @@ declare namespace Dysnomia {
     max_values?: number;
     required?: boolean;
   }
-
   interface CheckboxOption {
     label: string;
     value: string;
     description?: string;
     default?: boolean;
   }
-
   interface CheckboxComponent extends ComponentBase {
     type: Constants["ComponentTypes"]["CHECKBOX"];
     custom_id: string;
