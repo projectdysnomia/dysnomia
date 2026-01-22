@@ -1632,7 +1632,13 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["LABEL"];
     label: string;
     description?: string;
-    component: Omit<SelectMenu, "disabled"> | Omit<TextInput, "label"> | FileUploadComponent;
+    component:
+        | Omit<SelectMenu, "disabled">
+        | Omit<TextInput, "label">
+        | FileUploadComponent
+        | RadioGroupComponent
+        | CheckboxGroupComponent
+        | CheckboxComponent;
   }
   interface MediaGalleryItem {
     media: UnfurledMediaItem;
@@ -1696,7 +1702,7 @@ declare namespace Dysnomia {
     type: Constants["ComponentTypes"]["TEXT_DISPLAY"];
     content: string;
   }
-  interface TextInput {
+  interface TextInput extends ComponentBase {
     type: Constants["ComponentTypes"]["TEXT_INPUT"];
     custom_id: string;
     style: Constants["TextInputStyles"][keyof Constants["TextInputStyles"]];
@@ -1720,6 +1726,41 @@ declare namespace Dysnomia {
     min_values?: number;
     max_values?: number;
     required?: boolean;
+  }
+  interface RadioGroupComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["RADIO_GROUP"];
+    custom_id: string;
+    options: RadioOption[];
+    required?: boolean;
+  }
+
+  interface RadioOption {
+    label: string;
+    value: string;
+    description?: string;
+    default?: boolean;
+  }
+
+  interface CheckboxGroupComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["CHECKBOX_GROUP"];
+    custom_id: string;
+    options: CheckboxOption[];
+    min_values?: number;
+    max_values?: number;
+    required?: boolean;
+  }
+
+  interface CheckboxOption {
+    label: string;
+    value: string;
+    description?: string;
+    default?: boolean;
+  }
+
+  interface CheckboxComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["CHECKBOX"];
+    custom_id: string;
+    default?: boolean;
   }
   interface GetMessageReactionOptions {
     after?: string;
@@ -2015,7 +2056,13 @@ declare namespace Dysnomia {
 
   interface ModalSubmitInteractionDataLabelComponent extends Required<ComponentBase> {
     type: Constants["ComponentTypes"]["LABEL"];
-    component: (ModalSubmitInteractionDataTextInputComponent | ModalSubmitInteractionDataSelectComponent | ModalSubmitInteractionDataFileUploadComponent);
+    component:
+        | ModalSubmitInteractionDataTextInputComponent
+        | ModalSubmitInteractionDataSelectComponent
+        | ModalSubmitInteractionDataFileUploadComponent
+        | ModalSubmitInteractionDataRadioGroupComponent
+        | ModalSubmitInteractionDataCheckboxGroupComponent
+        | ModalSubmitInteractionDataCheckboxComponent;
   }
 
   interface ModalSubmitInteractionDataTextDisplayComponent extends Required<ComponentBase> {
@@ -2025,6 +2072,21 @@ declare namespace Dysnomia {
   interface ModalSubmitInteractionDataFileUploadComponent extends ModalSubmitInteractionDataValueComponent {
     type: Constants["ComponentTypes"]["FILE_UPLOAD"];
     values: string[];
+  }
+
+  interface ModalSubmitInteractionDataRadioGroupComponent extends ModalSubmitInteractionDataValueComponent {
+    type: Constants["ComponentTypes"]["RADIO_GROUP"];
+    value: string;
+  }
+
+  interface ModalSubmitInteractionDataCheckboxGroupComponent extends ModalSubmitInteractionDataValueComponent {
+    type: Constants["ComponentTypes"]["CHECKBOX_GROUP"];
+    values: string[];
+  }
+
+  interface ModalSubmitInteractionDataCheckboxComponent extends ModalSubmitInteractionDataValueComponent {
+    type: Constants["ComponentTypes"]["CHECKBOX"];
+    value: boolean;
   }
 
   interface ModalSubmitInteractionData {
@@ -2456,6 +2518,9 @@ declare namespace Dysnomia {
       CONTAINER:          17;
       LABEL:              18;
       FILE_UPLOAD:        19;
+      RADIO_GROUP:        21;
+      CHECKBOX_GROUP:     22;
+      CHECKBOX:           23;
     };
     ConnectionVisibilityTypes: {
       NONE:     0;
