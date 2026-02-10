@@ -2072,7 +2072,7 @@ declare namespace Dysnomia {
 
   interface ModalSubmitInteractionDataRadioGroupComponent extends ModalSubmitInteractionDataValueComponent {
     type: Constants["ComponentTypes"]["RADIO_GROUP"];
-    value: string;
+    value: string | null;
   }
 
   interface ModalSubmitInteractionDataCheckboxGroupComponent extends ModalSubmitInteractionDataValueComponent {
