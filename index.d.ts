@@ -1471,6 +1471,8 @@ declare namespace Dysnomia {
     maxUses?: number;
     temporary?: boolean;
     unique?: boolean;
+    roleIDs?: string[];
+    targetUserIDs?: string[];
   }
   interface GetInviteOptions<C extends boolean, E extends boolean, GSE extends string | undefined> {
     withCounts?: C;
@@ -1493,6 +1495,14 @@ declare namespace Dysnomia {
     participantCount: number;
     speakerCount: number;
     topic: string;
+  }
+  interface InviteTargetUsersJobStatus {
+    status: Constants["InviteUpdateJobStatus"][keyof Constants["InviteUpdateJobStatus"]];
+    total_users: number;
+    processed_users: number;
+    created_at: string;
+    completed_at: string | null;
+    error_message?: string;
   }
 
   // Member/User
@@ -2734,6 +2744,12 @@ declare namespace Dysnomia {
       GROUP_DM: 1;
       FRIEND:   2;
     };
+    InviteUpdateJobStatus: {
+      UNSPECIFIED: 0;
+      PROCESSING: 1;
+      COMPLETED:  2;
+      FAILED:     3;
+    };
     MFALevels: {
       NONE:     0;
       ELEVATED: 1;
@@ -3371,6 +3387,7 @@ declare namespace Dysnomia {
     editGuildVoiceState(guildID: string, options: VoiceStateOptions, userID?: string): Promise<void>;
     editGuildWelcomeScreen(guildID: string, options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editGuildWidget(guildID: string, options: Partial<Widget> & { reason?: string }): Promise<Widget>;
+    editInviteTargetUsers(inviteID: string, userIDs: string[]): Promise<void>;
     editMessage(channelID: string, messageID: string, content: MessageContent): Promise<Message>;
     editRole(guildID: string, roleID: string, options: RoleOptions, reason?: string): Promise<Role>; // TODO not all options are available?
     editRoleConnectionMetadata(metadata: ApplicationRoleConnectionMetadata[]): Promise<ApplicationRoleConnectionMetadata[]>;
@@ -3440,6 +3457,8 @@ declare namespace Dysnomia {
     getGuildWidget(guildID: string): Promise<WidgetData>;
     getGuildWidgetSettings(guildID: string): Promise<Widget>;
     getInvite<C extends boolean = false, E extends boolean = false, GSE extends string | undefined = undefined>(inviteID: string, options?: GetInviteOptions<C, E, GSE>): Promise<Invite<(C extends true ? "withCount" : "withoutCount") | (E extends true ? "withExpiration" : "withoutExpiration") | (GSE extends string ? "withGuildScheduledEvent" : never)>>;
+    getInviteTargetUsers(inviteID: string): Promise<string[]>;
+    getInviteTargetUsersJobStatus(inviteID: string): Promise<InviteTargetUsersJobStatus>;
     getJoinedPrivateArchivedThreads(channelID: string, options?: GetArchivedThreadsOptions): Promise<ListedChannelThreads<PrivateThreadChannel>>;
     getMessage(channelID: string, messageID: string): Promise<Message>;
     getMessageReaction(channelID: string, messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
@@ -4021,6 +4040,7 @@ declare namespace Dysnomia {
     maxUses: CT extends "withMetadata" ? number : null;
     memberCount: CT extends "withMetadata" | "withoutCount" ? null : number;
     presenceCount: CT extends "withMetadata" | "withoutCount" ? null : number;
+    roles?: Collection<Role>;
     /** @deprecated */
     stageInstance: CH extends StageChannel ? InviteStageInstance : null;
     targetApplication?: OAuthApplicationInfo;
@@ -4031,6 +4051,9 @@ declare namespace Dysnomia {
     uses: CT extends "withMetadata" ? number : null;
     constructor(data: BaseData, client: Client);
     delete(reason?: string): Promise<void>;
+    editTargetUsers(userIDs: string[]): Promise<void>;
+    getTargetUsers(): Promise<string[]>;
+    getTargetUsersJobStatus(): Promise<InviteTargetUsersJobStatus>;
   }
 
   export class Member extends Base implements Presence {
