@@ -40,11 +40,11 @@ declare namespace Dysnomia {
   type ApplicationCommandOptionsWithOptions = ApplicationCommandOptionsSubCommand | ApplicationCommandOptionsSubCommandGroup;
   type ApplicationCommandOptionsWithValue = ApplicationCommandOptionsString | ApplicationCommandOptionsInteger | ApplicationCommandOptionsBoolean | ApplicationCommandOptionsUser | ApplicationCommandOptionsChannel | ApplicationCommandOptionsRole | ApplicationCommandOptionsMentionable | ApplicationCommandOptionsNumber | ApplicationCommandOptionsAttachment;
   type ApplicationCommandStructure = ChatInputApplicationCommandStructure | MessageApplicationCommandStructure | UserApplicationCommandStructure | PrimaryEntryPointApplicationCommandStructure;
-  type ApplicationCommandStructureConversion<T extends ApplicationCommandStructure, W extends boolean = false> = T extends ChatInputApplicationCommandStructure ?
-    ChatInputApplicationCommand<W> : T extends MessageApplicationCommandStructure ?
-      MessageApplicationCommand<W> : T extends UserApplicationCommandStructure ?
-        UserApplicationCommand<W> : T extends PrimaryEntryPointApplicationCommandStructure ?
-          PrimaryEntryPointApplicationCommand<W> : never;
+  type ApplicationCommandStructureConversion<T extends ApplicationCommandStructure, W extends boolean = false> = T extends ChatInputApplicationCommandStructure
+    ? ChatInputApplicationCommand<W> : T extends MessageApplicationCommandStructure
+      ? MessageApplicationCommand<W> : T extends UserApplicationCommandStructure
+        ? UserApplicationCommand<W> : T extends PrimaryEntryPointApplicationCommandStructure
+          ? PrimaryEntryPointApplicationCommand<W> : never;
   type ApplicationCommandTypes = Constants["ApplicationCommandTypes"][keyof Constants["ApplicationCommandTypes"]];
   type ApplicationRoleConnectionMetadataTypes = Constants["RoleConnectionMetadataTypes"][keyof Constants["RoleConnectionMetadataTypes"]];
   type ChatInputApplicationCommand<W extends boolean = false> = ApplicationCommand<"CHAT_INPUT", W>;
@@ -273,9 +273,9 @@ declare namespace Dysnomia {
   interface ApplicationCommandOptionsChoice<T extends ApplicationCommandOptionsTypesWithChoices = ApplicationCommandOptionsTypesWithChoices> {
     name: string;
     value:
-    T extends Constants["ApplicationCommandOptionTypes"]["STRING"] ? string :
-      T extends Constants["ApplicationCommandOptionTypes"]["INTEGER" | "NUMBER"] ? number :
-        unknown;
+    T extends Constants["ApplicationCommandOptionTypes"]["STRING"] ? string
+      : T extends Constants["ApplicationCommandOptionTypes"]["INTEGER" | "NUMBER"] ? number
+        : unknown;
   }
 
   interface ApplicationCommandOptionsChannelTypes {
@@ -2258,16 +2258,16 @@ declare namespace Dysnomia {
     verify_key: string;
   }
 
-  type EditApplicationOptions = Partial<Pick<OAuthApplicationInfo, |
-      "cover_image" |
-      "custom_install_url" |
-      "description" |
-      "flags" |
-      "icon" |
-      "install_params" |
-      "interactions_endpoint_url" |
-      "role_connections_verification_url" |
-      "tags"
+  type EditApplicationOptions = Partial<Pick<OAuthApplicationInfo,
+      | "cover_image"
+      | "custom_install_url"
+      | "description"
+      | "flags"
+      | "icon"
+      | "install_params"
+      | "interactions_endpoint_url"
+      | "role_connections_verification_url"
+      | "tags"
   >>;
 
   interface OAuthTeamInfo {
@@ -3977,11 +3977,11 @@ declare namespace Dysnomia {
     type: Constants["ApplicationCommandTypes"][T];
     version: string;
     delete(): Promise<void>;
-    edit(options: Omit<T extends "CHAT_INPUT" ?
-      ChatInputApplicationCommandStructure : T extends "USER" ?
-        UserApplicationCommandStructure : T extends "MESSAGE" ?
-          MessageApplicationCommandStructure : T extends "PRIMARY_ENTRY_POINT" ?
-            PrimaryEntryPointApplicationCommandStructure : never, "type">): Promise<this>;
+    edit(options: Omit<T extends "CHAT_INPUT"
+      ? ChatInputApplicationCommandStructure : T extends "USER"
+        ? UserApplicationCommandStructure : T extends "MESSAGE"
+          ? MessageApplicationCommandStructure : T extends "PRIMARY_ENTRY_POINT"
+            ? PrimaryEntryPointApplicationCommandStructure : never, "type">): Promise<this>;
   }
   export class Interaction extends Base {
     acknowledged: boolean;
