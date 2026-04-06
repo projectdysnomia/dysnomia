@@ -3186,8 +3186,6 @@ declare namespace Dysnomia {
   }
 
   export class Channel extends Base {
-    /** @deprecated */
-    client: Client;
     createdAt: number;
     id: string;
     mention: string;
