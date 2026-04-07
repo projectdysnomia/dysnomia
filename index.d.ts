@@ -200,8 +200,6 @@ declare namespace Dysnomia {
   // Presence/Relationship
   type ActivityFlags = Constants["ActivityFlags"][keyof Constants["ActivityFlags"]];
   type ActivityType = Constants["ActivityTypes"][keyof Constants["ActivityTypes"]];
-  /** @deprecated This is equivalent to ActivityType, use that type instead */
-  type BotActivityType = ActivityType;
   type FriendSuggestionReasons = { name: string; platform_type: string; type: number }[];
   type Status = "online" | "idle" | "dnd";
   type SelfStatus = Status | "invisible";
@@ -532,8 +530,6 @@ declare namespace Dysnomia {
     defaultImageSize?: number;
     gateway?: GatewayOptions;
     messageLimit?: number;
-    /** @deprecated */
-    opusOnly?: boolean;
     requestTimeout?: number;
     rest?: RequestHandlerOptions;
     restMode?: boolean;
@@ -1156,8 +1152,6 @@ declare namespace Dysnomia {
     features?: GuildFeatures[]; // Though only some are editable?
     icon?: string;
     name?: string;
-    /** @deprecated */
-    ownerID?: string;
     preferredLocale?: string;
     premiumProgressBarEnabled?: boolean;
     publicUpdatesChannelID?: string;
@@ -2685,8 +2679,6 @@ declare namespace Dysnomia {
       guildMembers:                2;
       guildModeration:             4;
       guildExpressions:            8;
-      /** @deprecated */
-      guildEmojisAndStickers:      8;
       guildIntegrations:           16;
       guildWebhooks:               32;
       guildInvites:                64;
@@ -2877,8 +2869,6 @@ declare namespace Dysnomia {
       manageNicknames:                  134217728n;
       manageRoles:                      268435456n;
       manageWebhooks:                   536870912n;
-      /** @deprecated */
-      manageEmojisAndStickers:          1073741824n;
       manageGuildExpressions:           1073741824n;
       useApplicationCommands:           2147483648n;
       voiceRequestToSpeak:              4294967296n;
@@ -3196,8 +3186,6 @@ declare namespace Dysnomia {
   }
 
   export class Channel extends Base {
-    /** @deprecated */
-    client: Client;
     createdAt: number;
     id: string;
     mention: string;
@@ -3303,12 +3291,8 @@ declare namespace Dysnomia {
       reason?: string
     ): Promise<Webhook>;
     createCommand<T extends ApplicationCommandStructure>(command: T): Promise<ApplicationCommandStructureConversion<T, true>>;
-    /** @deprecated */
-    createGuild(name: string, options?: CreateGuildOptions): Promise<Guild>;
     createGuildCommand<T extends ApplicationCommandStructure>(guildID: string, command: T): Promise<ApplicationCommandStructureConversion<T, true>>;
     createGuildEmoji(guildID: string, options: EmojiOptions, reason?: string): Promise<Emoji>;
-    /** @deprecated */
-    createGuildFromTemplate(code: string, name: string, icon?: string): Promise<Guild>;
     createGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, event: GuildScheduledEventOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     createGuildSoundboardSound(guildID: string, sound: GuildSoundboardSoundCreate, reason?: string): Promise<SoundboardSound>;
     createGuildSticker(guildID: string, options: CreateStickerOptions, reason?: string): Promise<Sticker>;
@@ -3327,8 +3311,6 @@ declare namespace Dysnomia {
     deleteChannel(channelID: string, reason?: string): Promise<void>;
     deleteChannelPermission(channelID: string, overwriteID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
-    /** @deprecated */
-    deleteGuild(guildID: string): Promise<void>;
     deleteGuildCommand(guildID: string, commandID: string): Promise<void>;
     deleteGuildEmoji(guildID: string, emojiID: string, reason?: string): Promise<void>;
     deleteGuildIntegration(guildID: string, integrationID: string): Promise<void>;
@@ -3377,8 +3359,6 @@ declare namespace Dysnomia {
     editGuildIncidentActions(guildID: string, options: EditGuildIncidentActionsOptions): Promise<GuildIncidentsData>;
     editGuildIntegration(guildID: string, integrationID: string, options: IntegrationOptions): Promise<void>;
     editGuildMember(guildID: string, memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
-    /** @deprecated */
-    editGuildMFALevel(guildID: string, options: EditGuildMFALevelOptions): Promise<MFALevel>;
     editGuildOnboarding(guildID: string, options: EditGuildOnboardingOptions): Promise<GuildOnboarding>;
     editGuildScheduledEvent<T extends GuildScheduledEventEntityTypes>(guildID: string, eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
     editGuildSoundboardSound(guildID: string, soundID: string, options: GuildSoundboardSoundEdit): Promise<SoundboardSound>;
@@ -3463,8 +3443,6 @@ declare namespace Dysnomia {
     getMessage(channelID: string, messageID: string): Promise<Message>;
     getMessageReaction(channelID: string, messageID: string, reaction: string, options?: GetMessageReactionOptions): Promise<User[]>;
     getMessages(channelID: string, options?: GetMessagesOptions): Promise<Message[]>;
-    /** @deprecated */
-    getNitroStickerPacks(): Promise<{ sticker_packs: StickerPack[] }>;
     getOAuthApplication(): Promise<OAuthApplicationInfo>;
     getPins(channelID: string): Promise<Message[]>;
     getPins(channelID: string, options: GetPinsOptions): Promise<GetPinsResponse>;
@@ -3738,8 +3716,6 @@ declare namespace Dysnomia {
     createSoundboardSound(sound: GuildSoundboardSoundCreate, reason?: string): Promise<SoundboardSound>;
     createSticker(options: CreateStickerOptions, reason?: string): Promise<Sticker>;
     createTemplate(name: string, description?: string | null): Promise<GuildTemplate>;
-    /** @deprecated */
-    delete(): Promise<void>;
     deleteAutoModerationRule(ruleID: string, reason?: string): Promise<void>;
     deleteCommand(commandID: string): Promise<void>;
     deleteEmoji(emojiID: string, reason?: string): Promise<void>;
@@ -3762,8 +3738,6 @@ declare namespace Dysnomia {
     editIncidentActions(options: EditGuildIncidentActionsOptions): Promise<GuildIncidentsData>;
     editIntegration(integrationID: string, options: IntegrationOptions): Promise<void>;
     editMember(memberID: string, options: MemberOptions, reason?: string): Promise<Member>;
-    /** @deprecated */
-    editMFALevel(options: EditGuildMFALevelOptions): Promise<MFALevel>;
     editOnboarding(options: EditGuildOnboardingOptions): Promise<GuildOnboarding>;
     editRole(roleID: string, options: RoleOptions): Promise<Role>;
     editScheduledEvent<T extends GuildScheduledEventEntityTypes>(eventID: string, event: GuildScheduledEventEditOptions<T>, reason?: string): Promise<GuildScheduledEvent<T>>;
@@ -3950,8 +3924,6 @@ declare namespace Dysnomia {
     updatedAt: number;
     usageCount: number;
     constructor(data: BaseData, client: Client);
-    /** @deprecated */
-    createGuild(name: string, icon?: string): Promise<Guild>;
     delete(): Promise<GuildTemplate>;
     edit(options: GuildTemplateOptions): Promise<GuildTemplate>;
     sync(): Promise<GuildTemplate>;
