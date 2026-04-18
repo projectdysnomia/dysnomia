@@ -566,6 +566,7 @@ declare namespace Dysnomia {
   // Omit<T, K> used to override
   interface Embed extends Omit<EmbedOptions, "footer" | "image" | "thumbnail" | "author"> {
     author?: EmbedAuthor;
+    flags?: number;
     footer?: EmbedFooter;
     image?: EmbedImage;
     provider?: EmbedProvider;
@@ -597,6 +598,11 @@ declare namespace Dysnomia {
     height?: number;
     proxy_url?: string;
     width?: number;
+    content_type?: string;
+    description?: string;
+    flags?: number;
+    placeholder?: string;
+    placeholder_version?: number;
   }
   interface EmbedImageOptions {
     url?: string;
@@ -622,6 +628,11 @@ declare namespace Dysnomia {
     proxy_url?: string;
     url?: string;
     width?: number;
+    content_type?: string;
+    description?: string;
+    flags?: number;
+    placeholder?: string;
+    placeholder_version?: number;
   }
 
   // Emoji
@@ -1932,6 +1943,9 @@ declare namespace Dysnomia {
     width?: number | null;
     content_type?: string;
     attachment_id?: string;
+    placeholder?: string;
+    placeholder_version?: number;
+    flags?: number;
   }
   interface URLButton extends ButtonBase {
     style: Constants["ButtonStyles"]["LINK"];
@@ -2390,7 +2404,11 @@ declare namespace Dysnomia {
       USER_INSTALL: 1;
     };
     AttachmentFlags: {
-      IS_REMIX: 4;
+      IS_CLIP:      1;
+      IS_THUMBNAIL: 2;
+      IS_REMIX:     4;
+      IS_SPOILER:   8;
+      IS_ANIMATED:  32;
     };
     AuditLogActions: {
       GUILD_UPDATE: 1;
@@ -2563,6 +2581,12 @@ declare namespace Dysnomia {
       ALL_MESSAGES:  0;
       ONLY_MENTIONS: 1;
     };
+    EmbedFlags: {
+      IS_CONTENT_INVENTORY_ENTRY: 32;
+    };
+    EmbedMediaFlags: {
+      IS_ANIMATED: 32;
+    }
     EntitlementOwnerTypes: {
       GUILD: 1;
       USER:  2;
@@ -3061,6 +3085,9 @@ declare namespace Dysnomia {
       /** @deprecated */
       ACTIVE_DEVELOPER:             4194304;
     };
+    UnfurledMediaItemFlags: {
+      IS_ANIMATED: 1;
+    };
     VerificationLevels: {
       NONE:      0;
       LOW:       1;
@@ -3157,6 +3184,9 @@ declare namespace Dysnomia {
     edit(options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
   }
   export class Attachment extends Base {
+    application?: OAuthApplicationInfo;
+    clipCreatedAt?: number;
+    clipParticipants: Collection<User>;
     contentType?: string;
     description?: string;
     durationSecs?: number;
@@ -3165,6 +3195,8 @@ declare namespace Dysnomia {
     flags?: number;
     height?: number;
     id: string;
+    placeholder?: string;
+    placeholderVersion?: number;
     proxyURL: string;
     size: number;
     title?: string;
