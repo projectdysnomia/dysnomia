@@ -3020,7 +3020,9 @@ declare namespace Dysnomia {
       VERIFIED_DEVELOPER:           131072;
       CERTIFIED_MODERATOR:          262144;
       BOT_HTTP_INTERACTIONS:        524288;
+      /** @deprecated */
       SPAMMER:                      1048576;
+      /** @deprecated */
       ACTIVE_DEVELOPER:             4194304;
     };
     VerificationLevels: {
