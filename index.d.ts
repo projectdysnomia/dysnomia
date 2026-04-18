@@ -1315,6 +1315,50 @@ declare namespace Dysnomia {
     expireBehavior?: string;
     expireGracePeriod?: string;
   }
+  type PossiblyNegated<T extends string> = T | `-${T}`;
+  interface GuildMessageSearchOptions {
+    limit?: number;
+    offset?: number;
+    maxID?: string;
+    minID?: string;
+    slop?: number;
+    content?: string;
+    channelID?: string[];
+    authorType?: PossiblyNegated<"user" | "bot" | "webhook">[];
+    authorID?: string[];
+    mentions?: string[];
+    mentionsRoleID?: string[];
+    mentionsEveryone?: boolean;
+    repliedToUserID?: string[];
+    repliedToMessageID?: string[];
+    pinned?: boolean;
+    has?: PossiblyNegated<"image" | "sound" | "video" | "file" | "sticker" | "embed" | "link" | "poll" | "snapshot">[];
+    embedType?: ("image" | "video" | "gif" | "sound" | "article")[];
+    embedProvider?: string[];
+    linkHostname?: string[];
+    attachmentFilename?: string[];
+    attachmentExtension?: string[];
+    sortBy?: "relevance" | "timestamp";
+    sortOrder?: "asc" | "desc";
+    includeNSFW?: boolean;
+  }
+
+  interface GuildMessageSearchUnindexedResult {
+    code: number;
+    message: string;
+    documentsIndexed: number;
+    retryAfter: number;
+  }
+
+  interface GuildMessageSearchResult {
+    doingDeepHistoricalIndex: boolean;
+    documentsIndexed: number;
+    totalResults: number;
+    messages: Message<GuildTextableChannel>[][];
+    threads?: AnyThreadChannel[];
+    members?: ThreadMember[];
+  }
+
   interface PruneMemberOptions extends GetPruneOptions {
     computePruneCount?: boolean;
     reason?: string;
