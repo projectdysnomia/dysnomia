@@ -2586,7 +2586,7 @@ declare namespace Dysnomia {
     };
     EmbedMediaFlags: {
       IS_ANIMATED: 32;
-    }
+    };
     EntitlementOwnerTypes: {
       GUILD: 1;
       USER:  2;
