@@ -1578,7 +1578,7 @@ declare namespace Dysnomia {
     timeout?: number;
   }
   interface FetchChannelInfoOptions {
-    fields: (keyof Omit<ChannelInfo, 'id'>)[];
+    fields: (keyof Omit<ChannelInfo, "id">)[];
     timeout?: number;
   }
 
@@ -4359,9 +4359,10 @@ declare namespace Dysnomia {
     presenceUpdateBucket: Bucket;
     ready: boolean;
     reconnectInterval: number;
+    requestChannelInfoPromise: Record<string, RequestChannelInfoPromise>;
     requestMembersPromise: Record<string, RequestMembersPromise>;
     requestSoundboardSoundsPromise: Record<string, RequestSoundboardSoundsPromise>;
-    requestChannelInfoPromise: Record<string, RequestChannelInfoPromise>;
+
     resumeURL: string | null;
     seq: number;
     sessionID: string | null;
