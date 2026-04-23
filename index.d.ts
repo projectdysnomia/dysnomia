@@ -4363,7 +4363,6 @@ declare namespace Dysnomia {
     requestChannelInfoPromise: Record<string, RequestChannelInfoPromise>;
     requestMembersPromise: Record<string, RequestMembersPromise>;
     requestSoundboardSoundsPromise: Record<string, RequestSoundboardSoundsPromise>;
-
     resumeURL: string | null;
     seq: number;
     sessionID: string | null;
