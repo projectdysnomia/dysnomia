@@ -649,6 +649,11 @@ declare namespace Dysnomia {
   }
 
   // Events
+  interface ChannelInfo {
+    id: string;
+    status?: string | null;
+    voice_start_time?: number | null;
+  }
   interface OldGuild {
     afkChannelID: string | null;
     afkTimeout: number;
@@ -804,6 +809,16 @@ declare namespace Dysnomia {
     soundID?: string | number;
     soundVolume?: number;
   }
+  interface VoiceChannelStatusUpdate {
+    guild: Guild | Uncached;
+    channel: AnyVoiceChannel | Uncached;
+    status: string | null;
+  }
+  interface VoiceChannelStartTimeUpdate {
+    guild: Guild | Uncached;
+    channel: AnyVoiceChannel | Uncached;
+    voiceStartTime?: number | null;
+  }
   interface EventListeners {
     applicationCommandPermissionsUpdate: [applicationCommandPermissions: GuildApplicationCommandPermissions];
     autoModerationActionExecution: [guild: Guild, action: AutoModerationActionExecution];
@@ -811,6 +826,7 @@ declare namespace Dysnomia {
     autoModerationRuleDelete: [guild: Guild, rule: AutoModerationRule];
     autoModerationRuleUpdate: [guild: Guild, rule: AutoModerationRule | null, newRule: AutoModerationRule];
     channelCreate: [channel: AnyGuildChannel];
+    channelInfo: [guild: PossiblyUncachedGuild, channelInfo: ChannelInfo[]];
     channelDelete: [channel: AnyNonThreadChannel];
     channelPinUpdate: [channel: TextableChannel, timestamp: number, oldTimestamp: number];
     channelUpdate: [channel: AnyGuildChannel, oldChannel: OldGuildChannel | OldGuildTextChannel | OldVoiceChannel];
@@ -889,6 +905,8 @@ declare namespace Dysnomia {
     unknown: [packet: RawPacket, id?: number];
     userUpdate: [user: User, oldUser: OldUser | null];
     voiceChannelEffectSend: [effect: VoiceChannelEffect];
+    voiceChannelStatusUpdate: [event: VoiceChannelStatusUpdate];
+    voiceChannelStartTimeUpdate: [event: VoiceChannelStartTimeUpdate];
     voiceChannelJoin: [member: Member, channel: AnyVoiceChannel];
     voiceChannelLeave: [member: Member, channel: AnyVoiceChannel];
     voiceChannelSwitch: [member: Member, newChannel: AnyVoiceChannel, oldChannel: AnyVoiceChannel];
@@ -983,6 +1001,10 @@ declare namespace Dysnomia {
   interface RequestSoundboardSoundsPromise {
     res: (value: Record<string, SoundboardSound[]>) => void;
     soundboardSounds: Record<string, SoundboardSound[]>;
+    timeout: NodeJS.Timeout;
+  }
+  interface RequestChannelInfoPromise {
+    res: (value: ChannelInfo[]) => void;
     timeout: NodeJS.Timeout;
   }
 
@@ -1243,6 +1265,10 @@ declare namespace Dysnomia {
   interface GuildSoundboardSoundSend {
     soundID: string;
     sourceGuildID?: string;
+  }
+  interface GuildVoiceChannelStatusSet {
+    status: string | null;
+    reason?: string;
   }
   interface GuildTemplateOptions {
     name?: string;
@@ -1549,6 +1575,10 @@ declare namespace Dysnomia {
   }
   interface RequestGuildSoundboardSoundsOptions {
     guildIDs: string[];
+    timeout?: number;
+  }
+  interface FetchChannelInfoOptions {
+    fields: (keyof Omit<ChannelInfo, "id">)[];
     timeout?: number;
   }
 
@@ -2448,6 +2478,9 @@ declare namespace Dysnomia {
 
       HOME_SETTINGS_CREATE: 190;
       HOME_SETTINGS_UPDATE: 191;
+
+      VOICE_CHANNEL_STATUS_UPDATE: 192;
+      VOICE_CHANNEL_STATUS_DELETE: 193;
     };
     AutoModerationActionTypes: {
       BLOCK_MESSAGE:            1;
@@ -2569,6 +2602,8 @@ declare namespace Dysnomia {
       HEARTBEAT_ACK:             11;
       // (undocumented op codes skipped)
       REQUEST_SOUNDBOARD_SOUNDS: 31;
+      // (undocumented op codes skipped)
+      REQUEST_CHANNEL_INFO:      43;
     };
     GuildFeatures: [
       "ANIMATED_BANNER",
@@ -2886,14 +2921,15 @@ declare namespace Dysnomia {
       useExternalSounds:                35184372088832n;
       useSoundboard:                    4398046511104n;
       sendVoiceMessages:                70368744177664n;
+      setVoiceChannelStatus:            281474976710656n;
       sendPolls:                        562949953421312n;
       useExternalApps:                  1125899906842624n;
       pinMessages:                      2251799813685248n;
       bypassSlowmode:                   4503599627370496n;
       allGuild:                         29697484783806n;
       allText:                          8515153574755409n;
-      allVoice:                         40136803878673n;
-      all:                              8584986789675007n;
+      allVoice:                         321611780589329n;
+      all:                              8866461766385663n;
     };
     PollLayoutTypes: {
       DEFAULT: 1;
@@ -3500,6 +3536,7 @@ declare namespace Dysnomia {
     searchGuildMembers(guildID: string, query: string, limit?: number): Promise<Member[]>;
     sendChannelTyping(channelID: string): Promise<void>;
     sendSoundboardSound(channelID: string, options: GuildSoundboardSoundSend): Promise<void>;
+    setVoiceChannelStatus(channelID: string, options: GuildVoiceChannelStatusSet): Promise<void>;
     syncGuildIntegration(guildID: string, integrationID: string): Promise<void>;
     syncGuildTemplate(guildID: string, code: string): Promise<GuildTemplate>;
     unbanGuildMember(guildID: string, userID: string, reason?: string): Promise<void>;
@@ -3748,6 +3785,7 @@ declare namespace Dysnomia {
     editVoiceState(options: VoiceStateOptions, userID?: string): Promise<void>;
     editWelcomeScreen(options: WelcomeScreenOptions): Promise<WelcomeScreen>;
     editWidget(options: Partial<Widget> & { reason?: string }): Promise<Widget>;
+    fetchChannelInfo(options?: FetchChannelInfoOptions): Promise<ChannelInfo[]>;
     fetchMembers(options?: FetchMembersOptions): Promise<Member[]>;
     fetchSoundboardSounds(options?: Omit<RequestGuildSoundboardSoundsOptions, "guildIDs">): Promise<SoundboardSound[]>;
     getActiveThreads(): Promise<ListedGuildThreads>;
@@ -3816,6 +3854,7 @@ declare namespace Dysnomia {
     message?: Message<GuildTextableChannel>;
     reason: string | null;
     role?: Role | { id: string; name: string };
+    status?: string;
     target?: Guild | AnyGuildChannel | AnyThreadChannel | Member | Role | Invite | Emoji | Sticker | StageInstance | User | GuildScheduledEvent | null;
     targetID: string;
     user: User | Uncached;
@@ -4321,6 +4360,7 @@ declare namespace Dysnomia {
     presenceUpdateBucket: Bucket;
     ready: boolean;
     reconnectInterval: number;
+    requestChannelInfoPromise: Record<string, RequestChannelInfoPromise>;
     requestMembersPromise: Record<string, RequestMembersPromise>;
     requestSoundboardSoundsPromise: Record<string, RequestSoundboardSoundsPromise>;
     resumeURL: string | null;
@@ -4349,6 +4389,7 @@ declare namespace Dysnomia {
     once<K extends keyof ShardEvents>(event: K, listener: (...args: ShardEvents[K]) => void): this;
     once(event: string, listener: (...args: any[]) => void): this;
     onPacket(packet: RawPacket): void;
+    requestGuildChannelInfo(guildID: string, options?: FetchChannelInfoOptions): Promise<ChannelInfo[]>;
     requestGuildMembers(guildID: string, options?: FetchMembersOptions): Promise<Member[]>;
     requestGuildSoundboardSounds(options: RequestGuildSoundboardSoundsOptions): Promise<Record<string, SoundboardSound[]>>;
     reset(): void;
@@ -4625,6 +4666,7 @@ declare namespace Dysnomia {
     join(options?: JoinVoiceChannelOptions): Promise<VoiceConnection>;
     leave(): void;
     sendSoundboardSound(options: GuildSoundboardSoundSend): Promise<void>;
+    setVoiceStatus(options: GuildVoiceChannelStatusSet): Promise<void>;
   }
 
   export class VoiceConnection extends EventEmitter implements SimpleJSON {
