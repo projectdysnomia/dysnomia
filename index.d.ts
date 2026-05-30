@@ -3613,7 +3613,7 @@ declare namespace Dysnomia {
     removeMessageReactionEmoji(channelID: string, messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(channelID: string, messageID: string): Promise<void>;
     searchGuildMembers(guildID: string, query: string, limit?: number): Promise<Member[]>;
-    searchGuildMessages(guildID: string, options: GuildMessageSearchOptions): Promise<GuildMessageSearchResult | GuildMessageSearchUnindexedResult>;
+    searchGuildMessages(guildID: string, options?: GuildMessageSearchOptions): Promise<GuildMessageSearchResult | GuildMessageSearchUnindexedResult>;
     sendChannelTyping(channelID: string): Promise<void>;
     sendSoundboardSound(channelID: string, options: GuildSoundboardSoundSend): Promise<void>;
     setVoiceChannelStatus(channelID: string, options: GuildVoiceChannelStatusSet): Promise<void>;
@@ -3911,7 +3911,7 @@ declare namespace Dysnomia {
     pruneMembers(options?: PruneMemberOptions): Promise<number>;
     removeMemberRole(memberID: string, roleID: string, reason?: string): Promise<void>;
     searchMembers(query: string, limit?: number): Promise<Member[]>;
-    searchMessages(options: GuildMessageSearchOptions): Promise<GuildMessageSearchResult | GuildMessageSearchUnindexedResult>;
+    searchMessages(options?: GuildMessageSearchOptions): Promise<GuildMessageSearchResult | GuildMessageSearchUnindexedResult>;
     syncIntegration(integrationID: string): Promise<void>;
     syncTemplate(code: string): Promise<GuildTemplate>;
     unbanMember(userID: string, reason?: string): Promise<void>;
