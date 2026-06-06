@@ -78,6 +78,7 @@ declare namespace Dysnomia {
   type GuildTextableWithThreads = GuildTextableChannel | AnyThreadChannel;
   type InviteChannel = InvitePartialChannel | Exclude<AnyGuildChannel, CategoryChannel | AnyThreadChannel>;
   type PossiblyUncachedInteractionChannel = TextableChannel | PartialChannel;
+  type PossiblyUncachedMessageChannel = TextableChannel | { id: string; type: ChannelTypes };
   type PossiblyUncachedSpeakableChannel = VoiceChannel | StageChannel | Uncached;
   type PossiblyUncachedTextable = Textable | Uncached;
   type PossiblyUncachedTextableChannel = TextableChannel | Uncached;
@@ -469,7 +470,7 @@ declare namespace Dysnomia {
     permission_overwrites?: Overwrite[];
     rate_limit_per_user?: number;
     topic?: string | null;
-    type: number;
+    type: ChannelTypes;
     user_limit?: number;
   }
   interface Pinnable {
@@ -885,7 +886,7 @@ declare namespace Dysnomia {
     integrationCreate: [guild: Guild, integration: GuildIntegration];
     integrationUpdate: [guild: Guild, integration: GuildIntegration];
     integrationDelete: [guild: PossiblyUncachedGuild, integration: DeletedGuildIntegration];
-    messageCreate: [message: Message<PossiblyUncachedTextableChannel>];
+    messageCreate: [message: Message<PossiblyUncachedMessageChannel>];
     messageDelete: [message: PossiblyUncachedMessage];
     messageDeleteBulk: [messages: PossiblyUncachedMessage[]];
     messagePollVoteAdd: [message: PossiblyUncachedMessage, answerID: number, user: User | Uncached];
@@ -894,7 +895,7 @@ declare namespace Dysnomia {
     messageReactionRemove: [message: PossiblyUncachedMessage, emoji: PartialEmoji, userID: string, isBurst: boolean];
     messageReactionRemoveAll: [message: PossiblyUncachedMessage];
     messageReactionRemoveEmoji: [message: PossiblyUncachedMessage, emoji: PartialEmoji];
-    messageUpdate: [message: Message<PossiblyUncachedTextableChannel>, oldMessage: OldMessage | null];
+    messageUpdate: [message: Message<PossiblyUncachedMessageChannel>, oldMessage: OldMessage | null];
     presenceUpdate: [other: Member, oldPresence: Presence | null];
     rawREST: [request: RawRESTRequest];
     rawWS: [packet: RawPacket, id: number];
