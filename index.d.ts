@@ -3066,8 +3066,8 @@ declare namespace Dysnomia {
     };
     SubscriptionStatus: {
       ACTIVE:   0;
-      ENDING:   1;
-      INACTIVE: 2;
+      INACTIVE: 1;
+      ENDING:   2;
     };
     SystemChannelFlags: {
       SUPPRESS_JOIN_NOTIFICATIONS:                              1;
