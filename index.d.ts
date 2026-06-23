@@ -27,7 +27,6 @@ declare namespace Dysnomia {
   type ApplicationCommandOptionMinMaxValue<T extends "INTEGER" | "NUMBER"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMaxValue);
   type ApplicationCommandOptionMinMaxLength<T extends "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMaxLength);
 
-  type ApplicationCommandOptionsAttachment = ApplicationCommandOption<"ATTACHMENT">;
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<"BOOLEAN">;
   type ApplicationCommandOptionsChannel = ApplicationCommandOptionChannelTypes<"CHANNEL">;
   type ApplicationCommandOptionsInteger = ApplicationCommandOptionAutocomplete<"INTEGER"> | ApplicationCommandOptionChoices<"INTEGER"> | ApplicationCommandOptionMinMaxValue<"INTEGER">;
@@ -182,6 +181,7 @@ declare namespace Dysnomia {
   type Component = ActionRow | ActionRowComponents | ComponentV2;
   type ComponentV2 = SectionComponent | TextDisplayComponent | MediaGalleryComponent | SeparatorComponent | FileComponent | ContainerComponent;
   type ComponentTypes = Constants["ComponentTypes"][keyof Constants["ComponentTypes"]];
+  type FileUploadComponentFileTypes = "image" | "video" | "audio" | `.${string}`;
   type ImageFormat = Constants["ImageFormats"][number];
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent<T extends "hasNonce" | "" = ""> = string | AdvancedMessageContent<T>;
@@ -268,6 +268,9 @@ declare namespace Dysnomia {
   }
   interface ApplicationCommandOptionsAutocomplete {
     autocomplete?: boolean;
+  }
+  interface ApplicationCommandOptionsAttachment extends ApplicationCommandOption<"ATTACHMENT"> {
+    file_types?: FileUploadComponentFileTypes[];
   }
   interface ApplicationCommandOptionsChoice<T extends ApplicationCommandOptionsTypesWithChoices = ApplicationCommandOptionsTypesWithChoices> {
     name: string;
@@ -1825,6 +1828,7 @@ declare namespace Dysnomia {
     min_values?: number;
     max_values?: number;
     required?: boolean;
+    file_types?: FileUploadComponentFileTypes[];
   }
   interface RadioGroupComponent extends ComponentBase {
     type: Constants["ComponentTypes"]["RADIO_GROUP"];
