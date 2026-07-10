@@ -1664,6 +1664,7 @@ declare namespace Dysnomia {
 
   interface AdvancedMessageContentAttachmentBase {
     description?: string;
+    is_spoiler?: boolean;
   }
   interface AdvancedMessageContentAttachmentExisting extends AdvancedMessageContentAttachmentBase {
     id: string;
@@ -1674,6 +1675,8 @@ declare namespace Dysnomia {
     filename: string;
     file: Buffer | string;
     id?: never;
+    duration_secs?: number;
+    waveform?: string;
   }
   interface AllowedMentions {
     everyone?: boolean;
