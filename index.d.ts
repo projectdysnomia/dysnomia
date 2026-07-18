@@ -385,6 +385,7 @@ declare namespace Dysnomia {
     position?: number;
     lockPermissions?: boolean;
     parentID?: string;
+    flags?: number;
   }
   interface CreateChannelOptions {
     availableTags?: (Required<Pick<ForumTag, "name">> & Partial<ForumTag>)[];
@@ -417,6 +418,7 @@ declare namespace Dysnomia {
   interface EditChannelPositionOptions {
     lockPermissions?: string;
     parentID?: string;
+    flags?: number;
   }
   interface ForumTag {
     id: string;
@@ -2603,6 +2605,7 @@ declare namespace Dysnomia {
       PINNED:                      2;
       REQUIRE_TAG:                 16;
       HIDE_MEDIA_DOWNLOAD_OPTIONS: 32768;
+      IS_SPOILER_CHANNEL:          2097152;
     };
     ComponentTypes: {
       ACTION_ROW:         1;
