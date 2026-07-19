@@ -395,6 +395,7 @@ declare namespace Dysnomia {
     defaultReactionEmoji?: ForumDefaultReactionEmoji | null;
     defaultSortOrder?: ThreadSortingOrders | null;
     defaultThreadRateLimitPerUser?: number | null;
+    flags?: number;
     nsfw?: boolean;
     parentID?: string;
     permissionOverwrites?: Overwrite[];
