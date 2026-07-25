@@ -4416,6 +4416,7 @@ declare namespace Dysnomia {
     unicodeEmoji: string | null;
     constructor(data: BaseData, guild: Guild);
     delete(reason?: string): Promise<void>;
+    dynamicIconURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     edit(options: RoleOptions, reason?: string): Promise<Role>;
     editPosition(position: number): Promise<void>;
   }
