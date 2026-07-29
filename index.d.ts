@@ -3994,6 +3994,7 @@ declare namespace Dysnomia {
     status: GuildScheduledEventStatus;
     userCount?: number;
     delete(): Promise<void>;
+    dynamicImageURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     edit<U extends GuildScheduledEventEntityTypes>(event: GuildScheduledEventEditOptions<U>, reason?: string): Promise<GuildScheduledEvent<U>>;
     getUsers(options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
   }
