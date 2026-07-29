@@ -3760,7 +3760,7 @@ declare namespace Dysnomia {
     ownerID: string;
     recipients: Collection<User>;
     type: Constants["ChannelTypes"]["GROUP_DM"];
-    dynamicIconURL(format?: ImageFormat, size?: number): string | null;
+    dynamicIconURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
   }
 
   export class Guild extends Base {
@@ -3854,10 +3854,10 @@ declare namespace Dysnomia {
     deleteSoundboardSound(soundID: string, reason?: string): Promise<void>;
     deleteSticker(stickerID: string, reason?: string): Promise<void>;
     deleteTemplate(code: string): Promise<GuildTemplate>;
-    dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
-    dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string | null;
-    dynamicIconURL(format?: ImageFormat, size?: number): string | null;
-    dynamicSplashURL(format?: ImageFormat, size?: number): string | null;
+    dynamicBannerURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
+    dynamicDiscoverySplashURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
+    dynamicIconURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
+    dynamicSplashURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
     editAutoModerationRule(ruleID: string, options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
     editChannelPositions(channelPositions: ChannelPosition[]): Promise<void>;
@@ -3994,6 +3994,7 @@ declare namespace Dysnomia {
     status: GuildScheduledEventStatus;
     userCount?: number;
     delete(): Promise<void>;
+    dynamicImageURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     edit<U extends GuildScheduledEventEntityTypes>(event: GuildScheduledEventEditOptions<U>, reason?: string): Promise<GuildScheduledEvent<U>>;
     getUsers(options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
   }
@@ -4039,9 +4040,9 @@ declare namespace Dysnomia {
     splashURL: string | null;
     stickers: Sticker[];
     constructor(data: BaseData, client: Client);
-    dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string | null;
-    dynamicIconURL(format?: ImageFormat, size?: number): string | null;
-    dynamicSplashURL(format?: ImageFormat, size?: number): string | null;
+    dynamicDiscoverySplashURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
+    dynamicIconURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
+    dynamicSplashURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
   }
 
   export class GuildTemplate {
@@ -4197,8 +4198,8 @@ declare namespace Dysnomia {
     constructor(data: BaseData, guild?: Guild, client?: Client);
     addRole(roleID: string, reason?: string): Promise<void>;
     ban(options?: BanMemberOptions): Promise<void>;
-    dynamicAvatarURL(format?: ImageFormat, size?: number): string;
-    dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
+    dynamicAvatarURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string;
+    dynamicBannerURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     edit(options: MemberOptions, reason?: string): Promise<void>;
     kick(reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
@@ -4416,6 +4417,7 @@ declare namespace Dysnomia {
     unicodeEmoji: string | null;
     constructor(data: BaseData, guild: Guild);
     delete(reason?: string): Promise<void>;
+    dynamicIconURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     edit(options: RoleOptions, reason?: string): Promise<Role>;
     editPosition(position: number): Promise<void>;
   }
@@ -4738,8 +4740,8 @@ declare namespace Dysnomia {
     system: boolean;
     username: string;
     constructor(data: BaseData, client: Client);
-    dynamicAvatarURL(format?: ImageFormat, size?: number): string;
-    dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
+    dynamicAvatarURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string;
+    dynamicBannerURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     getDMChannel(): Promise<PrivateChannel>;
   }
 
