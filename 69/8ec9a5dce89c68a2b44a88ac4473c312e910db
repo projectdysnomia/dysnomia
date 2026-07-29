@@ -1,0 +1,27 @@
+lib/structures/Member.js
+  h_a954843f2693a3 172
+  s_55da50d60367a2::t_c66492ffc49c07 276
+lib/structures/User.js
+  h_a954843f2693a3 122
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "698ec9a5dce89c68a2b44a88ac4473c312e910db",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  },
+  "sessions": {
+    "s_55da50d60367a2": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_0519f611affeOhdTPBoitpzdGQ",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
