@@ -147,8 +147,7 @@ export default ts.config(
                         "toJSON"
                     ]
                 }
-            ],
-            "no-useless-assignment": "warn" // temporarily downgrade to warning until I figure it out
+            ]
         }
     },
     {
