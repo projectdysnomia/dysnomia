@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "es2025",
+    "module": "nodenext",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -11,8 +11,8 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
-    "lib": ["es6"]
+    "moduleResolution": "nodenext",
+    "lib": ["es2025"]
   },
   "files": ["index.d.ts"]
 }
