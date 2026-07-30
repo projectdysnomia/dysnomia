@@ -11,6 +11,8 @@ jobs:
         uses: actions/setup-node@v6
         with: 
           node-version: lts/*
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
       - name: Checkout the repository
         uses: actions/checkout@v6
       - name: Install dependencies
