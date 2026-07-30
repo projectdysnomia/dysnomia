@@ -15,7 +15,11 @@ jobs:
         uses: actions/checkout@v6
       - name: Setup pnpm
         uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+        with:
+          cache: true
       - name: Install dependencies
-        run: pnpm i --no-optional --frozen-lockfile
+        run: |
+          pnpm config set auto-install-peers false # we don't need those here
+          pnpm i --no-optional --frozen-lockfile
       - name: Lint all files
         run: pnpm run lint
