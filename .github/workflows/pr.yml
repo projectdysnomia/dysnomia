@@ -19,7 +19,7 @@ jobs:
           cache: true
       - name: Install dependencies
         run: |
-          pnpm config set auto-install-peers false # we don't need those here
+          pnpm config set --location=project auto-install-peers false # we don't need those here
           pnpm i --no-optional --frozen-lockfile
       - name: Lint all files
         run: pnpm run lint
