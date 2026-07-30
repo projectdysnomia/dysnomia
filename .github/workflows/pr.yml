@@ -14,6 +14,6 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v6
       - name: Install dependencies
-        run: npm i --omit=optional
+        run: pnpm i --omit=optional --frozen-lockfile
       - name: Lint all files
-        run: npm run lint
+        run: pnpm run lint

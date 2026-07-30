@@ -22,7 +22,7 @@ jobs:
       - name: Package the project
         run: |
             mkdir -p ${{ runner.temp }}/gha-dist
-            npm pack . --pack-destination ${{ runner.temp }}/gha-dist/
+            pnpm pack . --pack-destination ${{ runner.temp }}/gha-dist/
       - name: Upload the built package as an artifact
         uses: actions/upload-artifact@v7
         with:
@@ -34,4 +34,4 @@ jobs:
         if: github.event_name == 'release'
         env:
           NODE_AUTH_TOKEN: ${{ github.event_name == 'release' && secrets.NPM_TOKEN || '' }}
-        run: npm publish --provenance --access public
+        run: pnpm publish --provenance --access public
