@@ -40,22 +40,22 @@
     "url": "https://github.com/projectdysnomia/dysnomia/issues"
   },
   "dependencies": {
-    "ws": "^8.19.0"
+    "ws": "^8.21.1"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
+    "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@types/node": "^18.19.130",
-    "@types/ws": "^8.5.13",
-    "eslint": "^9.39.4",
-    "eslint-plugin-jsdoc": "^62.8.0",
-    "eslint-plugin-sort-class-members": "^1.21.0",
-    "globals": "^17.4.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.0"
+    "@types/ws": "^8.18.1",
+    "eslint": "^10.8.0",
+    "eslint-plugin-jsdoc": "^63.3.2",
+    "eslint-plugin-sort-class-members": "^1.22.1",
+    "globals": "^17.8.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.65.0"
   },
   "optionalDependencies": {
-    "@snazzah/davey": "^0.1.10",
+    "@snazzah/davey": "^0.1.12",
     "@stablelib/xchacha20poly1305": "~1.0.1",
     "opusscript": "^0.1.1"
   },
