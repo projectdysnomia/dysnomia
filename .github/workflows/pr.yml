@@ -18,6 +18,8 @@ jobs:
         with:
           cache: true
       - name: Install dependencies
-        run: pnpm i --no-optional --frozen-lockfile
+        # Ignore build scripts as pnpm ignores the optionality of peer dependencies in
+        # the root package.json, forcing some of the native dependencies to be installed
+        run: pnpm i --no-optional --frozen-lockfile --ignore-scripts 
       - name: Lint all files
         run: pnpm run lint
