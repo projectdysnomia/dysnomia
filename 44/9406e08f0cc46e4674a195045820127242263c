@@ -1,0 +1,14 @@
+lib/structures/Message.js
+  h_a954843f2693a3 21-24
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "449406e08f0cc46e4674a195045820127242263c",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
