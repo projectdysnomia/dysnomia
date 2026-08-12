@@ -1,0 +1,27 @@
+lib/gateway/Shard.js
+  s_48b00737d1ab62::t_27ccbc5cf53b9f 897
+lib/structures/Guild.js
+  h_a954843f2693a3 204,206-207,209
+  h_a954843f2693a3 208
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "c400802287fa0c1822b3502c02472f002860c9ca",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  },
+  "sessions": {
+    "s_48b00737d1ab62": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_00875c33bffeLRC6ofNSCOClQj",
+        "model": "deepseek-v4-flash-free"
+      },
+      "human_author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
