@@ -1,0 +1,14 @@
+lib/gateway/Shard.js
+  h_a954843f2693a3 844
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "0c379fe0d5753c32bfb906c2d233753b4369e8d3",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
