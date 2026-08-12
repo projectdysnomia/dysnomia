@@ -13,18 +13,20 @@ jobs:
       id-token: write
     steps:
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with: 
           node-version: lts/*
           registry-url: 'https://registry.npmjs.org'
       - name: Checkout the repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
       - name: Package the project
         run: |
             mkdir -p ${{ runner.temp }}/gha-dist
-            npm pack . --pack-destination ${{ runner.temp }}/gha-dist/
+            pnpm pack . --pack-destination ${{ runner.temp }}/gha-dist/
       - name: Upload the built package as an artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: npm-package
           path:
@@ -34,4 +36,4 @@ jobs:
         if: github.event_name == 'release'
         env:
           NODE_AUTH_TOKEN: ${{ github.event_name == 'release' && secrets.NPM_TOKEN || '' }}
-        run: npm publish --provenance --access public
+        run: pnpm publish --provenance --access public
