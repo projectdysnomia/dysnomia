@@ -1,0 +1,14 @@
+pnpm-lock.yaml
+  h_a954843f2693a3 14-16,67-69,170-178,1164-1168,1239,1259,1261,1268
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "e0df05fe86ceecb5e93d6b3cc31a5d7bf6752920",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
