@@ -2713,6 +2713,7 @@ declare namespace Dysnomia {
       "NEWS",
       "PARTNERED",
       "PREVIEW_ENABLED",
+      "PRUNE_REQUIRES_ADMIN",
       "RAID_ALERTS_DISABLED",
       "ROLE_ICONS",
       "ROLE_SUBSCRIPTIONS_AVAILABLE_FOR_PURCHASE",
