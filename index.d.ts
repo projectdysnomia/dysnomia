@@ -2610,6 +2610,7 @@ declare namespace Dysnomia {
       PINNED:                      2;
       REQUIRE_TAG:                 16;
       HIDE_MEDIA_DOWNLOAD_OPTIONS: 32768;
+      CHANNEL_OBFUSCATED:          131072;
       IS_SPOILER_CHANNEL:          2097152;
     };
     ComponentTypes: {
