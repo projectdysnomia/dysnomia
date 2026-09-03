@@ -27,7 +27,6 @@ declare namespace Dysnomia {
   type ApplicationCommandOptionMinMaxValue<T extends "INTEGER" | "NUMBER"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMaxValue);
   type ApplicationCommandOptionMinMaxLength<T extends "STRING"> = (ApplicationCommandOption<T> & ApplicationCommandOptionsMinMaxLength);
 
-  type ApplicationCommandOptionsAttachment = ApplicationCommandOption<"ATTACHMENT">;
   type ApplicationCommandOptionsBoolean = ApplicationCommandOption<"BOOLEAN">;
   type ApplicationCommandOptionsChannel = ApplicationCommandOptionChannelTypes<"CHANNEL">;
   type ApplicationCommandOptionsInteger = ApplicationCommandOptionAutocomplete<"INTEGER"> | ApplicationCommandOptionChoices<"INTEGER"> | ApplicationCommandOptionMinMaxValue<"INTEGER">;
@@ -182,6 +181,7 @@ declare namespace Dysnomia {
   type Component = ActionRow | ActionRowComponents | ComponentV2;
   type ComponentV2 = SectionComponent | TextDisplayComponent | MediaGalleryComponent | SeparatorComponent | FileComponent | ContainerComponent;
   type ComponentTypes = Constants["ComponentTypes"][keyof Constants["ComponentTypes"]];
+  type FileUploadComponentFileTypes = "image" | "video" | "audio" | `.${string}`;
   type ImageFormat = Constants["ImageFormats"][number];
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent<T extends "hasNonce" | "" = ""> = string | AdvancedMessageContent<T>;
@@ -268,6 +268,9 @@ declare namespace Dysnomia {
   }
   interface ApplicationCommandOptionsAutocomplete {
     autocomplete?: boolean;
+  }
+  interface ApplicationCommandOptionsAttachment extends ApplicationCommandOption<"ATTACHMENT"> {
+    file_types?: FileUploadComponentFileTypes[];
   }
   interface ApplicationCommandOptionsChoice<T extends ApplicationCommandOptionsTypesWithChoices = ApplicationCommandOptionsTypesWithChoices> {
     name: string;
@@ -385,6 +388,7 @@ declare namespace Dysnomia {
     position?: number;
     lockPermissions?: boolean;
     parentID?: string;
+    flags?: number;
   }
   interface CreateChannelOptions {
     availableTags?: (Required<Pick<ForumTag, "name">> & Partial<ForumTag>)[];
@@ -394,6 +398,7 @@ declare namespace Dysnomia {
     defaultReactionEmoji?: ForumDefaultReactionEmoji | null;
     defaultSortOrder?: ThreadSortingOrders | null;
     defaultThreadRateLimitPerUser?: number | null;
+    flags?: number;
     nsfw?: boolean;
     parentID?: string;
     permissionOverwrites?: Overwrite[];
@@ -417,6 +422,7 @@ declare namespace Dysnomia {
   interface EditChannelPositionOptions {
     lockPermissions?: string;
     parentID?: string;
+    flags?: number;
   }
   interface ForumTag {
     id: string;
@@ -1664,6 +1670,7 @@ declare namespace Dysnomia {
 
   interface AdvancedMessageContentAttachmentBase {
     description?: string;
+    is_spoiler?: boolean;
   }
   interface AdvancedMessageContentAttachmentExisting extends AdvancedMessageContentAttachmentBase {
     id: string;
@@ -1674,6 +1681,8 @@ declare namespace Dysnomia {
     filename: string;
     file: Buffer | string;
     id?: never;
+    duration_secs?: number;
+    waveform?: string;
   }
   interface AllowedMentions {
     everyone?: boolean;
@@ -1819,6 +1828,7 @@ declare namespace Dysnomia {
     min_values?: number;
     max_values?: number;
     required?: boolean;
+    file_types?: FileUploadComponentFileTypes[];
   }
   interface RadioGroupComponent extends ComponentBase {
     type: Constants["ComponentTypes"]["RADIO_GROUP"];
@@ -2545,6 +2555,8 @@ declare namespace Dysnomia {
       HOME_SETTINGS_CREATE: 190;
       HOME_SETTINGS_UPDATE: 191;
 
+      VOICE_CHANNEL_STATUS_CREATE: 192;
+      /** @deprecated */
       VOICE_CHANNEL_STATUS_UPDATE: 192;
       VOICE_CHANNEL_STATUS_DELETE: 193;
     };
@@ -2598,6 +2610,8 @@ declare namespace Dysnomia {
       PINNED:                      2;
       REQUIRE_TAG:                 16;
       HIDE_MEDIA_DOWNLOAD_OPTIONS: 32768;
+      CHANNEL_OBFUSCATED:          131072;
+      IS_SPOILER_CHANNEL:          2097152;
     };
     ComponentTypes: {
       ACTION_ROW:         1;
@@ -2700,6 +2714,7 @@ declare namespace Dysnomia {
       "NEWS",
       "PARTNERED",
       "PREVIEW_ENABLED",
+      "PRUNE_REQUIRES_ADMIN",
       "RAID_ALERTS_DISABLED",
       "ROLE_ICONS",
       "ROLE_SUBSCRIPTIONS_AVAILABLE_FOR_PURCHASE",
@@ -3751,7 +3766,7 @@ declare namespace Dysnomia {
     ownerID: string;
     recipients: Collection<User>;
     type: Constants["ChannelTypes"]["GROUP_DM"];
-    dynamicIconURL(format?: ImageFormat, size?: number): string | null;
+    dynamicIconURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
   }
 
   export class Guild extends Base {
@@ -3845,10 +3860,10 @@ declare namespace Dysnomia {
     deleteSoundboardSound(soundID: string, reason?: string): Promise<void>;
     deleteSticker(stickerID: string, reason?: string): Promise<void>;
     deleteTemplate(code: string): Promise<GuildTemplate>;
-    dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
-    dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string | null;
-    dynamicIconURL(format?: ImageFormat, size?: number): string | null;
-    dynamicSplashURL(format?: ImageFormat, size?: number): string | null;
+    dynamicBannerURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
+    dynamicDiscoverySplashURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
+    dynamicIconURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
+    dynamicSplashURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
     editAutoModerationRule(ruleID: string, options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
     editChannelPositions(channelPositions: ChannelPosition[]): Promise<void>;
@@ -3985,6 +4000,7 @@ declare namespace Dysnomia {
     status: GuildScheduledEventStatus;
     userCount?: number;
     delete(): Promise<void>;
+    dynamicImageURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     edit<U extends GuildScheduledEventEntityTypes>(event: GuildScheduledEventEditOptions<U>, reason?: string): Promise<GuildScheduledEvent<U>>;
     getUsers(options?: GetGuildScheduledEventUsersOptions): Promise<GuildScheduledEventUser[]>;
   }
@@ -4030,9 +4046,9 @@ declare namespace Dysnomia {
     splashURL: string | null;
     stickers: Sticker[];
     constructor(data: BaseData, client: Client);
-    dynamicDiscoverySplashURL(format?: ImageFormat, size?: number): string | null;
-    dynamicIconURL(format?: ImageFormat, size?: number): string | null;
-    dynamicSplashURL(format?: ImageFormat, size?: number): string | null;
+    dynamicDiscoverySplashURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
+    dynamicIconURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
+    dynamicSplashURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
   }
 
   export class GuildTemplate {
@@ -4188,8 +4204,8 @@ declare namespace Dysnomia {
     constructor(data: BaseData, guild?: Guild, client?: Client);
     addRole(roleID: string, reason?: string): Promise<void>;
     ban(options?: BanMemberOptions): Promise<void>;
-    dynamicAvatarURL(format?: ImageFormat, size?: number): string;
-    dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
+    dynamicAvatarURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string;
+    dynamicBannerURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     edit(options: MemberOptions, reason?: string): Promise<void>;
     kick(reason?: string): Promise<void>;
     removeRole(roleID: string, reason?: string): Promise<void>;
@@ -4407,6 +4423,7 @@ declare namespace Dysnomia {
     unicodeEmoji: string | null;
     constructor(data: BaseData, guild: Guild);
     delete(reason?: string): Promise<void>;
+    dynamicIconURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     edit(options: RoleOptions, reason?: string): Promise<Role>;
     editPosition(position: number): Promise<void>;
   }
@@ -4729,8 +4746,8 @@ declare namespace Dysnomia {
     system: boolean;
     username: string;
     constructor(data: BaseData, client: Client);
-    dynamicAvatarURL(format?: ImageFormat, size?: number): string;
-    dynamicBannerURL(format?: ImageFormat, size?: number): string | null;
+    dynamicAvatarURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string;
+    dynamicBannerURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     getDMChannel(): Promise<PrivateChannel>;
   }
 

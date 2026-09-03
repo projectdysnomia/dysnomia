@@ -30,27 +30,31 @@ const classSortCommon = {
             {
                 kind: "get",
                 sort: "alphabetical",
-                static: false
+                static: false,
+                private: false
             }
         ],
         "alphabetical-methods": [
             {
                 type: "method",
                 sort: "alphabetical",
-                static: false
+                static: false,
+                private: false
             }
         ],
         "alphabetical-properties": [
             {
                 type: "property",
                 sort: "alphabetical",
-                static: false
+                static: false,
+                private: false
             }
         ],
         "alphabetical-private-properties": [
             {
                 type: "property",
                 sort: "alphabetical",
+                static: false,
                 private: true
             }
         ],
@@ -209,7 +213,6 @@ export default ts.config(
                 {
                     after: true,
                     overrides: {
-                        catch: {after: false},
                         for: {after: false},
                         if: {after: false},
                         switch: {after: false},
@@ -221,7 +224,12 @@ export default ts.config(
                 "error",
                 "never"
             ],
-            "@stylistic/space-before-function-paren": "off"
+            "@stylistic/space-before-function-paren": ["error", {
+                anonymous: "never",
+                named: "never",
+                asyncArrow: "always",
+                catch: "never"
+            }]
         }
     },
     {
