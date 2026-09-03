@@ -11,6 +11,9 @@ importers:
       '@discordjs/opus':
         specifier: ^0.10.0
         version: 0.10.0(supports-color@7.2.0)
+      '@stablelib/xchacha20poly1305':
+        specifier: ~1.0.1
+        version: 1.0.1
       erlpack:
         specifier: github:discord/erlpack
         version: https://codeload.github.com/discord/erlpack/tar.gz/2a4c0e832f3cd4e07c92d4baec326a631ed50f59
@@ -61,12 +64,12 @@ importers:
         specifier: ^8.65.0
         version: 8.65.0(eslint@10.8.0(supports-color@7.2.0))(supports-color@7.2.0)(typescript@6.0.3)
     optionalDependencies:
+      '@projectdysnomia/libsodium':
+        specifier: github:projectdysnomia/libsodium#acefd1b44526953eed4f0a87e31149963d052d21
+        version: https://codeload.github.com/projectdysnomia/libsodium/tar.gz/acefd1b44526953eed4f0a87e31149963d052d21(sodium-native@5.1.0(bare-events@2.9.1))
       '@snazzah/davey':
         specifier: ^0.1.12
         version: 0.1.12(@emnapi/core@2.0.0-alpha.3)(@emnapi/runtime@2.0.0-alpha.3)
-      '@stablelib/xchacha20poly1305':
-        specifier: ~1.0.1
-        version: 1.0.1
       opusscript:
         specifier: ^0.1.1
         version: 0.1.1
@@ -163,6 +166,15 @@ packages:
     peerDependencies:
       '@emnapi/core': ^2.0.0-alpha.3
       '@emnapi/runtime': ^2.0.0-alpha.3
+
+  '@projectdysnomia/libsodium@https://codeload.github.com/projectdysnomia/libsodium/tar.gz/acefd1b44526953eed4f0a87e31149963d052d21':
+    resolution: {gitHosted: true, integrity: sha512-4Xlhe7PI02wryQEQrSgHJhG/KuwFTjhelDiRNJUb0YeK6Y6Mal5oypo0IouQznkFQiLubGYVvIp7yX3EGJ9euw==, tarball: https://codeload.github.com/projectdysnomia/libsodium/tar.gz/acefd1b44526953eed4f0a87e31149963d052d21}
+    version: 0.0.1
+    peerDependencies:
+      sodium-native: ^4.1.1
+    peerDependenciesMeta:
+      sodium-native:
+        optional: true
 
   '@sindresorhus/base62@1.0.0':
     resolution: {integrity: sha512-TeheYy0ILzBEI/CO55CP6zJCSdSWeRtGnHy8U8dWSUH4I68iqTsy7HkMktR4xakThc9jotkPQUXT4ITdbV7cHA==}
@@ -1149,6 +1161,11 @@ snapshots:
       '@tybys/wasm-util': 0.10.3
     optional: true
 
+  '@projectdysnomia/libsodium@https://codeload.github.com/projectdysnomia/libsodium/tar.gz/acefd1b44526953eed4f0a87e31149963d052d21(sodium-native@5.1.0(bare-events@2.9.1))':
+    optionalDependencies:
+      sodium-native: 5.1.0(bare-events@2.9.1)
+    optional: true
+
   '@sindresorhus/base62@1.0.0': {}
 
   '@snazzah/davey-android-arm-eabi@0.1.12':
@@ -1219,13 +1236,11 @@ snapshots:
       - '@emnapi/runtime'
     optional: true
 
-  '@stablelib/aead@1.0.1':
-    optional: true
+  '@stablelib/aead@1.0.1': {}
 
   '@stablelib/binary@1.0.1':
     dependencies:
       '@stablelib/int': 1.0.1
-    optional: true
 
   '@stablelib/chacha20poly1305@1.0.1':
     dependencies:
@@ -1235,35 +1250,28 @@ snapshots:
       '@stablelib/constant-time': 1.0.1
       '@stablelib/poly1305': 1.0.1
       '@stablelib/wipe': 1.0.1
-    optional: true
 
   '@stablelib/chacha@1.0.1':
     dependencies:
       '@stablelib/binary': 1.0.1
       '@stablelib/wipe': 1.0.1
-    optional: true
 
-  '@stablelib/constant-time@1.0.1':
-    optional: true
+  '@stablelib/constant-time@1.0.1': {}
 
-  '@stablelib/int@1.0.1':
-    optional: true
+  '@stablelib/int@1.0.1': {}
 
   '@stablelib/poly1305@1.0.1':
     dependencies:
       '@stablelib/constant-time': 1.0.1
       '@stablelib/wipe': 1.0.1
-    optional: true
 
-  '@stablelib/wipe@1.0.1':
-    optional: true
+  '@stablelib/wipe@1.0.1': {}
 
   '@stablelib/xchacha20@1.0.1':
     dependencies:
       '@stablelib/binary': 1.0.1
       '@stablelib/chacha': 1.0.1
       '@stablelib/wipe': 1.0.1
-    optional: true
 
   '@stablelib/xchacha20poly1305@1.0.1':
     dependencies:
@@ -1272,7 +1280,6 @@ snapshots:
       '@stablelib/constant-time': 1.0.1
       '@stablelib/wipe': 1.0.1
       '@stablelib/xchacha20': 1.0.1
-    optional: true
 
   '@stylistic/eslint-plugin@5.10.0(eslint@10.8.0(supports-color@7.2.0))':
     dependencies:
