@@ -3354,6 +3354,8 @@ declare namespace Dysnomia {
     constructor(token: string, options?: ClientOptions);
     addGuildMember(guildID: string, userID: string, accessToken: string, options?: AddGuildMemberOptions): Promise<void>;
     addGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
+    addInviteTargetUser(inviteID: string, userID: string): Promise<void>;
+    addInviteTargetUsers(inviteID: string, userIDs: string[]): Promise<void>;
     addMessageReaction(channelID: string, messageID: string, reaction: string): Promise<void>;
     banGuildMember(guildID: string, userID: string, options?: BanMemberOptions): Promise<void>;
     bulkBanGuildMembers(guildID: string, userIDs: string[], options?: BanMemberOptions): Promise<BulkGuildMemberBanResult>;
@@ -3625,6 +3627,8 @@ declare namespace Dysnomia {
     pruneMembers(guildID: string, options?: PruneMemberOptions): Promise<number>;
     purgeChannel(channelID: string, options: PurgeChannelOptions): Promise<number>;
     removeGuildMemberRole(guildID: string, memberID: string, roleID: string, reason?: string): Promise<void>;
+    removeInviteTargetUser(inviteID: string, userID: string): Promise<void>;
+    removeInviteTargetUsers(inviteID: string, userIDs: string[]): Promise<void>;
     removeMessageReaction(channelID: string, messageID: string, reaction: string, userID?: string): Promise<void>;
     removeMessageReactionEmoji(channelID: string, messageID: string, reaction: string): Promise<void>;
     removeMessageReactions(channelID: string, messageID: string): Promise<void>;
@@ -4161,10 +4165,14 @@ declare namespace Dysnomia {
     type: InviteTypes;
     uses: CT extends "withMetadata" ? number : null;
     constructor(data: BaseData, client: Client);
+    addTargetUser(userID: string): Promise<void>;
+    addTargetUsers(userIDs: string[]): Promise<void>;
     delete(reason?: string): Promise<void>;
     editTargetUsers(userIDs: string[]): Promise<void>;
     getTargetUsers(): Promise<string[]>;
     getTargetUsersJobStatus(): Promise<InviteTargetUsersJobStatus>;
+    removeTargetUser(userID: string): Promise<void>;
+    removeTargetUsers(userIDs: string[]): Promise<void>;
   }
 
   export class Member extends Base implements Presence {
