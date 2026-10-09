@@ -1605,6 +1605,9 @@ declare namespace Dysnomia {
     channelID?: string | null;
     communicationDisabledUntil?: Date | null;
     deaf?: boolean;
+    displayNameColors?: number[] | null;
+    displayNameEffectID?: number | null;
+    displayNameFontID?: number | null;
     flags?: number;
     mute?: boolean;
     nick?: string | null;
