@@ -106,6 +106,8 @@ declare namespace Dysnomia {
 
   // Guild
   type DefaultNotifications = Constants["DefaultMessageNotificationLevels"][keyof Constants["DefaultMessageNotificationLevels"]];
+  type DisplayNameEffect = Constants["DisplayNameEffects"][keyof Constants["DisplayNameEffects"]];
+  type DisplayNameFont = Constants["DisplayNameFonts"][keyof Constants["DisplayNameFonts"]];
   type ExplicitContentFilter = Constants["ExplicitContentFilterLevels"][keyof Constants["ExplicitContentFilterLevels"]];
   type GuildFeatures = Constants["GuildFeatures"][number];
   type GuildScheduledEventEditOptions<T extends GuildScheduledEventEntityTypes> = GuildScheduledEventEditOptionsExternal | GuildScheduledEventEditOptionsDiscord | GuildScheduledEventEditOptionsBase<T>;
@@ -1606,8 +1608,8 @@ declare namespace Dysnomia {
     communicationDisabledUntil?: Date | null;
     deaf?: boolean;
     displayNameColors?: number[] | null;
-    displayNameEffectID?: number | null;
-    displayNameFontID?: number | null;
+    displayNameEffectID?: DisplayNameEffect | null;
+    displayNameFontID?: DisplayNameFont | null;
     flags?: number;
     mute?: boolean;
     nick?: string | null;
@@ -2645,6 +2647,23 @@ declare namespace Dysnomia {
     DefaultMessageNotificationLevels: {
       ALL_MESSAGES:  0;
       ONLY_MENTIONS: 1;
+    };
+    DisplayNameEffects: {
+      SOLID:    1;
+      GRADIENT: 2;
+      NEON:     3;
+      TOON:     4;
+      POP:      5;
+    };
+    DisplayNameFonts: {
+      SAKURA:    3;
+      JELLYBEAN: 4;
+      MODERN:    6;
+      MEDIEVAL:  7;
+      EIGHT_BIT: 8;
+      VAMPYRE:   10;
+      GG_SANS:   11;
+      TEMPO:     12;
     };
     EmbedFlags: {
       IS_CONTENT_INVENTORY_ENTRY: 32;
