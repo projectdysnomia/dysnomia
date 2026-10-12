@@ -1,0 +1,14 @@
+index.d.ts
+  h_a954843f2693a3 3357-3358,3630-3631,4168-4169,4174-4175
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "fe6d0a1a4c83a50bab9f265e824bd373e1a091bc",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
