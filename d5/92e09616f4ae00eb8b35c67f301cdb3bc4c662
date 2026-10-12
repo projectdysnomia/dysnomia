@@ -1,0 +1,16 @@
+lib/Client.js
+  h_a954843f2693a3 289-298,3598-3607
+lib/rest/Endpoints.js
+  h_a954843f2693a3 93-95
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "d592e09616f4ae00eb8b35c67f301cdb3bc4c662",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
