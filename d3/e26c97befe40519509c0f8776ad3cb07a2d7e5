@@ -1,0 +1,14 @@
+lib/Client.js
+  h_a954843f2693a3 608,622,624
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "d3e26c97befe40519509c0f8776ad3cb07a2d7e5",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
