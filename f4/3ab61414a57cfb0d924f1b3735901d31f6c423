@@ -1,0 +1,16 @@
+lib/Client.js
+  h_a954843f2693a3 289-294,299-304,620,3611-3616,3621-3626
+lib/structures/Invite.js
+  h_a954843f2693a3 168-172,177-181,228-232,237-241
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "f43ab61414a57cfb0d924f1b3735901d31f6c423",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
