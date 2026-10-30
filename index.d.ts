@@ -2650,7 +2650,7 @@ declare namespace Dysnomia {
       IS_EXPLICIT_CONTENT:  1;
       IS_GORE_CONTENT:      2;
       IS_SELF_HARM_CONTENT: 4;
-    }
+    };
     DefaultMessageNotificationLevels: {
       ALL_MESSAGES:  0;
       ONLY_MENTIONS: 1;
