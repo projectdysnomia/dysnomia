@@ -2004,6 +2004,10 @@ declare namespace Dysnomia {
     placeholder?: string;
     placeholder_version?: number;
     flags?: number;
+    content_scan_metadata?: ContentScanMetadata;
+  }
+  interface ContentScanMetadata {
+    flags: number;
   }
   interface URLButton extends ButtonBase {
     style: Constants["ButtonStyles"]["LINK"];
@@ -2462,11 +2466,14 @@ declare namespace Dysnomia {
       USER_INSTALL: 1;
     };
     AttachmentFlags: {
-      IS_CLIP:      1;
-      IS_THUMBNAIL: 2;
-      IS_REMIX:     4;
-      IS_SPOILER:   8;
-      IS_ANIMATED:  32;
+      IS_CLIP:                    1;
+      IS_THUMBNAIL:               2;
+      IS_REMIX:                   4;
+      IS_SPOILER:                 8;
+      CONTAINS_EXPLICIT_CONTENT:  16;
+      IS_ANIMATED:                32;
+      CONTAINS_GORE_CONTENT:      64;
+      CONTAINS_SELF_HARM_CONTENT: 128;
     };
     AuditLogActions: {
       GUILD_UPDATE: 1;
@@ -2639,12 +2646,20 @@ declare namespace Dysnomia {
       NONE:     0;
       EVERYONE: 1;
     };
+    ContentScanMetadataFlags: {
+      IS_EXPLICIT_CONTENT:  1;
+      IS_GORE_CONTENT:      2;
+      IS_SELF_HARM_CONTENT: 4;
+    }
     DefaultMessageNotificationLevels: {
       ALL_MESSAGES:  0;
       ONLY_MENTIONS: 1;
     };
     EmbedFlags: {
+      CONTAINS_EXPLICIT_CONTENT:  16;
       IS_CONTENT_INVENTORY_ENTRY: 32;
+      CONTAINS_GORE_CONTENT:      64;
+      CONTAINS_SELF_HARM_CONTENT: 128;
     };
     EmbedMediaFlags: {
       IS_ANIMATED: 32;
