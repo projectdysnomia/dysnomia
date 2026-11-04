@@ -2484,6 +2484,7 @@ declare namespace Dysnomia {
       CHANNEL_OVERWRITE_CREATE: 13;
       CHANNEL_OVERWRITE_UPDATE: 14;
       CHANNEL_OVERWRITE_DELETE: 15;
+      CHANNEL_POSITION_UPDATE:  16;
 
       MEMBER_KICK:        20;
       MEMBER_PRUNE:       21;
@@ -2495,9 +2496,10 @@ declare namespace Dysnomia {
       MEMBER_DISCONNECT:  27;
       BOT_ADD:            28;
 
-      ROLE_CREATE: 30;
-      ROLE_UPDATE: 31;
-      ROLE_DELETE: 32;
+      ROLE_CREATE:          30;
+      ROLE_UPDATE:          31;
+      ROLE_DELETE:          32;
+      ROLE_POSITION_UPDATE: 33;
 
       INVITE_CREATE: 40;
       INVITE_UPDATE: 41;
