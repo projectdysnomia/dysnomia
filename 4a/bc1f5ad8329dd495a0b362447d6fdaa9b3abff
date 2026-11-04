@@ -1,0 +1,14 @@
+lib/structures/Attachment.js
+  h_a954843f2693a3 22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "4abc1f5ad8329dd495a0b362447d6fdaa9b3abff",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
