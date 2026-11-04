@@ -1,0 +1,18 @@
+index.d.ts
+  h_a954843f2693a3 2487,2499-2502
+lib/Constants.js
+  h_a954843f2693a3 106,118-121
+lib/structures/GuildAuditLogEntry.js
+  h_a954843f2693a3 190-192,200-202
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "029aa4cf2f258585397119e10a540f33cde80c12",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
