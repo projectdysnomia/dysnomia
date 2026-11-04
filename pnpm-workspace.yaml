@@ -2,20 +2,3 @@ allowBuilds:
   '@discordjs/opus': true
   erlpack@https://codeload.github.com/discord/erlpack/tar.gz/2a4c0e832f3cd4e07c92d4baec326a631ed50f59: true
   zlib-sync: true
-minimumReleaseAgeExclude:
-  # This is here temporarily as the package needs to be out for 24 hours
-  - '@snazzah/davey-android-arm-eabi@0.2.0'
-  - '@snazzah/davey-android-arm64@0.2.0'
-  - '@snazzah/davey-darwin-arm64@0.2.0'
-  - '@snazzah/davey-darwin-x64@0.2.0'
-  - '@snazzah/davey-freebsd-x64@0.2.0'
-  - '@snazzah/davey-linux-arm-gnueabihf@0.2.0'
-  - '@snazzah/davey-linux-arm64-gnu@0.2.0'
-  - '@snazzah/davey-linux-arm64-musl@0.2.0'
-  - '@snazzah/davey-linux-x64-gnu@0.2.0'
-  - '@snazzah/davey-linux-x64-musl@0.2.0'
-  - '@snazzah/davey-wasm32-wasi@0.2.0'
-  - '@snazzah/davey-win32-arm64-msvc@0.2.0'
-  - '@snazzah/davey-win32-ia32-msvc@0.2.0'
-  - '@snazzah/davey-win32-x64-msvc@0.2.0'
-  - '@snazzah/davey@0.2.0'
