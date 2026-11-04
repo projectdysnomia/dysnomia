@@ -1,0 +1,16 @@
+index.d.ts
+  h_a954843f2693a3 2653
+lib/Constants.js
+  h_a954843f2693a3 281
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2e3d2332efcbaeadacc92beb09c60c84db16e8b8",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
