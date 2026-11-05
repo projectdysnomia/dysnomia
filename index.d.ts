@@ -388,7 +388,6 @@ declare namespace Dysnomia {
     position?: number;
     lockPermissions?: boolean;
     parentID?: string;
-    flags?: number;
   }
   interface CreateChannelOptions {
     availableTags?: (Required<Pick<ForumTag, "name">> & Partial<ForumTag>)[];
@@ -422,7 +421,7 @@ declare namespace Dysnomia {
   interface EditChannelPositionOptions {
     lockPermissions?: string;
     parentID?: string;
-    flags?: number;
+    reason?: string;
   }
   interface ForumTag {
     id: string;
@@ -3495,7 +3494,7 @@ declare namespace Dysnomia {
       reason?: string
     ): Promise<void>;
     editChannelPosition(channelID: string, position: number, options?: EditChannelPositionOptions): Promise<void>;
-    editChannelPositions(guildID: string, channelPositions: ChannelPosition[]): Promise<void>;
+    editChannelPositions(guildID: string, channelPositions: ChannelPosition[], reason?: string): Promise<void>;
     editCommand<T extends ApplicationCommandStructure>(commandID: string, command: Omit<ApplicationCommandStructure, "type">): Promise<ApplicationCommandStructureConversion<T, true>>;
     editCommandPermissions(guildID: string, commandID: string, permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions>;
     editGuild(guildID: string, options: GuildOptions, reason?: string): Promise<Guild>;
@@ -3885,7 +3884,7 @@ declare namespace Dysnomia {
     dynamicSplashURL(format?: ImageFormat, size?: number, forceStatic?: boolean): string | null;
     edit(options: GuildOptions, reason?: string): Promise<Guild>;
     editAutoModerationRule(ruleID: string, options: EditAutoModerationRuleOptions): Promise<AutoModerationRule>;
-    editChannelPositions(channelPositions: ChannelPosition[]): Promise<void>;
+    editChannelPositions(channelPositions: ChannelPosition[], reason?: string): Promise<void>;
     editCommand<T extends ApplicationCommandStructure>(commandID: string, command: Omit<T, "type">): Promise<ApplicationCommandStructureConversion<T, true>>;
     editCommandPermissions(permissions: ApplicationCommandPermissions[]): Promise<GuildApplicationCommandPermissions[]>;
     editEmoji(emojiID: string, options: { name: string; roles?: string[] }, reason?: string): Promise<Emoji>;
