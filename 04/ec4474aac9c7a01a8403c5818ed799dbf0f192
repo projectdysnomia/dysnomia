@@ -1,0 +1,20 @@
+index.d.ts
+  h_a954843f2693a3 424,3497,3887
+lib/Client.js
+  h_a954843f2693a3 1520,1524-1527,1552,1555-1559,1570,1573-1574,1579,1581-1583
+lib/structures/Guild.js
+  h_a954843f2693a3 926,929-930
+lib/structures/GuildChannel.js
+  h_a954843f2693a3 131
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "04ec4474aac9c7a01a8403c5818ed799dbf0f192",
+  "prompts": {},
+  "humans": {
+    "h_a954843f2693a3": {
+      "author": "TTtie <me@tttie.cz>"
+    }
+  }
+}
