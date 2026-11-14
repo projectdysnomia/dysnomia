@@ -3601,13 +3601,17 @@ declare namespace Dysnomia {
     getPollAnswerVoters(channelID: string, messageID: string, answerID: number, options?: GetPollAnswerVotersOptions): Promise<User[]>;
     getPruneCount(guildID: string, options?: GetPruneOptions): Promise<number>;
     getRESTChannel(channelID: string): Promise<AnyChannel>;
+    getRESTChannelMemberPermissions(channelID: string, memberID: string, options?: { implicit?: boolean }): Promise<Permission>;
+    getRESTChannelRolePermissions(channelID: string, roleID: string, options?: { implicit?: boolean }): Promise<Permission>;
     getRESTGuild(guildID: string, withCounts?: boolean): Promise<Guild>;
     getRESTGuildChannels(guildID: string): Promise<AnyGuildChannel[]>;
     getRESTGuildEmoji(guildID: string, emojiID: string): Promise<Emoji>;
     getRESTGuildEmojis(guildID: string): Promise<Emoji[]>;
     getRESTGuildMember(guildID: string, memberID: string): Promise<Member>;
+    getRESTGuildMemberPermissions(guildID: string, memberID: string): Promise<Permission>;
     getRESTGuildMembers(guildID: string, options?: GetRESTGuildMembersOptions): Promise<Member[]>;
     getRESTGuildRole(guildID: string, roleID: string): Promise<Role>;
+    getRESTGuildRolePermissions(guildID: string, roleID: string): Promise<Permission>;
     getRESTGuildRoles(guildID: string): Promise<Role[]>;
     getRESTGuilds(options?: GetRESTGuildsOptions): Promise<Guild[]>;
     getRESTGuildScheduledEvent(guildID: string, eventID: string, options?: GetGuildScheduledEventOptions): Promise<GuildScheduledEvent>;
@@ -3922,8 +3926,10 @@ declare namespace Dysnomia {
     getRESTEmoji(emojiID: string): Promise<Emoji>;
     getRESTEmojis(): Promise<Emoji[]>;
     getRESTMember(memberID: string): Promise<Member>;
+    getRESTMemberPermissions(memberID: string): Promise<Permission>;
     getRESTMembers(options?: GetRESTGuildMembersOptions): Promise<Member[]>;
     getRESTRole(roleID: string): Promise<Role>;
+    getRESTRolePermissions(roleID: string): Promise<Permission>;
     getRESTRoles(): Promise<Role[]>;
     getRESTScheduledEvent(eventID: string): Promise<GuildScheduledEvent>;
     getRESTSticker(stickerID: string): Promise<Sticker>;
@@ -4000,6 +4006,8 @@ declare namespace Dysnomia {
     ): Promise<PermissionOverwrite>;
     editPosition(position: number, options?: EditChannelPositionOptions): Promise<void>;
     getInvites(): Promise<Invite[]>;
+    getRESTMemberPermissions(memberID: string, options?: { implicit?: boolean }): Promise<Permission>;
+    getRESTRolePermissions(roleID: string, options?: { implicit?: boolean }): Promise<Permission>;
     permissionsOf(memberID: string | Member | MemberRoles): Permission;
   }
 
