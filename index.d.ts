@@ -183,6 +183,7 @@ declare namespace Dysnomia {
   type ComponentTypes = Constants["ComponentTypes"][keyof Constants["ComponentTypes"]];
   type FileUploadComponentFileTypes = "image" | "video" | "audio" | `.${string}`;
   type ImageFormat = Constants["ImageFormats"][number];
+  type MenuActionItemStyles = Constants["MenuActionItemStyles"][keyof Constants["MenuActionItemStyles"]];
   type MessageActivityTypes = Constants["MessageActivityTypes"][keyof Constants["MessageActivityTypes"]];
   type MessageContent<T extends "hasNonce" | "" = ""> = string | AdvancedMessageContent<T>;
   type MessageReferenceSend = MessageReferenceReply | MessageReferenceForward;
@@ -1861,6 +1862,28 @@ declare namespace Dysnomia {
     custom_id: string;
     default?: boolean;
   }
+
+  interface OverflowMenuComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["OVERFLOW_MENU"];
+    groups: OverflowMenuGroup[];
+  }
+
+  interface OverflowMenuGroup {
+    label?: string;
+    components: MenuActionItemComponent[];
+  }
+
+  interface MenuActionItemComponent extends ComponentBase {
+    type: Constants["ComponentTypes"]["MENU_ACTION_ITEM"];
+    custom_id?: string;
+    label: string;
+    style: MenuActionItemStyles;
+    description?: string;
+    url?: string;
+    emoji?: PartialEmoji;
+    disabled?: boolean;
+  }
+
   interface GetMessageReactionOptions {
     after?: string;
     limit?: number;
@@ -2643,6 +2666,8 @@ declare namespace Dysnomia {
       RADIO_GROUP:        21;
       CHECKBOX_GROUP:     22;
       CHECKBOX:           23;
+      OVERFLOW_MENU:      25;
+      MENU_ACTION_ITEM:   26;
     };
     ConnectionVisibilityTypes: {
       NONE:     0;
@@ -2896,6 +2921,11 @@ declare namespace Dysnomia {
       AUTOMOD_QUARANTINED_USERNAME:    128;
       DM_SETTINGS_UPSELL_ACKNOWLEDGED: 512;
       AUTOMOD_QUARANTINED_GUILD_TAG:   1024;
+    };
+    MenuActionItemStyles: {
+      DEFAULT: 1;
+      DANGER:  2;
+      LINK:    3;
     };
     MessageActivityTypes: {
       JOIN:         1;
